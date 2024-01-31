@@ -1,14 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "./components/mode-toggle";
+import DemoPage from "./expenses/page";
 
 const App = () => {
   return (
     <div>
-      Hello World
-      <Button variant={"default"} size={"lg"}>
-        Button
-      </Button>
       <ModeToggle />
+      <DemoPage />
     </div>
   );
 };
