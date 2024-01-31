@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String    @id @default(uuid())
+  email              String    @unique
+  name               String
+  surname            String
+  profilePicture     String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  country            String?
+  alternativeEmail   String?
+  currencyPreference String?
+  languagePreference String?
+  twoFactorEnabled   Boolean   @default(false)
+  twoFactorSecret    String?
+  espenses           Expense[]
+}
+
+model ExpenseCategory {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  description String?
+  expenses    Expense[]
+}
+
+model Expense {
+  id          String          @id @default(uuid())
+  userId      String
+  user        User            @relation(fields: [userId], references: [id])
+  amount      Float
+  description String
+  categoryId  String
+  category    ExpenseCategory @relation(fields: [categoryId], references: [id])
+  currency    String? // Currency of the expense (nullable)
+  location    String? // Location where the expense occurred (nullable)
+  receipt     String? // Receipt details (e.g., URL or file path) (nullable)
+  date        DateTime // Date of the expense
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
