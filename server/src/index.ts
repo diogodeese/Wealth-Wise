@@ -1,20 +1,20 @@
-import Fastify from "fastify";
+// const fastify = Fastify({
+//   logger: false,
+// });
 
-const fastify = Fastify({
-  logger: false,
-});
+import { buildApp } from "./app";
 
-// Declare a route
-fastify.get("/", function (request, reply) {
-  reply.send({ hello: "world" });
-});
+async function startServer() {
+  const app = await buildApp();
 
-// Run the server!
-fastify.listen({ port: 3000 }, function (err, address) {
-  if (err) {
-    fastify.log.error(err);
-    process.exit(1);
-  }
-  fastify.log.info(`Server listening at ${address}`);
-  console.log(`Server listening at ${address}`);
-});
+  app.listen({ port: 3000 }, function (err, address) {
+    if (err) {
+      app.log.error(err);
+      process.exit(1);
+    }
+    app.log.info(`Server listening at ${address}`);
+    console.log(`Server listening at ${address}`);
+  });
+}
+
+startServer();
