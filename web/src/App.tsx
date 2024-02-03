@@ -1,35 +1,25 @@
-import { ModeToggle } from "./components/mode-toggle";
-import DemoPage from "./expenses/page";
+import { ThemeToggle } from "./components/theme-toggle";
+import DemoPage from "./app/expenses/page";
 import { Combobox } from "./components/ui/combobox";
-// import { useQuery } from "@tanstack/react-query";
-
-// import { IComboboxItem } from "./interfaces/comboboxItem";
-
-// const fetchExpenseCategories = async () => {
-//   const response = await fetch("http://localhost:3000/expense-categories");
-//   if (!response.ok) {
-//     throw new Error("Failed to fetch data");
-//   }
-//   return response.json();
-// };
+import { useQuery } from "@tanstack/react-query";
+import { getExpenseCategories } from "./api/get-expense-categories";
 
 const App = () => {
-  // const { data, error, isLoading } = useQuery(
-  //   "expenseCategories",
-  //   fetchExpenseCategories
-  // );
+  const { data } = useQuery({
+    queryKey: ["expense-categories"],
+    queryFn: getExpenseCategories,
+  });
+
+  const comboboxData = data?.map((expenseCategory) => ({
+    id: expenseCategory.id,
+    text: expenseCategory.name,
+  }));
 
   return (
     <div>
-      <ModeToggle />
+      <ThemeToggle />
       <DemoPage />
-      <Combobox
-        label="Select Expense Category"
-        data={[
-          { id: "1", text: "Test 1" },
-          { id: "2", text: "Test 2" },
-        ]}
-      />
+      <Combobox label="Select Expense Category" data={comboboxData || []} />
     </div>
   );
 };

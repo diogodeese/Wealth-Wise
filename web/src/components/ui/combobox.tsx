@@ -57,7 +57,7 @@ export function Combobox({ label, data }: ComboboxProps) {
             {data.map((item) => (
               <CommandItem
                 key={item.id}
-                value={item.text}
+                value={item.id}
                 onSelect={(currentValue) => {
                   setValue(currentValue === value ? "" : currentValue);
                   setOpen(false);
