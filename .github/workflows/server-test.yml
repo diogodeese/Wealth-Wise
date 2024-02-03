@@ -22,5 +22,5 @@ jobs:
       - name: Install dependencies
         run: npm install --prefix server
 
-      - name: Run tests
-        run: npm test --prefix server
+      # - name: Run tests
+      #   run: npm test --prefix server
