@@ -5,6 +5,7 @@ on:
     branches: [main] # Run tests on every push to the main branch
   pull_request:
     branches: [main] # Run tests on every pull request targeting the main branch
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,11 +19,8 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Navigate to project directory
-        run: cd server
-
       - name: Install dependencies
-        run: npm install
+        run: npm install --prefix server
 
       - name: Run tests
-        run: npm test
+        run: npm test --prefix server
