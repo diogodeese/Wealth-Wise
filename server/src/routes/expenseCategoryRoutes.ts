@@ -7,7 +7,14 @@ export default async function expenseCategoryRoutes(fastify: FastifyInstance) {
   fastify.get(
     "/expense-categories",
     async (request: FastifyRequest, reply: FastifyReply) => {
-      return expenseCategoryController.getAllExpenseCategories(request, reply);
+      return expenseCategoryController.getAll(request, reply);
+    }
+  );
+
+  fastify.post(
+    "/expense-categories",
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      return expenseCategoryController.create(request, reply);
     }
   );
 }
