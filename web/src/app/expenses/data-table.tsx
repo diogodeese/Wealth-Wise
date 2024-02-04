@@ -30,7 +30,7 @@ import React from "react";
 import { DataTablePagination } from "./pagination";
 
 interface DataTableProps<TData> {
-  columns: ColumnDef<TData, any>[]; // We're using 'any' for the value type for flexibility
+  columns: ColumnDef<TData, keyof TData>[]; // We're using 'any' for the value type for flexibility
   data: TData[];
 }
 
