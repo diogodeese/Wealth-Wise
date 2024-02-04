@@ -10,7 +10,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { DataTableColumnHeader } from "./column-header";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -19,7 +20,7 @@ export type Expense = {
   date: string;
   category: string;
   description: string;
-  amount: number;
+  amount: string;
   currency: string;
   paymentMethod: string;
   location: string;
@@ -29,12 +30,16 @@ export type Expense = {
 export const columns: ColumnDef<Expense>[] = [
   {
     accessorKey: "id",
-    header: "ID",
+    header: ({ column }) => {
+      return <DataTableColumnHeader title={"ID"} column={column} />;
+    },
     enableHiding: false,
   },
   {
     accessorKey: "date",
-    header: "Date",
+    header: ({ column }) => {
+      return <DataTableColumnHeader title={"Date"} column={column} />;
+    },
     enableHiding: false,
   },
   {
@@ -49,7 +54,9 @@ export const columns: ColumnDef<Expense>[] = [
   },
   {
     accessorKey: "amount",
-    header: "Amount",
+    header: ({ column }) => {
+      return <DataTableColumnHeader title={"Amount"} column={column} />;
+    },
     enableHiding: false,
   },
   {

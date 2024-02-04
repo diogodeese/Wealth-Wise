@@ -1,24 +1,32 @@
 import { Expense, columns } from "./columns";
 import { DataTable } from "./data-table";
 
-// Function to generate random expenses
-// Function to generate random expenses
 function generateRandomExpenses(): Expense[] {
   const expenses: Expense[] = [];
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 100; i++) {
     const id = Math.random().toString(36).substr(2, 9); // Generate a random ID
+
     const startDate = new Date(2023, 0, 1).getTime(); // Start date: 01-01-2023
     const endDate = Date.now(); // End date: Current date
     const randomDate = new Date(
       startDate + Math.random() * (endDate - startDate)
     );
 
-    const date = randomDate.toLocaleDateString(); // Random date
+    // Format the date as "dd/mm/yyyy"
+    const date =
+      ("0" + randomDate.getDate()).slice(-2) +
+      "/" +
+      ("0" + (randomDate.getMonth() + 1)).slice(-2) +
+      "/" +
+      randomDate.getFullYear();
+
     const categories = ["Entertainment", "Groceries", "Other"]; // Available categories
     const category = categories[Math.floor(Math.random() * categories.length)];
     const description = "Random Description"; // Random description
-    const amount = Math.random() * 1000; // Generate a random amount
+
+    // Generate a random amount with 2 digits after the comma
+    const amount = (Math.random() * 1000).toFixed(2);
 
     const currencies = ["USD", "EUR"]; // Available currencies
     const currency = currencies[Math.floor(Math.random() * currencies.length)];
