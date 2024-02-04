@@ -24,69 +24,66 @@ const Layout = ({ children }: LayoutProps) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className="flex h-screen">
-      <ResizablePanelGroup
-        direction="horizontal"
-        onLayout={(sizes: number[]) => {
+    <ResizablePanelGroup
+      direction="horizontal"
+      onLayout={(sizes: number[]) => {
+        localStorage.setItem(
+          "react-resizable-panels:layout",
+          JSON.stringify(sizes)
+        );
+      }}
+      className="h-full items-stretch"
+    >
+      <ResizablePanel
+        defaultSize={defaultLayout[0]}
+        minSize={minSizes[0]}
+        maxSize={maxSizes[0]}
+        collapsedSize={5}
+        collapsible={true}
+        onCollapse={() => {
+          setIsCollapsed(true);
           localStorage.setItem(
-            "react-resizable-panels:layout",
-            JSON.stringify(sizes)
+            "react-resizable-panels:collapsed",
+            JSON.stringify(true)
           );
         }}
-        className="h-full max-h-[800px] items-stretch"
+        onExpand={() => {
+          setIsCollapsed(false);
+          localStorage.setItem(
+            "react-resizable-panels:collapsed",
+            JSON.stringify(false)
+          );
+        }}
+        className={cn(
+          isCollapsed && "min-w-[50px] transition-all duration-300 ease-in-out"
+        )}
       >
-        <ResizablePanel
-          defaultSize={defaultLayout[0]}
-          minSize={minSizes[0]}
-          maxSize={maxSizes[0]}
-          collapsedSize={5}
-          collapsible={true}
-          onCollapse={() => {
-            setIsCollapsed(true);
-            localStorage.setItem(
-              "react-resizable-panels:collapsed",
-              JSON.stringify(true)
-            );
-          }}
-          onExpand={() => {
-            setIsCollapsed(false);
-            localStorage.setItem(
-              "react-resizable-panels:collapsed",
-              JSON.stringify(false)
-            );
-          }}
-          className={cn(
-            isCollapsed &&
-              "min-w-[50px] transition-all duration-300 ease-in-out"
-          )}
-        >
-          <div className="w-full flex justify-center items-center pb-4 pt-6">
-            Diogo Santos
-          </div>
-          <Separator />
-          <Nav
-            isCollapsed={isCollapsed}
-            links={[
-              {
-                title: "Expenses",
-                icon: Snowflake,
-                variant: "ghost",
-              },
-            ]}
-          />
-          <Separator />
-          <ThemeToggle />
-        </ResizablePanel>
-        <ResizableHandle withHandle />
-        <ResizablePanel
-          defaultSize={defaultLayout[1]}
-          minSize={minSizes[1]}
-          maxSize={maxSizes[1]}
-        >
-          {children}
-        </ResizablePanel>
-      </ResizablePanelGroup>
-    </div>
+        <div className="w-full flex justify-center items-center pb-4 pt-6">
+          Diogo Santos
+        </div>
+        <Separator />
+        <Nav
+          isCollapsed={isCollapsed}
+          links={[
+            {
+              title: "Expenses",
+              icon: Snowflake,
+              variant: "ghost",
+            },
+          ]}
+        />
+        <Separator />
+        <ThemeToggle />
+      </ResizablePanel>
+      <ResizableHandle withHandle />
+      <ResizablePanel
+        defaultSize={defaultLayout[1]}
+        minSize={minSizes[1]}
+        maxSize={maxSizes[1]}
+      >
+        {children}
+      </ResizablePanel>
+    </ResizablePanelGroup>
   );
 };
 

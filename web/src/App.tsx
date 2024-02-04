@@ -1,8 +1,8 @@
-import DemoPage from "@/app/expenses/page";
 import { Combobox } from "@/components/ui/combobox";
 import { useQuery } from "@tanstack/react-query";
 import { getExpenseCategories } from "@/api/get-expense-categories";
 import Layout from "@/components/layout";
+import Expenses from "@/app/expenses/page";
 
 const App = () => {
   const { data } = useQuery({
@@ -17,8 +17,8 @@ const App = () => {
 
   return (
     <Layout>
-      <DemoPage />
       <Combobox label="Select Expense Category" data={comboboxData || []} />
+      <Expenses />
     </Layout>
   );
 };

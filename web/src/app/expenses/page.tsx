@@ -58,7 +58,7 @@ function generateRandomExpenses(): Expense[] {
   return expenses;
 }
 
-export default function DemoPage() {
+export default function Expenses() {
   const data = generateRandomExpenses();
 
   return (
