@@ -1,12 +1,6 @@
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from './ui/resizable'
-import { Separator } from './ui/separator'
-import { ThemeToggle } from './theme-toggle'
-import { Nav } from './nav'
-import { useState } from 'react'
+import WealthWiseSimpleBlack from '@/assets/wealth-wise-simple-black/wealth-wise-simple-black'
+import WealthWiseSimpleWhite from '@/assets/wealth-wise-simple-white/wealth-wise-simple-white'
+import { useTheme } from '@/utils/use-theme'
 import {
   ArrowUpDown,
   Banknote,
@@ -15,17 +9,19 @@ import {
   History,
   LayoutGrid,
   TrendingUp,
-  WalletCards,
+  WalletCards
 } from 'lucide-react'
-import { cn } from '../../lib/utils'
-import { ReactNode } from 'react'
-import WealthWiseSimpleBlack from '@/assets/wealth-wise-simple-black/wealth-wise-simple-black'
-import WealthWiseSimpleWhite from '@/assets/wealth-wise-simple-white/wealth-wise-simple-white'
+import { ReactNode, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useTheme } from '@/utils/use-theme'
-import WealthWiseComplexBlack from '@/assets/weath-wise-complex-black/wealth-wise-complex-black'
-import WealthWiseComplexWhite from '@/assets/wealth-wise-complex-white/wealth-wise-complex-white'
-import { Button } from './ui/button'
+import { cn } from '../../lib/utils'
+import { Nav } from './nav'
+import { ThemeToggle } from './theme-toggle'
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup
+} from './ui/resizable'
+import { Separator } from './ui/separator'
 
 interface LayoutProps {
   children: ReactNode
@@ -41,14 +37,14 @@ const Layout = ({ children }: LayoutProps) => {
 
   return (
     <ResizablePanelGroup
-      direction='horizontal'
+      direction="horizontal"
       onLayout={(sizes: number[]) => {
         localStorage.setItem(
           'react-resizable-panels:layout',
           JSON.stringify(sizes)
         )
       }}
-      className='min-h-screen items-stretch'
+      className="min-h-screen items-stretch"
     >
       <ResizablePanel
         defaultSize={defaultLayout[0]}
@@ -74,10 +70,10 @@ const Layout = ({ children }: LayoutProps) => {
           isCollapsed && 'min-w-[50px]  transition-all duration-300 ease-in-out'
         )}
       >
-        <div className='w-full'>
+        <div className="w-full">
           <Link
-            to='/'
-            className='flex justify-center items-center pb-4 pt-6 gap-4'
+            to="/"
+            className="flex justify-center items-center pb-4 pt-6 gap-4"
           >
             {isCollapsed ? (
               <>
@@ -92,12 +88,12 @@ const Layout = ({ children }: LayoutProps) => {
                 {themeMode === 'light' ? (
                   <>
                     <WealthWiseSimpleWhite />
-                    <span className='text-base'>Wealth Wise</span>
+                    <span className="text-base">Wealth Wise</span>
                   </>
                 ) : (
                   <>
                     <WealthWiseSimpleBlack />
-                    <span className='text-base'>Wealth Wise</span>
+                    <span className="text-base">Wealth Wise</span>
                   </>
                 )}
               </>
@@ -110,29 +106,34 @@ const Layout = ({ children }: LayoutProps) => {
           links={[
             {
               title: 'Dashboard',
+              to: '/',
               icon: LayoutGrid,
-              variant: 'ghost',
+              variant: 'ghost'
             },
             {
               title: 'Expenses',
+              to: '/expenses',
               icon: WalletCards,
-              variant: 'ghost',
+              variant: 'ghost'
             },
             {
               title: 'Analytics',
+              to: '/',
               icon: TrendingUp,
-              variant: 'ghost',
+              variant: 'ghost'
             },
             {
               title: 'Transactions',
+              to: '/',
               icon: ArrowUpDown,
-              variant: 'ghost',
+              variant: 'ghost'
             },
             {
               title: 'History',
+              to: '/',
               icon: History,
-              variant: 'ghost',
-            },
+              variant: 'ghost'
+            }
           ]}
         />
         <Separator />
@@ -141,19 +142,22 @@ const Layout = ({ children }: LayoutProps) => {
           links={[
             {
               title: 'Savings',
+              to: '/',
               icon: Banknote,
-              variant: 'ghost',
+              variant: 'ghost'
             },
             {
               title: 'Cards',
+              to: '/',
               icon: CreditCard,
-              variant: 'ghost',
+              variant: 'ghost'
             },
             {
               title: 'Crypto',
+              to: '/',
               icon: Bitcoin,
-              variant: 'ghost',
-            },
+              variant: 'ghost'
+            }
           ]}
         />
         <Separator />

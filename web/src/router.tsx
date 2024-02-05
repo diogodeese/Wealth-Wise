@@ -1,14 +1,19 @@
-import { createBrowserRouter } from "react-router-dom";
-import App from "./app/pages/App";
-import NotFound from "./app/pages/NotFound";
+import { createBrowserRouter } from 'react-router-dom'
+import Dashboard from './app/pages/App'
+import Expenses from './app/pages/Expenses'
+import NotFound from './app/pages/NotFound'
 
 export const router = createBrowserRouter([
   {
-    path: "/",
-    element: <App />,
+    path: '/',
+    element: <Dashboard />
   },
   {
-    path: "*",
-    element: <NotFound />,
+    path: '/expenses',
+    element: <Expenses />
   },
-]);
+  {
+    path: '*',
+    element: <NotFound />
+  }
+])
