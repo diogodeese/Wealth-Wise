@@ -70,7 +70,7 @@ const Layout = ({ children }: LayoutProps) => {
           isCollapsed && 'min-w-[50px]  transition-all duration-300 ease-in-out'
         )}
       >
-        <div className="w-full">
+        <div className="w-full h-20">
           <Link
             to="/"
             className="flex justify-center items-center pb-4 pt-6 gap-4"
@@ -168,6 +168,7 @@ const Layout = ({ children }: LayoutProps) => {
         defaultSize={defaultLayout[1]}
         minSize={minSizes[1]}
         maxSize={maxSizes[1]}
+        className="container py-8"
       >
         {children}
       </ResizablePanel>

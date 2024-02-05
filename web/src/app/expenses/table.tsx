@@ -62,7 +62,7 @@ export default function ExpensesTable() {
   const data = generateRandomExpenses()
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="py-10">
       <DataTable columns={columns} data={data} />
     </div>
   )

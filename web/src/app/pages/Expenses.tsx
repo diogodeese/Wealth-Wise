@@ -1,7 +1,7 @@
 import { getExpenseCategories } from '@/api/get-expense-categories'
 import Layout from '@/app/components/layout'
 import { Combobox } from '@/app/components/ui/combobox'
-import ExpensesTable from '@/app/expenses/page'
+import ExpensesTable from '@/app/expenses/table'
 import { useQuery } from '@tanstack/react-query'
 
 export default function Expenses() {

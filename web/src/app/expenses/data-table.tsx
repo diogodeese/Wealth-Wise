@@ -1,4 +1,18 @@
-import { Button } from "@/app/components/ui/button";
+import { Button } from '@/app/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger
+} from '@/app/components/ui/dropdown-menu'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/app/components/ui/table'
 import {
   ColumnDef,
   SortingState,
@@ -7,38 +21,24 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/app/components/ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuCheckboxItem,
-} from "@/app/components/ui/dropdown-menu";
+  useReactTable
+} from '@tanstack/react-table'
 
-import { SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal } from 'lucide-react'
 
-import React from "react";
-import { DataTablePagination } from "./pagination";
+import React from 'react'
+import { DataTablePagination } from './pagination'
 
 interface DataTableProps<TData> {
-  columns: ColumnDef<TData, keyof TData>[]; // We're using 'any' for the value type for flexibility
-  data: TData[];
+  columns: ColumnDef<TData, keyof TData>[] // We're using 'any' for the value type for flexibility
+  data: TData[]
 }
 
 export function DataTable<TData>({ columns, data }: DataTableProps<TData>) {
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+    React.useState<VisibilityState>({})
 
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [sorting, setSorting] = React.useState<SortingState>([])
 
   const table = useReactTable({
     data,
@@ -50,9 +50,9 @@ export function DataTable<TData>({ columns, data }: DataTableProps<TData>) {
     getPaginationRowModel: getPaginationRowModel(),
     state: {
       columnVisibility,
-      sorting,
-    },
-  });
+      sorting
+    }
+  })
 
   return (
     <div>
@@ -80,13 +80,13 @@ export function DataTable<TData>({ columns, data }: DataTableProps<TData>) {
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
-                );
+                )
               })}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
 
-      <div className="rounded-md border mt-4 mb-4">
+      <div className="rounded-md border my-4">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -101,7 +101,7 @@ export function DataTable<TData>({ columns, data }: DataTableProps<TData>) {
                             header.getContext()
                           )}
                     </TableHead>
-                  );
+                  )
                 })}
               </TableRow>
             ))}
@@ -111,7 +111,7 @@ export function DataTable<TData>({ columns, data }: DataTableProps<TData>) {
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
+                  data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -138,5 +138,5 @@ export function DataTable<TData>({ columns, data }: DataTableProps<TData>) {
       </div>
       <DataTablePagination table={table} />
     </div>
-  );
+  )
 }
