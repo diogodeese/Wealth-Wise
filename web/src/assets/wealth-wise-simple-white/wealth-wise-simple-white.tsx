@@ -6,8 +6,8 @@ const WealthWiseSimpleWhite: React.FC<WealthWiseSimpleWhiteProps> = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 358 308"
-    width="46"
-    height="46"
+    width="36"
+    height="36"
     fill="none"
     {...props}
   >

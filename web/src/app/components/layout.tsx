@@ -67,15 +67,30 @@ const Layout = ({ children }: LayoutProps) => {
             to="/"
             className="flex justify-center items-center pb-4 pt-6 gap-4"
           >
-            {themeMode === "light" ? (
+            {isCollapsed ? (
               <>
-                <WealthWiseSimpleWhite />
-                <span className="text-xl">Wealth Wise</span>
+                {themeMode === "light" ? (
+                  <>
+                    light
+                    {/* <WealthWiseComplexWhite /> */}
+                  </>
+                ) : (
+                  <>dark</>
+                )}
               </>
             ) : (
               <>
-                <WealthWiseSimpleBlack />
-                <span className="text-xl">Wealth Wise</span>
+                {themeMode === "light" ? (
+                  <>
+                    <WealthWiseSimpleWhite />
+                    <span className="text-base">Wealth Wise</span>
+                  </>
+                ) : (
+                  <>
+                    <WealthWiseSimpleBlack />
+                    <span className="text-base">Wealth Wise</span>
+                  </>
+                )}
               </>
             )}
           </Link>
