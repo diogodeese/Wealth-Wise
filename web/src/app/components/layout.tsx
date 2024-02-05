@@ -7,7 +7,16 @@ import { Separator } from './ui/separator'
 import { ThemeToggle } from './theme-toggle'
 import { Nav } from './nav'
 import { useState } from 'react'
-import { LayoutGrid, TrendingUp, WalletCards } from 'lucide-react'
+import {
+  ArrowUpDown,
+  Banknote,
+  Bitcoin,
+  CreditCard,
+  History,
+  LayoutGrid,
+  TrendingUp,
+  WalletCards,
+} from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { ReactNode } from 'react'
 import WealthWiseSimpleBlack from '@/assets/wealth-wise-simple-black/wealth-wise-simple-black'
@@ -15,6 +24,8 @@ import WealthWiseSimpleWhite from '@/assets/wealth-wise-simple-white/wealth-wise
 import { Link } from 'react-router-dom'
 import { useTheme } from '@/utils/use-theme'
 import WealthWiseComplexBlack from '@/assets/weath-wise-complex-black/wealth-wise-complex-black'
+import WealthWiseComplexWhite from '@/assets/wealth-wise-complex-white/wealth-wise-complex-white'
+import { Button } from './ui/button'
 
 interface LayoutProps {
   children: ReactNode
@@ -24,7 +35,7 @@ const Layout = ({ children }: LayoutProps) => {
   const themeMode = useTheme().theme
 
   const defaultLayout = [15, 85]
-  const minSizes = [10, 70]
+  const minSizes = [12, 70]
   const maxSizes = [20, 95]
   const [isCollapsed, setIsCollapsed] = useState(false)
 
@@ -43,7 +54,7 @@ const Layout = ({ children }: LayoutProps) => {
         defaultSize={defaultLayout[0]}
         minSize={minSizes[0]}
         maxSize={maxSizes[0]}
-        collapsedSize={5}
+        collapsedSize={6}
         collapsible={true}
         onCollapse={() => {
           setIsCollapsed(true)
@@ -71,13 +82,9 @@ const Layout = ({ children }: LayoutProps) => {
             {isCollapsed ? (
               <>
                 {themeMode === 'light' ? (
-                  <div className='h-16 w-16'>
-                    <WealthWiseComplexBlack />
-                  </div>
+                  <WealthWiseSimpleWhite />
                 ) : (
-                  <div className='h-16 w-16 flex justify-center items-center'>
-                    <WealthWiseComplexBlack width={54} height={54} />
-                  </div>
+                  <WealthWiseSimpleBlack />
                 )}
               </>
             ) : (
@@ -114,6 +121,37 @@ const Layout = ({ children }: LayoutProps) => {
             {
               title: 'Analytics',
               icon: TrendingUp,
+              variant: 'ghost',
+            },
+            {
+              title: 'Transactions',
+              icon: ArrowUpDown,
+              variant: 'ghost',
+            },
+            {
+              title: 'History',
+              icon: History,
+              variant: 'ghost',
+            },
+          ]}
+        />
+        <Separator />
+        <Nav
+          isCollapsed={isCollapsed}
+          links={[
+            {
+              title: 'Savings',
+              icon: Banknote,
+              variant: 'ghost',
+            },
+            {
+              title: 'Cards',
+              icon: CreditCard,
+              variant: 'ghost',
+            },
+            {
+              title: 'Crypto',
+              icon: Bitcoin,
               variant: 'ghost',
             },
           ]}
