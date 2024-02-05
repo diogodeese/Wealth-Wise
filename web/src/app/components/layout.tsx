@@ -2,41 +2,42 @@ import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from "./ui/resizable";
-import { Separator } from "./ui/separator";
-import { ThemeToggle } from "./theme-toggle";
-import { Nav } from "./nav";
-import { useState } from "react";
-import { Snowflake } from "lucide-react";
-import { cn } from "../../lib/utils";
-import { ReactNode } from "react";
-import WealthWiseSimpleBlack from "@/assets/wealth-wise-simple-black/wealth-wise-simple-black";
-import { Link } from "react-router-dom";
-import WealthWiseSimpleWhite from "@/assets/wealth-wise-simple-white/wealth-wise-simple-white";
-import { useTheme } from "@/utils/use-theme";
+} from './ui/resizable'
+import { Separator } from './ui/separator'
+import { ThemeToggle } from './theme-toggle'
+import { Nav } from './nav'
+import { useState } from 'react'
+import { LayoutGrid, TrendingUp, WalletCards } from 'lucide-react'
+import { cn } from '../../lib/utils'
+import { ReactNode } from 'react'
+import WealthWiseSimpleBlack from '@/assets/wealth-wise-simple-black/wealth-wise-simple-black'
+import WealthWiseSimpleWhite from '@/assets/wealth-wise-simple-white/wealth-wise-simple-white'
+import { Link } from 'react-router-dom'
+import { useTheme } from '@/utils/use-theme'
+import WealthWiseComplexBlack from '@/assets/weath-wise-complex-black/wealth-wise-complex-black'
 
 interface LayoutProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
 const Layout = ({ children }: LayoutProps) => {
-  const themeMode = useTheme().theme;
+  const themeMode = useTheme().theme
 
-  const defaultLayout = [15, 85];
-  const minSizes = [10, 70];
-  const maxSizes = [20, 95];
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const defaultLayout = [15, 85]
+  const minSizes = [10, 70]
+  const maxSizes = [20, 95]
+  const [isCollapsed, setIsCollapsed] = useState(false)
 
   return (
     <ResizablePanelGroup
-      direction="horizontal"
+      direction='horizontal'
       onLayout={(sizes: number[]) => {
         localStorage.setItem(
-          "react-resizable-panels:layout",
+          'react-resizable-panels:layout',
           JSON.stringify(sizes)
-        );
+        )
       }}
-      className="h-full items-stretch"
+      className='min-h-screen items-stretch'
     >
       <ResizablePanel
         defaultSize={defaultLayout[0]}
@@ -45,50 +46,51 @@ const Layout = ({ children }: LayoutProps) => {
         collapsedSize={5}
         collapsible={true}
         onCollapse={() => {
-          setIsCollapsed(true);
+          setIsCollapsed(true)
           localStorage.setItem(
-            "react-resizable-panels:collapsed",
+            'react-resizable-panels:collapsed',
             JSON.stringify(true)
-          );
+          )
         }}
         onExpand={() => {
-          setIsCollapsed(false);
+          setIsCollapsed(false)
           localStorage.setItem(
-            "react-resizable-panels:collapsed",
+            'react-resizable-panels:collapsed',
             JSON.stringify(false)
-          );
+          )
         }}
         className={cn(
-          isCollapsed && "min-w-[50px] transition-all duration-300 ease-in-out"
+          isCollapsed && 'min-w-[50px]  transition-all duration-300 ease-in-out'
         )}
       >
-        <div className="w-full ">
+        <div className='w-full'>
           <Link
-            to="/"
-            className="flex justify-center items-center pb-4 pt-6 gap-4"
+            to='/'
+            className='flex justify-center items-center pb-4 pt-6 gap-4'
           >
             {isCollapsed ? (
               <>
-                {themeMode === "light" ? (
-                  <>
-                    light
-                    {/* <WealthWiseComplexWhite /> */}
-                  </>
+                {themeMode === 'light' ? (
+                  <div className='h-16 w-16'>
+                    <WealthWiseComplexBlack />
+                  </div>
                 ) : (
-                  <>dark</>
+                  <div className='h-16 w-16 flex justify-center items-center'>
+                    <WealthWiseComplexBlack width={54} height={54} />
+                  </div>
                 )}
               </>
             ) : (
               <>
-                {themeMode === "light" ? (
+                {themeMode === 'light' ? (
                   <>
                     <WealthWiseSimpleWhite />
-                    <span className="text-base">Wealth Wise</span>
+                    <span className='text-base'>Wealth Wise</span>
                   </>
                 ) : (
                   <>
                     <WealthWiseSimpleBlack />
-                    <span className="text-base">Wealth Wise</span>
+                    <span className='text-base'>Wealth Wise</span>
                   </>
                 )}
               </>
@@ -100,14 +102,19 @@ const Layout = ({ children }: LayoutProps) => {
           isCollapsed={isCollapsed}
           links={[
             {
-              title: "Expenses",
-              icon: Snowflake,
-              variant: "ghost",
+              title: 'Dashboard',
+              icon: LayoutGrid,
+              variant: 'ghost',
             },
             {
-              title: "Teste",
-              icon: Snowflake,
-              variant: "ghost",
+              title: 'Expenses',
+              icon: WalletCards,
+              variant: 'ghost',
+            },
+            {
+              title: 'Analytics',
+              icon: TrendingUp,
+              variant: 'ghost',
             },
           ]}
         />
@@ -123,7 +130,7 @@ const Layout = ({ children }: LayoutProps) => {
         {children}
       </ResizablePanel>
     </ResizablePanelGroup>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout
