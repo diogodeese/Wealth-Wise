@@ -1,18 +1,17 @@
 import { LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/app/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "@/app/components/ui/tooltip";
 
 interface NavProps {
   isCollapsed: boolean;
   links: {
     title: string;
-    label?: string;
     icon: LucideIcon;
     variant: "default" | "ghost";
   }[];
@@ -38,17 +37,12 @@ export function Nav({ links, isCollapsed }: NavProps) {
                       "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
                   )}
                 >
-                  <link.icon className="h-[1.2rem] w-[1.2rem]" />
+                  <link.icon className="h-5 w-5" />
                   <span className="sr-only">{link.title}</span>
                 </a>
               </TooltipTrigger>
               <TooltipContent side="right" className="flex items-center gap-4">
                 {link.title}
-                {link.label && (
-                  <span className="ml-auto text-muted-foreground">
-                    {link.label}
-                  </span>
-                )}
               </TooltipContent>
             </Tooltip>
           ) : (
@@ -62,19 +56,8 @@ export function Nav({ links, isCollapsed }: NavProps) {
                 "justify-start"
               )}
             >
-              <link.icon className="mr-2 h-[1.2rem] w-[1.2rem]" />
-              <h4 className="text-sm">{link.title}</h4>
-              {link.label && (
-                <span
-                  className={cn(
-                    "ml-auto",
-                    link.variant === "default" &&
-                      "text-background dark:text-white"
-                  )}
-                >
-                  {link.label}
-                </span>
-              )}
+              <link.icon className="mr-2 h-5 w-5" />
+              <span className="text-sm">{link.title}</span>
             </a>
           )
         )}

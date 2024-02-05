@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
 import "./main.css";
-import { ThemeProvider } from "@/components/theme-provider.tsx";
+import { ThemeProvider } from "@/app/components/theme-provider.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { TooltipProvider } from "./components/ui/tooltip.tsx";
+import { TooltipProvider } from "./app/components/ui/tooltip.tsx";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./router.tsx";
 
 const queryClient = new QueryClient();
 
@@ -13,7 +14,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <TooltipProvider>
-          <App />
+          <RouterProvider router={router} />
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>

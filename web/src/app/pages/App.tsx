@@ -1,10 +1,10 @@
-import { Combobox } from "@/components/ui/combobox";
+import { Combobox } from "@/app/components/ui/combobox";
 import { useQuery } from "@tanstack/react-query";
 import { getExpenseCategories } from "@/api/get-expense-categories";
-import Layout from "@/components/layout";
+import Layout from "@/app/components/layout";
 import Expenses from "@/app/expenses/page";
 
-const App = () => {
+export default function App() {
   const { data } = useQuery({
     queryKey: ["expense-categories"],
     queryFn: getExpenseCategories,
@@ -17,10 +17,8 @@ const App = () => {
 
   return (
     <Layout>
-      <Combobox label="Select Expense Category" data={comboboxData || []} />
+      <Combobox label="Select Category" data={comboboxData || []} />
       <Expenses />
     </Layout>
   );
-};
-
-export default App;
+}
