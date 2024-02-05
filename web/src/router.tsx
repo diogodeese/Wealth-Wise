@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom'
-import Dashboard from './app/pages/App'
+import Dashboard from './app/pages/Dashboard'
 import Expenses from './app/pages/Expenses'
 import NotFound from './app/pages/NotFound'
 
