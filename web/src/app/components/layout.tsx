@@ -54,7 +54,7 @@ const Layout = ({ children }: LayoutProps) => {
         defaultSize={defaultLayout[0]}
         minSize={minSizes[0]}
         maxSize={maxSizes[0]}
-        collapsedSize={6}
+        collapsedSize={5}
         collapsible={true}
         onCollapse={() => {
           setIsCollapsed(true)
