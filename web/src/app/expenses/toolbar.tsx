@@ -1,3 +1,4 @@
+import { useExpenseCategories } from '@/api/get-expense-categories'
 import { Table } from '@tanstack/react-table'
 import { SlidersHorizontal } from 'lucide-react'
 import { Button } from '../components/ui/button'
@@ -17,11 +18,16 @@ interface DataTableToolbarProps<TData> {
 export default function Toolbar<TData>({
   table
 }: DataTableToolbarProps<TData>) {
-  const categories = [
-    { label: 'Entertainment', value: 'Entertainment' },
-    { label: 'Groceries', value: 'Groceries' },
-    { label: 'Other', value: 'Other' }
-  ]
+  const { data: categories } = useExpenseCategories()
+
+  let filterableCategories: { value: string; label: string }[] = []
+
+  if (categories) {
+    filterableCategories = categories.map((category) => ({
+      value: category.id,
+      label: category.name
+    }))
+  }
 
   return (
     <div className="flex flex-row">
@@ -40,7 +46,7 @@ export default function Toolbar<TData>({
           <DataTableFacetedFilter
             column={table.getColumn('category')}
             title="Category"
-            options={categories}
+            options={filterableCategories}
           />
         )}
       </div>

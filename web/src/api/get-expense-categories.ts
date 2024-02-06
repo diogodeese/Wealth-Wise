@@ -1,16 +1,13 @@
-import api from "@/lib/axios";
-import { z } from "zod";
+import api from '@/lib/axios'
+import ExpenseCategory from '@/types/expense-category'
+import { useQuery } from '@tanstack/react-query'
 
-const ExpenseCategorySchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  description: z.string(),
-});
-
-type ExpenseCategoryResponse = z.input<typeof ExpenseCategorySchema>;
-
-export async function getExpenseCategories(): Promise<
-  ExpenseCategoryResponse[]
-> {
-  return await api.get("/expense-categories");
+export async function getExpenseCategories(): Promise<ExpenseCategory[]> {
+  return await api.get('/expense-categories')
 }
+
+export const useExpenseCategories = () =>
+  useQuery({
+    queryKey: ['expense-categories'],
+    queryFn: getExpenseCategories
+  })

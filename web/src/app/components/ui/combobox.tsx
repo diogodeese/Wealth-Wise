@@ -1,40 +1,41 @@
-"use client";
+'use client'
 
-import * as React from "react";
-import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
+import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
+import * as React from 'react'
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/app/components/ui/button";
+import { Button } from '@/app/components/ui/button'
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
-  CommandItem,
-} from "@/app/components/ui/command";
+  CommandItem
+} from '@/app/components/ui/command'
 import {
   Popover,
   PopoverContent,
-  PopoverTrigger,
-} from "@/app/components/ui/popover";
+  PopoverTrigger
+} from '@/app/components/ui/popover'
+import { cn } from '@/lib/utils'
 // import { IComboboxItem } from "@/interfaces/comboboxItem";
-import { z } from "zod";
+import { z } from 'zod'
 
 const ComboboxPropsSchema = z.object({
   label: z.string(),
   data: z.array(
     z.object({
       id: z.string(),
-      text: z.string(),
+      text: z.string()
     })
   ),
-});
+  onSelect: z.function(z.tuple([z.string()])).optional()
+})
 
-type ComboboxProps = z.input<typeof ComboboxPropsSchema>;
+type ComboboxProps = z.input<typeof ComboboxPropsSchema>
 
-export function Combobox({ label, data }: ComboboxProps) {
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+export function Combobox({ label, data, onSelect }: ComboboxProps) {
+  const [open, setOpen] = React.useState(false)
+  const [value, setValue] = React.useState('')
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -59,15 +60,18 @@ export function Combobox({ label, data }: ComboboxProps) {
                 key={item.id}
                 value={item.id}
                 onSelect={(currentValue) => {
-                  setValue(currentValue === value ? "" : currentValue);
-                  setOpen(false);
+                  setValue(currentValue === value ? '' : currentValue)
+                  if (onSelect) {
+                    onSelect(currentValue)
+                  }
+                  setOpen(false)
                 }}
               >
                 {item.text}
                 <CheckIcon
                   className={cn(
-                    "ml-auto h-4 w-4",
-                    value === item.id ? "opacity-100" : "opacity-0"
+                    'ml-auto h-4 w-4',
+                    value === item.id ? 'opacity-100' : 'opacity-0'
                   )}
                 />
               </CommandItem>
@@ -76,5 +80,5 @@ export function Combobox({ label, data }: ComboboxProps) {
         </Command>
       </PopoverContent>
     </Popover>
-  );
+  )
 }

@@ -1,5 +1,14 @@
-'use client'
+import { useExpenseCategories } from '@/api/get-expense-categories'
 import { Button } from '@/app/components/ui/button'
+import { Calendar } from '@/app/components/ui/calendar'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@/app/components/ui/dialog'
 import {
   Form,
   FormControl,
@@ -7,64 +16,67 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from '@/app/components/ui/form'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/app/components/ui/dialog'
 import { Input } from '@/app/components/ui/input'
-import { CalendarIcon, Plus } from 'lucide-react'
-
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { Calendar } from '@/app/components/ui/calendar'
-import { cn } from '@/lib/utils'
-import { format } from 'date-fns'
 import {
   Popover,
   PopoverContent,
-  PopoverTrigger,
+  PopoverTrigger
 } from '@/app/components/ui/popover'
+import { cn } from '@/lib/utils'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { format } from 'date-fns'
+import { CalendarIcon, Plus } from 'lucide-react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { Combobox } from './ui/combobox'
 
 const expensesFormSchema = z.object({
-  id: z.string().min(1),
   expense: z.string().min(2, {
-    message: 'Need to write an expense name',
+    message: 'Need to write an expense name'
   }),
+  category: z.string(),
   date: z.date({
     required_error: 'Please select a date and time',
-    invalid_type_error: "That's not a date!",
-  }),
+    invalid_type_error: "That's not a date!"
+  })
 })
 
 export function ExpensesForm() {
   const form = useForm<z.infer<typeof expensesFormSchema>>({
     resolver: zodResolver(expensesFormSchema),
     defaultValues: {
-      id: '123',
       expense: '',
-      date: new Date(),
-    },
+      category: '',
+      date: new Date()
+    }
   })
 
   function onSubmit(values: z.infer<typeof expensesFormSchema>) {
     console.log(values)
     console.log(values.date.toLocaleDateString('en-GB'))
   }
+
+  const { data: categories } = useExpenseCategories()
+
+  let comboboxCategories: { id: string; text: string }[] = []
+
+  if (categories) {
+    comboboxCategories = categories.map((category) => ({
+      id: category.id,
+      text: category.name
+    }))
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant='outline' className='ml-4'>
+        <Button variant="outline">
           <Plus width={12} height={12} />
         </Button>
       </DialogTrigger>
-      <DialogContent className='sm:max-w-[425px]'>
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Add expense</DialogTitle>
           <DialogDescription>
@@ -72,15 +84,15 @@ export function ExpensesForm() {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
-              name='expense'
+              name="expense"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Expense</FormLabel>
                   <FormControl>
-                    <Input placeholder='Coffee' {...field} />
+                    <Input placeholder="Coffee" {...field} />
                   </FormControl>
                   <FormDescription>This is your expense name</FormDescription>
                   <FormMessage />
@@ -89,9 +101,34 @@ export function ExpensesForm() {
             />
             <FormField
               control={form.control}
-              name='date'
+              name="category"
               render={({ field }) => (
-                <FormItem className='flex flex-col'>
+                <FormItem className="flex flex-col">
+                  <FormLabel>Category</FormLabel>
+                  <Combobox
+                    label="Select Category"
+                    data={comboboxCategories || []}
+                    onSelect={(categoryId: string) => {
+                      const selectedCategory = categories?.find(
+                        (category) => category?.id === categoryId
+                      )
+
+                      if (selectedCategory) {
+                        field.value = selectedCategory.id
+                      }
+                    }}
+                  />
+                  <FormDescription>Category...</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="date"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
                   <FormLabel>Date</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
@@ -108,13 +145,13 @@ export function ExpensesForm() {
                           ) : (
                             <span>Pick a date</span>
                           )}
-                          <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
-                    <PopoverContent className='w-auto p-0' align='start'>
+                    <PopoverContent className="w-auto p-0" align="start">
                       <Calendar
-                        mode='single'
+                        mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
                         disabled={(date) => date >= new Date()}
@@ -129,7 +166,7 @@ export function ExpensesForm() {
                 </FormItem>
               )}
             />
-            <Button type='submit'>Submit</Button>
+            <Button type="submit">Submit</Button>
           </form>
         </Form>
       </DialogContent>
