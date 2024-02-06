@@ -6,6 +6,7 @@ import {
   Banknote,
   Bitcoin,
   CreditCard,
+  HandCoins,
   History,
   LayoutGrid,
   TrendingUp,
@@ -114,6 +115,18 @@ const Layout = ({ children }: LayoutProps) => {
               title: 'Expenses',
               to: '/expenses',
               icon: WalletCards,
+              variant: 'ghost'
+            },
+            {
+              title: 'Income',
+              to: '/',
+              icon: WalletCards,
+              variant: 'ghost'
+            },
+            {
+              title: 'Dividends',
+              to: '/',
+              icon: HandCoins,
               variant: 'ghost'
             },
             {
