@@ -1,89 +1,87 @@
-"use client";
-
-import { Button } from "@/app/components/ui/button";
+import { Button } from '@/app/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/app/components/ui/dropdown-menu";
-import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-import { DataTableColumnHeader } from "./column-header";
+  DropdownMenuTrigger
+} from '@/app/components/ui/dropdown-menu'
+import { ColumnDef } from '@tanstack/react-table'
+import { MoreHorizontal } from 'lucide-react'
+import { DataTableColumnHeader } from './column-header'
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Expense = {
-  id: string;
-  date: string;
-  category: string;
-  description: string;
-  amount: string;
-  currency: string;
-  paymentMethod: string;
-  location: string;
-  receipt: string;
-};
+  id: string
+  date: string
+  category: string
+  description: string
+  amount: string
+  currency: string
+  paymentMethod: string
+  location: string
+  receipt: string
+}
 
 export const columns: ColumnDef<Expense>[] = [
   {
-    accessorKey: "id",
+    accessorKey: 'id',
     header: ({ column }) => {
-      return <DataTableColumnHeader title={"ID"} column={column} />;
+      return <DataTableColumnHeader title={'ID'} column={column} />
     },
-    enableHiding: false,
+    enableHiding: false
   },
   {
-    accessorKey: "date",
+    accessorKey: 'date',
     header: ({ column }) => {
-      return <DataTableColumnHeader title={"Date"} column={column} />;
+      return <DataTableColumnHeader title={'Date'} column={column} />
     },
-    enableHiding: false,
+    enableHiding: false
   },
   {
-    accessorKey: "category",
-    header: "Category",
-    enableHiding: false,
+    accessorKey: 'category',
+    header: 'Category',
+    enableHiding: false
   },
   {
-    accessorKey: "description",
-    header: "Description",
-    enableHiding: true,
+    accessorKey: 'description',
+    header: 'Description',
+    enableHiding: true
   },
   {
-    accessorKey: "amount",
+    accessorKey: 'amount',
     header: ({ column }) => {
-      return <DataTableColumnHeader title={"Amount"} column={column} />;
+      return <DataTableColumnHeader title={'Amount'} column={column} />
     },
-    enableHiding: false,
+    enableHiding: false
   },
   {
-    accessorKey: "currency",
-    header: "Currency",
-    enableHiding: false,
+    accessorKey: 'currency',
+    header: 'Currency',
+    enableHiding: false
   },
   {
-    accessorKey: "paymentMethod",
-    header: "Payment Method",
-    enableHiding: true,
+    accessorKey: 'paymentMethod',
+    header: 'Payment Method',
+    enableHiding: true
   },
   {
-    accessorKey: "location",
-    header: "Location",
-    enableHiding: true,
+    accessorKey: 'location',
+    header: 'Location',
+    enableHiding: true
   },
   {
-    accessorKey: "receipt",
-    header: "Receipt",
-    enableHiding: true,
+    accessorKey: 'receipt',
+    header: 'Receipt',
+    enableHiding: true
   },
   {
-    id: "actions",
+    id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
+      const payment = row.original
 
       return (
         <DropdownMenu>
@@ -105,7 +103,7 @@ export const columns: ColumnDef<Expense>[] = [
             <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      );
-    },
-  },
-];
+      )
+    }
+  }
+]

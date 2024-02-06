@@ -78,7 +78,7 @@ export function DataTable<TData>({ columns, data }: DataTableProps<TData>) {
                       column.toggleVisibility(!!value)
                     }
                   >
-                    {column.id}
+                    {column.id.replace(/(\p{Lu})/gu, ' $1').trim()}
                   </DropdownMenuCheckboxItem>
                 )
               })}
