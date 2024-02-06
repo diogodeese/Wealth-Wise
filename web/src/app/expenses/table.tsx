@@ -23,7 +23,7 @@ function generateRandomExpenses(): Expense[] {
 
     const categories = ['Entertainment', 'Groceries', 'Other'] // Available categories
     const category = categories[Math.floor(Math.random() * categories.length)]
-    const description = 'Random Description' // Random description
+    const description = 'Random Description ' + i // Random description
 
     // Generate a random amount with 2 digits after the comma
     const amount = (Math.random() * 1000).toFixed(2)

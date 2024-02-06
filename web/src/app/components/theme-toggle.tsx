@@ -1,4 +1,3 @@
-import { Button } from '@/app/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,6 +6,7 @@ import {
 } from '@/app/components/ui/dropdown-menu'
 import { useTheme } from '@/utils/use-theme'
 import { Moon, Sun } from 'lucide-react'
+import { Button } from './ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip'
 
 interface ThemeToggleProps {

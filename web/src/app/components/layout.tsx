@@ -67,7 +67,7 @@ const Layout = ({ children }: LayoutProps) => {
           )
         }}
         className={cn(
-          isCollapsed && 'min-w-[50px]  transition-all duration-300 ease-in-out'
+          isCollapsed && 'min-w-[50px] transition-all duration-300 ease-in-out'
         )}
       >
         <div className="w-full h-20">
@@ -168,9 +168,8 @@ const Layout = ({ children }: LayoutProps) => {
         defaultSize={defaultLayout[1]}
         minSize={minSizes[1]}
         maxSize={maxSizes[1]}
-        className="container py-8"
       >
-        {children}
+        <div className="container py-8">{children}</div>
       </ResizablePanel>
     </ResizablePanelGroup>
   )

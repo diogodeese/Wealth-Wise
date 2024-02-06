@@ -1,10 +1,3 @@
-import { Button } from '@/app/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger
-} from '@/app/components/ui/dropdown-menu'
 import {
   Table,
   TableBody,
@@ -15,19 +8,19 @@ import {
 } from '@/app/components/ui/table'
 import {
   ColumnDef,
+  ColumnFiltersState,
   SortingState,
   VisibilityState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable
 } from '@tanstack/react-table'
-
-import { SlidersHorizontal } from 'lucide-react'
-
 import React from 'react'
 import { DataTablePagination } from './pagination'
+import Toolbar from './toolbar'
 
 interface DataTableProps<TData> {
   columns: ColumnDef<TData, keyof TData>[] // We're using 'any' for the value type for flexibility
@@ -39,53 +32,30 @@ export function DataTable<TData>({ columns, data }: DataTableProps<TData>) {
     React.useState<VisibilityState>({})
 
   const [sorting, setSorting] = React.useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  )
 
   const table = useReactTable({
     data,
     columns,
-    onSortingChange: setSorting,
-    onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
+    onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
     state: {
-      columnVisibility,
-      sorting
+      sorting,
+      columnFilters,
+      columnVisibility
     }
   })
 
   return (
     <div>
-      <div className="flex flex-row">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto gap-2">
-              <SlidersHorizontal size={16} />
-              View
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id.replace(/(\p{Lu})/gu, ' $1').trim()}
-                  </DropdownMenuCheckboxItem>
-                )
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-
+      <Toolbar table={table} />
       <div className="rounded-md border my-4">
         <Table>
           <TableHeader>
