@@ -1,20 +1,22 @@
-import { LucideIcon } from "lucide-react";
+import { LucideIcon } from 'lucide-react'
 
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/app/components/ui/button";
+import { buttonVariants } from '@/app/components/ui/button'
 import {
   Tooltip,
   TooltipContent,
-  TooltipTrigger,
-} from "@/app/components/ui/tooltip";
+  TooltipTrigger
+} from '@/app/components/ui/tooltip'
+import { cn } from '@/lib/utils'
+import { Link } from 'react-router-dom'
 
 interface NavProps {
-  isCollapsed: boolean;
+  isCollapsed: boolean
   links: {
-    title: string;
-    icon: LucideIcon;
-    variant: "default" | "ghost";
-  }[];
+    title: string
+    to: string
+    icon: LucideIcon
+    variant: 'default' | 'ghost'
+  }[]
 }
 
 export function Nav({ links, isCollapsed }: NavProps) {
@@ -28,40 +30,40 @@ export function Nav({ links, isCollapsed }: NavProps) {
           isCollapsed ? (
             <Tooltip key={index} delayDuration={0}>
               <TooltipTrigger asChild>
-                <a
-                  href="#"
+                <Link
+                  to={link.to}
                   className={cn(
-                    buttonVariants({ variant: link.variant, size: "icon" }),
-                    "h-9 w-9",
-                    link.variant === "default" &&
-                      "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
+                    buttonVariants({ variant: link.variant, size: 'icon' }),
+                    'h-9 w-9',
+                    link.variant === 'default' &&
+                      'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white'
                   )}
                 >
                   <link.icon className="h-5 w-5" />
                   <span className="sr-only">{link.title}</span>
-                </a>
+                </Link>
               </TooltipTrigger>
               <TooltipContent side="right" className="flex items-center gap-4">
                 {link.title}
               </TooltipContent>
             </Tooltip>
           ) : (
-            <a
+            <Link
               key={index}
-              href="#"
+              to={link.to}
               className={cn(
-                buttonVariants({ variant: link.variant, size: "sm" }),
-                link.variant === "default" &&
-                  "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",
-                "justify-start"
+                buttonVariants({ variant: link.variant, size: 'sm' }),
+                link.variant === 'default' &&
+                  'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
+                'justify-start'
               )}
             >
               <link.icon className="mr-2 h-5 w-5" />
               <span className="text-sm">{link.title}</span>
-            </a>
+            </Link>
           )
         )}
       </nav>
     </div>
-  );
+  )
 }
