@@ -34,12 +34,29 @@ const Layout = ({ children }: LayoutProps) => {
   const defaultLayout = [15, 85]
   const minSizes = [12, 70]
   const maxSizes = [20, 95]
-  const [isCollapsed, setIsCollapsed] = useState(false)
+
+  const localStorageLayout = localStorage.getItem(
+    'react-resizable-panels:layout'
+  )
+  const localStorageIsCollapsed = localStorage.getItem(
+    'react-resizable-panels:collapsed'
+  )
+
+  const parsedLayout = localStorageLayout
+    ? JSON.parse(localStorageLayout)
+    : defaultLayout
+  const parsedIsCollapsed = localStorageIsCollapsed
+    ? JSON.parse(localStorageIsCollapsed)
+    : false
+
+  const [layout, setLayout] = useState(parsedLayout)
+  const [isCollapsed, setIsCollapsed] = useState(parsedIsCollapsed)
 
   return (
     <ResizablePanelGroup
       direction="horizontal"
       onLayout={(sizes: number[]) => {
+        setLayout(sizes)
         localStorage.setItem(
           'react-resizable-panels:layout',
           JSON.stringify(sizes)
@@ -48,7 +65,7 @@ const Layout = ({ children }: LayoutProps) => {
       className="min-h-screen items-stretch"
     >
       <ResizablePanel
-        defaultSize={defaultLayout[0]}
+        defaultSize={layout[0]}
         minSize={minSizes[0]}
         maxSize={maxSizes[0]}
         collapsedSize={5}
@@ -178,7 +195,7 @@ const Layout = ({ children }: LayoutProps) => {
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel
-        defaultSize={defaultLayout[1]}
+        defaultSize={layout[1]}
         minSize={minSizes[1]}
         maxSize={maxSizes[1]}
       >

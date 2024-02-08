@@ -1,8 +1,3 @@
-'use client'
-
-import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
-import * as React from 'react'
-
 import { Button } from '@/app/components/ui/button'
 import {
   Command,
@@ -17,7 +12,8 @@ import {
   PopoverTrigger
 } from '@/app/components/ui/popover'
 import { cn } from '@/lib/utils'
-// import { IComboboxItem } from "@/interfaces/comboboxItem";
+import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
+import * as React from 'react'
 import { z } from 'zod'
 
 const ComboboxPropsSchema = z.object({
