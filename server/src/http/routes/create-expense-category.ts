@@ -2,7 +2,7 @@ import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import z from 'zod'
 import { prisma } from '../../lib/prisma'
 
-export async function createdExpenseCategory(app: FastifyInstance) {
+export async function createExpenseCategory(app: FastifyInstance) {
   app.post(
     '/expense-categories',
     async (request: FastifyRequest, reply: FastifyReply) => {
