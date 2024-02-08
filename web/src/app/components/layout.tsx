@@ -193,7 +193,7 @@ const Layout = ({ children }: LayoutProps) => {
         <Separator />
         <ThemeToggle isCollapsed={isCollapsed} />
       </ResizablePanel>
-      <ResizableHandle withHandle />
+      <ResizableHandle />
       <ResizablePanel
         defaultSize={layout[1]}
         minSize={minSizes[1]}
