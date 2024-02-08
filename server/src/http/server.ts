@@ -1,6 +1,9 @@
 import fastify from 'fastify'
 import { createdExpenseCategory } from './routes/create-expense-category'
 import { getExpenseCategories } from './routes/get-expense-categories'
+import { getExpenses } from './routes/get-expenses'
+import { loginUser } from './routes/login-user'
+import { registerUser } from './routes/register-user'
 
 const app = fastify()
 
@@ -11,11 +14,12 @@ app.addHook('onRequest', (req, res, next) => {
   next()
 })
 
-// app.register(expenseCategoryRoutes)
-
+app.register(loginUser)
+app.register(registerUser)
 app.register(getExpenseCategories)
 app.register(createdExpenseCategory)
+app.register(getExpenses)
 
 app.listen({ port: 3000 }, () => {
-  console.log(`HTTP server running.}`)
+  console.log(`HTTP server running.`)
 })
