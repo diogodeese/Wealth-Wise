@@ -54,7 +54,6 @@ export function ExpensesForm() {
   })
 
   function onSubmit(values: z.infer<typeof expensesFormSchema>) {
-    console.log(values)
     console.log(values.date.toLocaleDateString('en-GB'))
   }
 
@@ -62,7 +61,7 @@ export function ExpensesForm() {
 
   let comboboxCategories: { id: string; text: string }[] = []
 
-  if (categories) {
+  if (categories && Array.isArray(categories)) {
     comboboxCategories = categories.map((category) => ({
       id: category.id,
       text: category.name

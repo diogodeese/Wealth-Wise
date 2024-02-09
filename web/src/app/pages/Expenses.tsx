@@ -1,9 +1,11 @@
 import Layout from '@/app/components/layout'
 import ExpensesTable from '@/app/expenses/table'
+import { isAuthenticated } from '@/utils/is-authenticated'
 import { ExpensesForm } from '../components/expenses-form'
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 
 export default function Expenses() {
+  isAuthenticated()
   return (
     <Layout>
       <div className="flex flex-row gap-4">

@@ -2,12 +2,12 @@ import { FastifyInstance, FastifyReply } from 'fastify'
 import z from 'zod'
 import { AuthenticatedRequest } from '../../interfaces/request'
 import { prisma } from '../../lib/prisma'
-import { verifyAndRegenerateToken } from '../middleware/verify-regenerate-token'
+import { verifyToken } from '../middleware/verify-token'
 
 export async function createExpense(app: FastifyInstance) {
   app.post(
     '/expenses',
-    { preHandler: [verifyAndRegenerateToken] },
+    { preHandler: [verifyToken] },
     async (request: AuthenticatedRequest, reply: FastifyReply) => {
       const createExpenseBody = z.object({
         amount: z.number(),

@@ -22,7 +22,7 @@ export default function Toolbar<TData>({
 
   let filterableCategories: { value: string; label: string }[] = []
 
-  if (categories) {
+  if (categories && Array.isArray(categories)) {
     filterableCategories = categories.map((category) => ({
       value: category.id,
       label: category.name
@@ -42,9 +42,9 @@ export default function Toolbar<TData>({
           }
           className="max-w-sm h-8"
         />
-        {table.getColumn('category') && (
+        {table.getColumn('categoryName') && (
           <DataTableFacetedFilter
-            column={table.getColumn('category')}
+            column={table.getColumn('categoryName')}
             title="Category"
             options={filterableCategories}
           />

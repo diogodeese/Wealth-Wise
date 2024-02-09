@@ -22,9 +22,9 @@ import React from 'react'
 import { DataTablePagination } from './pagination'
 import Toolbar from './toolbar'
 
-interface DataTableProps<TData> {
-  columns: ColumnDef<TData, keyof TData>[] // We're using 'any' for the value type for flexibility
-  data: TData[]
+interface DataTableProps<Expense> {
+  columns: ColumnDef<Expense, keyof Expense>[] // We're using 'any' for the value type for flexibility
+  data: Expense[]
 }
 
 export function DataTable<TData>({ columns, data }: DataTableProps<TData>) {

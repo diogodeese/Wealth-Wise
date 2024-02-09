@@ -4,7 +4,7 @@ import jwt, { Jwt, JwtPayload } from 'jsonwebtoken'
 import { AuthenticatedRequest } from '../../interfaces/request'
 dotenv.config()
 
-export function verifyAndRegenerateToken(
+export function verifyToken(
   request: AuthenticatedRequest,
   reply: FastifyReply,
   done: Function

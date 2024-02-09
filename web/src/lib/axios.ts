@@ -1,28 +1,31 @@
-import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
+import { getToken } from '@/utils/get-token'
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
 
 const api: AxiosInstance = axios.create({
-  baseURL: "http://localhost:3000",
-});
+  baseURL: 'http://localhost:3000'
+})
+
+api.defaults.headers.common['Authorization'] = `Bearer ${getToken()}`
 
 api.interceptors.response.use(
   (response: AxiosResponse) => response.data,
   (error: AxiosError) => {
-    handleApiError(error);
+    handleApiError(error)
 
-    return Promise.reject(error);
+    return Promise.reject(error)
   }
-);
+)
 
 function handleApiError(error: AxiosError) {
   if (error.response) {
-    console.error("Request failed with status code:", error.response.status);
-    console.error("Response data:", error.response.data);
+    console.error('Request failed with status code:', error.response.status)
+    console.error('Response data:', error.response.data)
   } else if (error.request) {
-    console.error("No response received:", error.request);
+    console.error('No response received:', error.request)
   } else {
-    console.error("Request setup error:", error.message);
+    console.error('Request setup error:', error.message)
   }
-  console.error("Error config:", error.config);
+  console.error('Error config:', error.config)
 }
 
-export default api;
+export default api
