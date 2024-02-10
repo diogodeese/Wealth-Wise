@@ -24,7 +24,7 @@ const ProtectedRoute: React.FC<Props> = ({ children }) => {
   }
 
   if (!authStatus) {
-    navigate('/landing', { replace: true })
+    navigate('/login', { replace: true })
     return null
   }
 
