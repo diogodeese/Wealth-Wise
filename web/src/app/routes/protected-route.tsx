@@ -1,7 +1,7 @@
 import { isAuthenticated } from '@/utils/is-authenticated'
 import { ReactNode, useEffect, useState } from 'react'
-import ReactLoading from 'react-loading'
 import { useNavigate } from 'react-router-dom'
+import { Loading } from '../components/loading'
 
 interface Props {
   children: ReactNode
@@ -20,11 +20,7 @@ const ProtectedRoute: React.FC<Props> = ({ children }) => {
   }, [])
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <ReactLoading type="spin" color={'white'} height={50} width={50} />
-      </div>
-    )
+    return <Loading />
   }
 
   if (!authStatus) {
