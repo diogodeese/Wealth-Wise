@@ -30,6 +30,6 @@ export async function loginUser(app: FastifyInstance) {
     }
 
     const token = generateToken(user.id)
-    reply.send({ token })
+    reply.send({ data: { token } })
   })
 }

@@ -12,8 +12,9 @@ import { verifyToken } from './routes/verify-token'
 const app = fastify()
 
 app.register(cors, {
-  allowedHeaders: ['Authorization'],
-  origin: '*'
+  origin: 'http://localhost:5173', // Allow requests from this origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed HTTP methods
+  allowedHeaders: ['Content-Type', 'Authorization'] // Specify allowed headers
 })
 
 app.addHook('onRequest', (req, res, next) => {

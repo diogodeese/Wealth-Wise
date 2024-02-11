@@ -33,7 +33,7 @@ const Layout = ({ children }: LayoutProps) => {
 
   const defaultLayout = [15, 85]
   const minSizes = [12, 70]
-  const maxSizes = [20, 95]
+  const maxSizes = [15, 95]
 
   const localStorageLayout = localStorage.getItem(
     'react-resizable-panels:layout'
@@ -88,10 +88,10 @@ const Layout = ({ children }: LayoutProps) => {
           isCollapsed && 'min-w-[50px] transition-all duration-300 ease-in-out'
         )}
       >
-        <div className="w-full h-20">
+        <div className="h-20 w-full">
           <Link
             to="/"
-            className="flex justify-center items-center pb-4 pt-6 gap-4"
+            className="flex items-center justify-center gap-4 pb-4 pt-6"
           >
             {isCollapsed ? (
               <>
@@ -124,7 +124,7 @@ const Layout = ({ children }: LayoutProps) => {
           links={[
             {
               title: 'Dashboard',
-              to: '/',
+              to: '/dashboard',
               icon: LayoutGrid,
               variant: 'ghost'
             },
@@ -136,31 +136,31 @@ const Layout = ({ children }: LayoutProps) => {
             },
             {
               title: 'Income',
-              to: '/',
+              to: '/dashboard',
               icon: WalletCards,
               variant: 'ghost'
             },
             {
               title: 'Dividends',
-              to: '/',
+              to: '/dashboard',
               icon: HandCoins,
               variant: 'ghost'
             },
             {
               title: 'Analytics',
-              to: '/',
+              to: '/dashboard',
               icon: TrendingUp,
               variant: 'ghost'
             },
             {
               title: 'Transactions',
-              to: '/',
+              to: '/dashboard',
               icon: ArrowUpDown,
               variant: 'ghost'
             },
             {
               title: 'History',
-              to: '/',
+              to: '/dashboard',
               icon: History,
               variant: 'ghost'
             }
@@ -172,19 +172,19 @@ const Layout = ({ children }: LayoutProps) => {
           links={[
             {
               title: 'Savings',
-              to: '/',
+              to: '/dashboard',
               icon: Banknote,
               variant: 'ghost'
             },
             {
               title: 'Cards',
-              to: '/',
+              to: '/dashboard',
               icon: CreditCard,
               variant: 'ghost'
             },
             {
               title: 'Crypto',
-              to: '/',
+              to: '/dashboard',
               icon: Bitcoin,
               variant: 'ghost'
             }

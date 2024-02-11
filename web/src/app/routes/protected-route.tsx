@@ -19,13 +19,14 @@ const ProtectedRoute: React.FC<Props> = ({ children }) => {
     })
   }, [])
 
+  useEffect(() => {
+    if (!loading && !authStatus) {
+      navigate('/login', { replace: true })
+    }
+  }, [loading, authStatus, navigate])
+
   if (loading) {
     return <Loading />
-  }
-
-  if (!authStatus) {
-    navigate('/login', { replace: true })
-    return null
   }
 
   return <>{children}</>

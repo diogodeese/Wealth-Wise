@@ -7,6 +7,7 @@ export async function regenerateToken(): Promise<string | null> {
     return response.data.token
   } catch (error) {
     console.error('Error regenerating token:', error)
+
     return null
   }
 }
