@@ -55,7 +55,7 @@ export default function Toolbar<TData>({
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="ml-auto gap-2">
+          <Button variant="outline" className="ml-auto h-8 gap-2">
             <SlidersHorizontal size={16} />
             View
           </Button>

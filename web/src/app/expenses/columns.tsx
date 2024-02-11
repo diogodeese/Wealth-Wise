@@ -9,6 +9,7 @@ import {
 } from '@/app/components/ui/dropdown-menu'
 import Expense from '@/types/expense'
 import { ColumnDef } from '@tanstack/react-table'
+import { format } from 'date-fns'
 import { MoreHorizontal } from 'lucide-react'
 import { DataTableColumnHeader } from './column-header'
 
@@ -18,7 +19,10 @@ export const columns: ColumnDef<Expense>[] = [
     header: ({ column }) => {
       return <DataTableColumnHeader title={'Date'} column={column} />
     },
-    enableHiding: false
+    enableHiding: false,
+    cell: ({ row }) => (
+      <div>{format(new Date(row.original.date), 'dd/MM/yyyy')}</div>
+    )
   },
   {
     accessorKey: 'categoryName',
@@ -28,14 +32,20 @@ export const columns: ColumnDef<Expense>[] = [
   {
     accessorKey: 'description',
     header: 'Description',
-    enableHiding: true
+    enableHiding: true,
+    cell: ({ row }) => (
+      <div className="line-clamp-2 max-w-72 overflow-hidden">
+        {row.original.description}
+      </div>
+    )
   },
   {
     accessorKey: 'amount',
     header: ({ column }) => {
       return <DataTableColumnHeader title={'Amount'} column={column} />
     },
-    enableHiding: false
+    enableHiding: false,
+    cell: ({ row }) => <div className="p-4">{row.original.amount}</div>
   },
   {
     accessorKey: 'currency',

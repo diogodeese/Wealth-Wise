@@ -18,7 +18,6 @@ import {
   FormLabel,
   FormMessage
 } from '@/app/components/ui/form'
-import { Input } from '@/app/components/ui/input'
 import {
   Popover,
   PopoverContent,
@@ -31,25 +30,29 @@ import { CalendarIcon, Plus } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Combobox } from '../components/ui/combobox'
+import { Textarea } from '../components/ui/textarea'
 
 const expensesFormSchema = z.object({
-  expense: z.string().min(2, {
-    message: 'Need to write an expense name'
-  }),
   category: z.string(),
   date: z.date({
     required_error: 'Please select a date and time',
     invalid_type_error: "That's not a date!"
-  })
+  }),
+  description: z
+    .string()
+    .max(256, {
+      message: 'Descriptions must be smaller than 256 chars'
+    })
+    .optional()
 })
 
 export function ExpensesForm() {
   const form = useForm<z.infer<typeof expensesFormSchema>>({
     resolver: zodResolver(expensesFormSchema),
     defaultValues: {
-      expense: '',
       category: '',
-      date: new Date()
+      date: new Date(),
+      description: ''
     }
   })
 
@@ -75,91 +78,102 @@ export function ExpensesForm() {
           <Plus width={12} height={12} />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Add expense</DialogTitle>
+          <DialogTitle>Add Expense</DialogTitle>
           <DialogDescription>
-            Add an expense to your account here.
+            Fill out the form below to add an expense to your account.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <div className="flex gap-8">
+              <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem className="flex flex-1 flex-col">
+                    <FormLabel>Category</FormLabel>
+                    <Combobox
+                      label="Select Category"
+                      data={comboboxCategories || []}
+                      onSelect={(categoryId: string) => {
+                        const selectedCategory = categories?.find(
+                          (category) => category?.id === categoryId
+                        )
+
+                        if (selectedCategory) {
+                          field.value = selectedCategory.id
+                        }
+                      }}
+                    />
+                    <FormDescription>
+                      Choose the category of the expense.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="date"
+                render={({ field }) => (
+                  <FormItem className="flex flex-1 flex-col">
+                    <FormLabel>Date</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={'outline'}
+                            className={cn(
+                              'w-full pl-3 text-left font-normal',
+                              !field.value && 'text-muted-foreground'
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, 'PPP')
+                            ) : (
+                              <span>Select a date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          disabled={(date) => date >= new Date()}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormDescription>
+                      Select the date of the expense.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <FormField
               control={form.control}
-              name="expense"
+              name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Expense</FormLabel>
+                  <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Input placeholder="Coffee" {...field} />
+                    <Textarea
+                      placeholder="Enter expense description"
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                      rows={4}
+                      {...field}
+                    />
                   </FormControl>
-                  <FormDescription>This is your expense name</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Category</FormLabel>
-                  <Combobox
-                    label="Select Category"
-                    data={comboboxCategories || []}
-                    onSelect={(categoryId: string) => {
-                      const selectedCategory = categories?.find(
-                        (category) => category?.id === categoryId
-                      )
-
-                      if (selectedCategory) {
-                        field.value = selectedCategory.id
-                      }
-                    }}
-                  />
-                  <FormDescription>Category...</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="date"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Date</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={'outline'}
-                          className={cn(
-                            'w-[240px] pl-3 text-left font-normal',
-                            !field.value && 'text-muted-foreground'
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, 'PPP')
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        disabled={(date) => date >= new Date()}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
                   <FormDescription>
-                    Just to keep your expense organized
+                    Provide a description for the expense.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

@@ -19,7 +19,7 @@ export function ThemeToggle({ isCollapsed }: ThemeToggleProps) {
   return (
     <div
       data-collapsed={isCollapsed}
-      className="px-2 flex items-center justify-center group flex-col gap-4 py-2 data-[collapsed=true]:py-2 absolute bottom-0"
+      className="group absolute bottom-0 flex flex-col items-center justify-center gap-4 px-2 py-2 data-[collapsed=true]:py-2"
     >
       <DropdownMenu>
         {isCollapsed ? (
@@ -33,7 +33,7 @@ export function ThemeToggle({ isCollapsed }: ThemeToggleProps) {
                   variant="ghost"
                   size="icon"
                   className={
-                    'flex items-center h-9 w-9 justify-center px-2 outline-none'
+                    'flex h-9 w-9 items-center justify-center px-2 outline-none'
                   }
                 >
                   <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />{' '}
@@ -51,10 +51,10 @@ export function ThemeToggle({ isCollapsed }: ThemeToggleProps) {
             <Button
               variant="ghost"
               size="default"
-              className="justify-start w-full outline-none flex items-center p-3"
+              className="flex w-full items-center justify-start p-3 outline-none"
             >
-              <Sun className="h-5 w-5 mr-2 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute h-5 w-5 mr-2 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              <Sun className="mr-2 h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+              <Moon className="absolute mr-2 h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
               <span className="text-sm">Theme</span>
             </Button>
           </DropdownMenuTrigger>
