@@ -4,7 +4,7 @@ import { prisma } from '../../lib/prisma'
 
 export async function createExpenseCategory(app: FastifyInstance) {
   app.post(
-    '/expense-categories',
+    '/api/expense-categories',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const createExpenseCategoryBody = z.object({
         name: z.string(),

@@ -5,7 +5,7 @@ import { verifyToken } from '../middleware/verify-token'
 
 export async function getExpenseCategories(app: FastifyInstance) {
   app.get(
-    '/expense-categories',
+    '/api/expense-categories',
     { preHandler: [verifyToken] },
     async (request: AuthenticatedRequest, reply: FastifyReply) => {
       const expenseCategories = await prisma.expenseCategory.findMany()

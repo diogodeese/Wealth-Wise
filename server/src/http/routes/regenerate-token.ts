@@ -4,7 +4,7 @@ import jwt, { Jwt, JwtPayload } from 'jsonwebtoken'
 dotenv.config()
 
 export async function regenerateToken(app: FastifyInstance) {
-  app.get('/regenerate-token', (req, res) => {
+  app.get('/api/regenerate-token', (req, res) => {
     const token = req.headers.authorization?.split(' ')[1]
     const jwtSecret = process.env.JWT_SECRET
     const jwtExpiresIn = process.env.JWT_EXPIRES_IN

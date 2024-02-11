@@ -6,20 +6,32 @@ import Login from '../pages/Login'
 import NotFound from '../pages/NotFound'
 import Register from '../pages/Register'
 import ProtectedRoute from './protected-route'
+import UnprotectedRoute from './unprotected-route'
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <Landing />
+    element: (
+      <UnprotectedRoute>
+        <Landing />
+      </UnprotectedRoute>
+    )
   },
   {
     path: '/register',
-
-    element: <Register />
+    element: (
+      <UnprotectedRoute>
+        <Register />
+      </UnprotectedRoute>
+    )
   },
   {
     path: '/login',
-    element: <Login />
+    element: (
+      <UnprotectedRoute>
+        <Login />
+      </UnprotectedRoute>
+    )
   },
   {
     path: '/dashboard',

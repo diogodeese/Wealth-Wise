@@ -2,7 +2,7 @@ import { getToken } from '@/utils/get-token'
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
 
 const api: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:3000'
+  baseURL: 'http://localhost:3000/api'
 })
 
 api.defaults.headers.common['Authorization'] = `Bearer ${getToken()}`

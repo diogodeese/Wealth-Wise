@@ -1,17 +1,38 @@
-import { FastifyInstance, FastifyReply } from 'fastify'
+import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import { AuthenticatedRequest } from '../../interfaces/request'
 import { prisma } from '../../lib/prisma'
 import { verifyToken } from '../middleware/verify-token'
 
+interface WhereCondition {
+  userId: string | undefined
+  categoryId?: {
+    in: string[]
+  }
+}
+
 export async function getExpenses(app: FastifyInstance) {
   app.get(
-    '/expenses',
+    '/api/expenses',
     { preHandler: [verifyToken] },
-    async (request: AuthenticatedRequest, reply: FastifyReply) => {
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const authenticatedRequest = request as AuthenticatedRequest
+
+      const { categories } = authenticatedRequest.query as {
+        categories?: string
+      }
+
+      let whereCondition: WhereCondition = {
+        userId: authenticatedRequest.userId
+      }
+
+      if (categories) {
+        whereCondition.categoryId = {
+          in: categories.split(',')
+        }
+      }
+
       const expenses = await prisma.expense.findMany({
-        where: {
-          userId: request.userId
-        },
+        where: whereCondition,
         include: {
           category: {
             select: {

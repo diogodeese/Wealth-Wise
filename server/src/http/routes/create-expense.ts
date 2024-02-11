@@ -6,7 +6,7 @@ import { verifyToken } from '../middleware/verify-token'
 
 export async function createExpense(app: FastifyInstance) {
   app.post(
-    '/expenses',
+    '/api/expenses',
     { preHandler: [verifyToken] },
     async (request: AuthenticatedRequest, reply: FastifyReply) => {
       const createExpenseBody = z.object({

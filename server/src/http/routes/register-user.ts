@@ -6,7 +6,7 @@ import { generateToken } from '../../utils/generate-token'
 
 export async function registerUser(app: FastifyInstance) {
   app.post(
-    '/register',
+    '/api/register',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const registerBody = z.object({
         email: z.string(),

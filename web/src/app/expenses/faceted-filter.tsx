@@ -20,6 +20,7 @@ import {
 } from '@/app/components/ui/popover'
 import { Separator } from '@/app/components/ui/separator'
 import { cn } from '@/lib/utils'
+import { useSearchParams } from 'react-router-dom'
 
 interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>
@@ -36,8 +37,24 @@ export function DataTableFacetedFilter<TData, TValue>({
   title,
   options
 }: DataTableFacetedFilterProps<TData, TValue>) {
+  const [searchParams, setSearchParams] = useSearchParams()
   const facets = column?.getFacetedUniqueValues()
   const selectedValues = new Set(column?.getFilterValue() as string[])
+
+  const handleFilterChange = (filters: Set<string>) => {
+    const categoryIds: string[] = []
+
+    filters.forEach((categoryId) => {
+      categoryIds.push(categoryId)
+    })
+
+    const categoryParam = categoryIds.join(',')
+    if (categoryIds.length > 0) {
+      setSearchParams({ categories: categoryParam })
+    } else {
+      setSearchParams({})
+    }
+  }
 
   return (
     <Popover>
@@ -94,8 +111,10 @@ export function DataTableFacetedFilter<TData, TValue>({
                     onSelect={() => {
                       if (isSelected) {
                         selectedValues.delete(option.value)
+                        handleFilterChange(selectedValues)
                       } else {
                         selectedValues.add(option.value)
+                        handleFilterChange(selectedValues)
                       }
                       const filterValues = Array.from(selectedValues)
                       column?.setFilterValue(
@@ -131,7 +150,10 @@ export function DataTableFacetedFilter<TData, TValue>({
                 <CommandSeparator />
                 <CommandGroup>
                   <CommandItem
-                    onSelect={() => column?.setFilterValue(undefined)}
+                    onSelect={() => {
+                      column?.setFilterValue(undefined)
+                      handleFilterChange(new Set())
+                    }}
                     className="justify-center text-center"
                   >
                     Clear filters

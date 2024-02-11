@@ -39,7 +39,7 @@ export default function Login() {
     try {
       const data = await login(formData)
 
-      setToken(data.token)
+      await setToken(data.token)
       navigate('/dashboard', { replace: true })
     } catch (error) {
       console.error('Login failed:', error)
