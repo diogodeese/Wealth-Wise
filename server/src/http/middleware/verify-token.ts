@@ -26,12 +26,10 @@ export function verifyToken(
   try {
     decodedToken = jwt.verify(token, jwtSecret) as Jwt & JwtPayload
   } catch (error) {
-    console.error('Error verifying token: ', error)
     return reply.code(401).send({ message: 'Unauthorized' })
   }
 
   if (!decodedToken) {
-    console.error('Decoded token is undefined')
     return reply.code(401).send({ message: 'Unauthorized' })
   }
 

@@ -5,13 +5,25 @@ const api: AxiosInstance = axios.create({
   baseURL: 'http://localhost:3000/api'
 })
 
-api.defaults.headers.common['Authorization'] = `Bearer ${getToken()}`
+api.interceptors.request.use(
+  (config) => {
+    const token = getToken()
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
+)
 
 api.interceptors.response.use(
   (response: AxiosResponse) => response.data,
   (error: AxiosError) => {
     handleApiError(error)
-
     return Promise.reject(error)
   }
 )

@@ -42,7 +42,7 @@ export default function Login() {
       await setToken(data.token)
       navigate('/dashboard', { replace: true })
     } catch (error) {
-      console.error('Login failed:', error)
+      console.error('Login failed: ', error)
     }
   }
 
@@ -58,7 +58,7 @@ export default function Login() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input type="email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -72,7 +72,7 @@ export default function Login() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input type="password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
