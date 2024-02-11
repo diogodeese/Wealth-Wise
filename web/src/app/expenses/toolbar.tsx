@@ -10,6 +10,7 @@ import {
 } from '../components/ui/dropdown-menu'
 import { Input } from '../components/ui/input'
 import { DataTableFacetedFilter } from './faceted-filter'
+import { ExpensesForm } from './form'
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
@@ -32,6 +33,8 @@ export default function Toolbar<TData>({
   return (
     <div className="flex flex-row">
       <div className="flex items-center gap-2">
+        <ExpensesForm />
+
         <Input
           placeholder="Filter description..."
           value={
@@ -40,7 +43,7 @@ export default function Toolbar<TData>({
           onChange={(event) =>
             table.getColumn('description')?.setFilterValue(event.target.value)
           }
-          className="max-w-sm h-8"
+          className="h-8 max-w-sm"
         />
         {table.getColumn('categoryName') && (
           <DataTableFacetedFilter

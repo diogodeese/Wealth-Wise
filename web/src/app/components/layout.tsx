@@ -90,7 +90,7 @@ const Layout = ({ children }: LayoutProps) => {
       >
         <div className="h-20 w-full">
           <Link
-            to="/"
+            to="/dashboard"
             className="flex items-center justify-center gap-4 pb-4 pt-6"
           >
             {isCollapsed ? (

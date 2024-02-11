@@ -30,7 +30,7 @@ import { format } from 'date-fns'
 import { CalendarIcon, Plus } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { Combobox } from './ui/combobox'
+import { Combobox } from '../components/ui/combobox'
 
 const expensesFormSchema = z.object({
   expense: z.string().min(2, {
@@ -71,7 +71,7 @@ export function ExpensesForm() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" className="h-8">
           <Plus width={12} height={12} />
         </Button>
       </DialogTrigger>
