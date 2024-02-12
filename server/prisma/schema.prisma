@@ -75,3 +75,22 @@ model Expense {
   user     User            @relation(fields: [userId], references: [id])
   category ExpenseCategory @relation(fields: [categoryId], references: [id])
 }
+
+model Currency {
+  id     Int     @id @default(autoincrement())
+  code   String
+  name   String
+  symbol String?
+
+  countries Country[]
+}
+
+model Country {
+  id   Int    @id @default(autoincrement())
+  code String @unique
+  name String @unique
+
+  currencies Currency[]
+
+  @@unique([code, name])
+}

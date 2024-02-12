@@ -30,9 +30,11 @@ import { CalendarIcon, Plus } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Combobox } from '../components/ui/combobox'
+import { Input } from '../components/ui/input'
 import { Textarea } from '../components/ui/textarea'
 
 const expensesFormSchema = z.object({
+  amount: z.string(),
   category: z.string(),
   date: z.date({
     required_error: 'Please select a date and time',
@@ -50,6 +52,7 @@ export function ExpensesForm() {
   const form = useForm<z.infer<typeof expensesFormSchema>>({
     resolver: zodResolver(expensesFormSchema),
     defaultValues: {
+      amount: '',
       category: '',
       date: new Date(),
       description: ''
@@ -57,7 +60,7 @@ export function ExpensesForm() {
   })
 
   function onSubmit(values: z.infer<typeof expensesFormSchema>) {
-    console.log(values.date.toLocaleDateString('en-GB'))
+    console.log(values)
   }
 
   const { data: categories } = useExpenseCategories()
@@ -86,12 +89,37 @@ export function ExpensesForm() {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="mt-6 space-y-6"
+          >
+            <FormField
+              control={form.control}
+              name="amount"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Amount</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      step="0.10"
+                      placeholder="Enter amount"
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Enter the amount of the expense.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <div className="flex gap-8">
               <FormField
                 control={form.control}
                 name="category"
-                render={({ field }) => (
+                render={() => (
                   <FormItem className="flex flex-1 flex-col">
                     <FormLabel>Category</FormLabel>
                     <Combobox
@@ -103,7 +131,7 @@ export function ExpensesForm() {
                         )
 
                         if (selectedCategory) {
-                          field.value = selectedCategory.id
+                          form.setValue('category', selectedCategory.id)
                         }
                       }}
                     />
