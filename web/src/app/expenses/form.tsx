@@ -1,3 +1,5 @@
+import { useCountries } from '@/api/get-countries'
+import { useCurrencies } from '@/api/get-currency'
 import { useExpenseCategories } from '@/api/get-expense-categories'
 import { Button } from '@/app/components/ui/button'
 import { Calendar } from '@/app/components/ui/calendar'
@@ -36,14 +38,30 @@ import { Textarea } from '../components/ui/textarea'
 const expensesFormSchema = z.object({
   amount: z.string(),
   category: z.string(),
-  date: z.date({
-    required_error: 'Please select a date and time',
-    invalid_type_error: "That's not a date!"
-  }),
+  date: z
+    .date()
+    .refine(
+      (date) => {
+        return date !== null
+      },
+      {
+        message: 'Please select a date',
+        path: ['date']
+      }
+    )
+    .refine(
+      (date) => {
+        return !isNaN(date.getTime())
+      },
+      {
+        message: "That's not a valid date",
+        path: ['date']
+      }
+    ),
   description: z
     .string()
     .max(256, {
-      message: 'Descriptions must be smaller than 256 chars'
+      message: 'Descriptions must be smaller than 256 characters'
     })
     .optional()
 })
@@ -52,10 +70,10 @@ export function ExpensesForm() {
   const form = useForm<z.infer<typeof expensesFormSchema>>({
     resolver: zodResolver(expensesFormSchema),
     defaultValues: {
-      amount: '',
-      category: '',
+      amount: undefined,
+      category: undefined,
       date: new Date(),
-      description: ''
+      description: undefined
     }
   })
 
@@ -71,6 +89,28 @@ export function ExpensesForm() {
     comboboxCategories = categories.map((category) => ({
       id: category.id,
       text: category.name
+    }))
+  }
+
+  const { data: countries } = useCountries()
+
+  let comboboxCountries: { id: string; text: string }[] = []
+
+  if (countries && Array.isArray(countries)) {
+    comboboxCountries = countries.map((country) => ({
+      id: country.id.toString(),
+      text: country.name
+    }))
+  }
+
+  const { data: currencies } = useCurrencies()
+
+  let comboboxCurrencies: { id: string; text: string }[] = []
+
+  if (currencies && Array.isArray(currencies)) {
+    comboboxCurrencies = currencies.map((currency) => ({
+      id: currency.id.toString(),
+      text: `${currency.code} (${currency.symbol})`
     }))
   }
 
@@ -93,28 +133,44 @@ export function ExpensesForm() {
             onSubmit={form.handleSubmit(onSubmit)}
             className="mt-6 space-y-6"
           >
-            <FormField
-              control={form.control}
-              name="amount"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Amount</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      step="0.10"
-                      placeholder="Enter amount"
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    Enter the amount of the expense.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="flex gap-8">
+              <FormField
+                control={form.control}
+                name="amount"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Amount</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        step="0.10"
+                        placeholder="Enter amount"
+                        className="block w-full rounded-md shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Enter the amount of the expense.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Combobox
+                label="Select Currency"
+                data={comboboxCurrencies || []}
+                // onSelect={(categoryId: string) => {
+                //   const selectedCategory = categories?.find(
+                //     (category) => category?.id === categoryId
+                //   )
+
+                //   if (selectedCategory) {
+                //     form.setValue('category', selectedCategory.id)
+                //   }
+                // }}
+              />
+            </div>
             <div className="flex gap-8">
               <FormField
                 control={form.control}
@@ -195,7 +251,7 @@ export function ExpensesForm() {
                   <FormControl>
                     <Textarea
                       placeholder="Enter expense description"
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                      className="block max-h-40 w-full rounded-md shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                       rows={4}
                       {...field}
                     />
@@ -207,6 +263,21 @@ export function ExpensesForm() {
                 </FormItem>
               )}
             />
+            <Combobox
+              label="Select Country"
+              data={comboboxCountries || []}
+              // onSelect={(categoryId: string) => {
+              //   const selectedCategory = categories?.find(
+              //     (category) => category?.id === categoryId
+              //   )
+
+              //   if (selectedCategory) {
+              //     form.setValue('category', selectedCategory.id)
+              //   }
+              // }}
+              defaultValue="181"
+            />
+
             <Button type="submit">Submit</Button>
           </form>
         </Form>

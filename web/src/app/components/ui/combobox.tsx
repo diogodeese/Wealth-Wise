@@ -13,8 +13,9 @@ import {
 } from '@/app/components/ui/popover'
 import { cn } from '@/lib/utils'
 import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
-import * as React from 'react'
+import { useState } from 'react'
 import { z } from 'zod'
+import { ScrollArea } from './scroll-area'
 
 const ComboboxPropsSchema = z.object({
   label: z.string(),
@@ -24,14 +25,20 @@ const ComboboxPropsSchema = z.object({
       text: z.string()
     })
   ),
-  onSelect: z.function(z.tuple([z.string()])).optional()
+  onSelect: z.function(z.tuple([z.string()])).optional(),
+  defaultValue: z.string().optional()
 })
 
 type ComboboxProps = z.input<typeof ComboboxPropsSchema>
 
-export function Combobox({ label, data, onSelect }: ComboboxProps) {
-  const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState('')
+export function Combobox({
+  label,
+  data,
+  onSelect,
+  defaultValue
+}: ComboboxProps) {
+  const [open, setOpen] = useState(false)
+  const [value, setValue] = useState(defaultValue ?? '')
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -46,33 +53,35 @@ export function Combobox({ label, data, onSelect }: ComboboxProps) {
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[220px] p-0">
+      <PopoverContent className="w-full p-0">
         <Command>
           <CommandInput placeholder={label} className="h-9" />
-          <CommandEmpty>No framework found.</CommandEmpty>
-          <CommandGroup>
-            {data.map((item) => (
-              <CommandItem
-                key={item.id}
-                value={item.id}
-                onSelect={(currentValue) => {
-                  setValue(currentValue === value ? '' : currentValue)
-                  if (onSelect) {
-                    onSelect(currentValue)
-                  }
-                  setOpen(false)
-                }}
-              >
-                {item.text}
-                <CheckIcon
-                  className={cn(
-                    'ml-auto h-4 w-4',
-                    value === item.id ? 'opacity-100' : 'opacity-0'
-                  )}
-                />
-              </CommandItem>
-            ))}
-          </CommandGroup>
+          <ScrollArea className="h-60">
+            <CommandEmpty>No framework found.</CommandEmpty>
+            <CommandGroup>
+              {data.map((item) => (
+                <CommandItem
+                  key={item.id}
+                  value={item.id}
+                  onSelect={(currentValue) => {
+                    setValue(currentValue === value ? '' : currentValue)
+                    if (onSelect) {
+                      onSelect(currentValue)
+                    }
+                    setOpen(false)
+                  }}
+                >
+                  {item.text}
+                  <CheckIcon
+                    className={cn(
+                      'ml-auto h-4 w-4',
+                      value === item.id ? 'opacity-100' : 'opacity-0'
+                    )}
+                  />
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </ScrollArea>
         </Command>
       </PopoverContent>
     </Popover>

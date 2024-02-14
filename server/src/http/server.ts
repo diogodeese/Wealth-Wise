@@ -2,6 +2,8 @@ import cors from '@fastify/cors'
 import fastify from 'fastify'
 import { createExpense } from './routes/create-expense'
 import { createExpenseCategory } from './routes/create-expense-category'
+import { getCountries } from './routes/get-countries'
+import { getCurrencies } from './routes/get-currencies'
 import { getExpenseCategories } from './routes/get-expense-categories'
 import { getExpenses } from './routes/get-expenses'
 import { loginUser } from './routes/login-user'
@@ -31,6 +33,8 @@ app.register(loginUser)
 app.register(registerUser)
 app.register(verifyToken)
 app.register(regenerateToken)
+app.register(getCountries)
+app.register(getCurrencies)
 app.register(getExpenseCategories)
 app.register(createExpenseCategory)
 app.register(getExpenses)

@@ -81,6 +81,7 @@ model Currency {
   code   String
   name   String
   symbol String?
+  active Boolean @default(true)
 
   countries Country[]
 }
