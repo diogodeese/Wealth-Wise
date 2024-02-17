@@ -13,15 +13,10 @@ export async function createExpense(app: FastifyInstance) {
         amount: z.number(),
         description: z.string(),
         categoryId: z.string(),
-        date: z.string().refine(
-          (value) => {
-            const iso8601Pattern =
-              /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,3})?Z$/
-            return iso8601Pattern.test(value)
-          },
-          { message: 'Invalid date format' }
-        )
+        date: z.string()
       })
+
+      console.log(request.body)
 
       const { amount, description, categoryId, date } = createExpenseBody.parse(
         request.body

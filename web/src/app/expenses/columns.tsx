@@ -19,6 +19,7 @@ export const columns: ColumnDef<Expense>[] = [
     header: ({ column }) => {
       return <DataTableColumnHeader title={'Date'} column={column} />
     },
+    sortDescFirst: true,
     enableHiding: false,
     cell: ({ row }) => (
       <div>{format(new Date(row.original.date), 'dd/MM/yyyy')}</div>

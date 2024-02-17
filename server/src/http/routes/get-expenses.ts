@@ -39,6 +39,9 @@ export async function getExpenses(app: FastifyInstance) {
               name: true
             }
           }
+        },
+        orderBy: {
+          date: 'desc'
         }
       })
 

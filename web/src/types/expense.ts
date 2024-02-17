@@ -6,7 +6,7 @@ const ExpenseSchema = z.object({
   userId: z.string(),
   categoryId: z.string(),
   amount: z.number(),
-  description: z.string(),
+  description: z.string().optional(),
   currency: z.string().optional(),
   location: z.string().optional(),
   receipt: z.string().optional(),

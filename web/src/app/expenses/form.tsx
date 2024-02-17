@@ -1,5 +1,4 @@
-import { useCountries } from '@/api/get-countries'
-import { useCurrencies } from '@/api/get-currency'
+import { createExpense } from '@/api/create-expense'
 import { useExpenseCategories } from '@/api/get-expense-categories'
 import { Button } from '@/app/components/ui/button'
 import { Calendar } from '@/app/components/ui/calendar'
@@ -27,6 +26,7 @@ import {
 } from '@/app/components/ui/popover'
 import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import { CalendarIcon, Plus } from 'lucide-react'
 import { useForm } from 'react-hook-form'
@@ -36,8 +36,14 @@ import { Input } from '../components/ui/input'
 import { Textarea } from '../components/ui/textarea'
 
 const expensesFormSchema = z.object({
-  amount: z.string(),
-  category: z.string(),
+  amount: z
+    .string()
+    .transform((val) => parseFloat(val)) // Transform string to number
+    .refine((val) => !isNaN(val), {
+      message: 'Amount must be a valid number',
+      path: ['amount']
+    }),
+  categoryId: z.string(),
   date: z
     .date()
     .refine(
@@ -71,13 +77,24 @@ export function ExpensesForm() {
     resolver: zodResolver(expensesFormSchema),
     defaultValues: {
       amount: undefined,
-      category: undefined,
+      categoryId: undefined,
       date: new Date(),
       description: undefined
     }
   })
 
-  function onSubmit(values: z.infer<typeof expensesFormSchema>) {
+  const { mutateAsync: createExpenseFn } = useMutation({
+    mutationKey: ['create-expense'],
+    mutationFn: createExpense
+  })
+
+  async function onSubmit(values: z.infer<typeof expensesFormSchema>) {
+    try {
+      await createExpenseFn(values)
+    } catch (error) {
+      console.error(error)
+    }
+
     console.log(values)
   }
 
@@ -89,28 +106,6 @@ export function ExpensesForm() {
     comboboxCategories = categories.map((category) => ({
       id: category.id,
       text: category.name
-    }))
-  }
-
-  const { data: countries } = useCountries()
-
-  let comboboxCountries: { id: string; text: string }[] = []
-
-  if (countries && Array.isArray(countries)) {
-    comboboxCountries = countries.map((country) => ({
-      id: country.id.toString(),
-      text: country.name
-    }))
-  }
-
-  const { data: currencies } = useCurrencies()
-
-  let comboboxCurrencies: { id: string; text: string }[] = []
-
-  if (currencies && Array.isArray(currencies)) {
-    comboboxCurrencies = currencies.map((currency) => ({
-      id: currency.id.toString(),
-      text: `${currency.code} (${currency.symbol})`
     }))
   }
 
@@ -156,25 +151,11 @@ export function ExpensesForm() {
                   </FormItem>
                 )}
               />
-
-              <Combobox
-                label="Select Currency"
-                data={comboboxCurrencies || []}
-                // onSelect={(categoryId: string) => {
-                //   const selectedCategory = categories?.find(
-                //     (category) => category?.id === categoryId
-                //   )
-
-                //   if (selectedCategory) {
-                //     form.setValue('category', selectedCategory.id)
-                //   }
-                // }}
-              />
             </div>
             <div className="flex gap-8">
               <FormField
                 control={form.control}
-                name="category"
+                name="categoryId"
                 render={() => (
                   <FormItem className="flex flex-1 flex-col">
                     <FormLabel>Category</FormLabel>
@@ -187,7 +168,7 @@ export function ExpensesForm() {
                         )
 
                         if (selectedCategory) {
-                          form.setValue('category', selectedCategory.id)
+                          form.setValue('categoryId', selectedCategory.id)
                         }
                       }}
                     />
@@ -262,20 +243,6 @@ export function ExpensesForm() {
                   <FormMessage />
                 </FormItem>
               )}
-            />
-            <Combobox
-              label="Select Country"
-              data={comboboxCountries || []}
-              // onSelect={(categoryId: string) => {
-              //   const selectedCategory = categories?.find(
-              //     (category) => category?.id === categoryId
-              //   )
-
-              //   if (selectedCategory) {
-              //     form.setValue('category', selectedCategory.id)
-              //   }
-              // }}
-              defaultValue="181"
             />
 
             <Button type="submit">Submit</Button>
