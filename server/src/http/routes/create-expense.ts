@@ -16,8 +16,6 @@ export async function createExpense(app: FastifyInstance) {
         date: z.string()
       })
 
-      console.log(request.body)
-
       const { amount, description, categoryId, date } = createExpenseBody.parse(
         request.body
       )
@@ -34,7 +32,7 @@ export async function createExpense(app: FastifyInstance) {
         }
       })
 
-      return reply.status(201).send({ expenseId: expense.id })
+      return reply.status(201).send({ expense: expense })
     }
   )
 }

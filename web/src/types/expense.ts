@@ -10,7 +10,7 @@ const ExpenseSchema = z.object({
   currency: z.string().optional(),
   location: z.string().optional(),
   receipt: z.string().optional(),
-  date: z.string(),
+  date: z.date(),
   createdAt: z.string(),
   updatedAt: z.string(),
   category: z.lazy(() => ExpenseCategorySchema)

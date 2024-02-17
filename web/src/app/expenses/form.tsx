@@ -25,8 +25,9 @@ import {
   PopoverTrigger
 } from '@/app/components/ui/popover'
 import { cn } from '@/lib/utils'
+import Expense from '@/types/expense'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import { CalendarIcon, Plus } from 'lucide-react'
 import { useForm } from 'react-hook-form'
@@ -73,6 +74,8 @@ const expensesFormSchema = z.object({
 })
 
 export function ExpensesForm() {
+  const queryClient = useQueryClient()
+
   const form = useForm<z.infer<typeof expensesFormSchema>>({
     resolver: zodResolver(expensesFormSchema),
     defaultValues: {
@@ -85,7 +88,39 @@ export function ExpensesForm() {
 
   const { mutateAsync: createExpenseFn } = useMutation({
     mutationKey: ['create-expense'],
-    mutationFn: createExpense
+    mutationFn: createExpense,
+    onSuccess(response: Expense) {
+      const expense: Expense = response
+
+      console.log(response)
+
+      queryClient.setQueryData<Expense[] | undefined>(['expenses'], (data) => {
+        const newData = data ? [...data] : []
+
+        newData.push({
+          id: expense.id,
+          userId: expense.userId,
+          amount: expense.amount,
+          date: expense.date,
+          categoryId: expense.categoryId,
+          category: categories?.find(
+            (category) => category.id === expense.categoryId
+          ) || { id: '', name: '', description: '' },
+          description: expense.description,
+          currency: expense.currency,
+          location: expense.location,
+          receipt: expense.receipt,
+          createdAt: expense.createdAt,
+          updatedAt: expense.updatedAt
+        })
+
+        newData.sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        )
+
+        return newData
+      })
+    }
   })
 
   async function onSubmit(values: z.infer<typeof expensesFormSchema>) {

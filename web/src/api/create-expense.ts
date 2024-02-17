@@ -1,10 +1,10 @@
 import api from '@/lib/axios'
 import CreateExpenseRequest from '@/types/create-expense-request'
-import Currency from '@/types/currency'
+import Expense from '@/types/expense'
 
 export async function createExpense(
   data: CreateExpenseRequest
-): Promise<Currency[]> {
+): Promise<Expense> {
   return await api.post('/expenses', data)
 }
 

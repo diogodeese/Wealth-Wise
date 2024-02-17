@@ -5,6 +5,8 @@ import { DataTable } from './data-table'
 export default function ExpensesTable() {
   const { data } = useExpenses()
 
+  const key = data ? JSON.stringify(data) : null
+
   const expenses = data?.map((expense) => ({
     ...expense,
     categoryName: expense.category.name
@@ -12,7 +14,7 @@ export default function ExpensesTable() {
 
   return (
     <div className="py-8">
-      <DataTable columns={columns} data={expenses || []} />
+      <DataTable key={key} columns={columns} data={expenses || []} />
     </div>
   )
 }

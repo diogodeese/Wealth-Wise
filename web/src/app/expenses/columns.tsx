@@ -21,9 +21,12 @@ export const columns: ColumnDef<Expense>[] = [
     },
     sortDescFirst: true,
     enableHiding: false,
-    cell: ({ row }) => (
-      <div>{format(new Date(row.original.date), 'dd/MM/yyyy')}</div>
-    )
+    cell: ({ row }) => {
+      const { date } = row.original
+      const formattedDate = date ? format(new Date(date), 'dd/MM/yyyy') : ''
+
+      return <div>{formattedDate}</div>
+    }
   },
   {
     accessorKey: 'categoryName',
