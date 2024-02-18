@@ -92,8 +92,6 @@ export function ExpensesForm() {
     onSuccess(response: Expense) {
       const expense: Expense = response
 
-      console.log(response)
-
       queryClient.setQueryData<Expense[] | undefined>(['expenses'], (data) => {
         const newData = data ? [...data] : []
 

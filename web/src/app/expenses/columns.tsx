@@ -49,23 +49,15 @@ export const columns: ColumnDef<Expense>[] = [
       return <DataTableColumnHeader title={'Amount'} column={column} />
     },
     enableHiding: false,
-    cell: ({ row }) => <div className="p-4">{row.original.amount}</div>
-  },
-  {
-    accessorKey: 'currency',
-    header: 'Currency',
-    enableHiding: false
+    cell: ({ row }) => (
+      <div className="p-4">{row.original.amount.toFixed(2)}€</div>
+    )
   },
   // {
   //   accessorKey: 'paymentMethod',
   //   header: 'Payment Method',
   //   enableHiding: true
   // },
-  {
-    accessorKey: 'location',
-    header: 'Location',
-    enableHiding: true
-  },
   {
     accessorKey: 'receipt',
     header: 'Receipt',
