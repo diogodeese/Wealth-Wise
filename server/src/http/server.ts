@@ -2,6 +2,7 @@ import cors from '@fastify/cors'
 import fastify from 'fastify'
 import { createExpense } from './routes/create-expense'
 import { createExpenseCategory } from './routes/create-expense-category'
+import { deleteExpense } from './routes/delete-expense'
 import { getCountries } from './routes/get-countries'
 import { getCurrencies } from './routes/get-currencies'
 import { getExpenseCategories } from './routes/get-expense-categories'
@@ -39,6 +40,7 @@ app.register(getExpenseCategories)
 app.register(createExpenseCategory)
 app.register(getExpenses)
 app.register(createExpense)
+app.register(deleteExpense)
 
 app.listen({ port: 3000 }, () => {
   console.log(`HTTP server running.`)
