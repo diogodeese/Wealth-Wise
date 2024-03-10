@@ -1,6 +1,6 @@
 import { useExpenseCategories } from '@/api/get-expense-categories'
 import { Table } from '@tanstack/react-table'
-import { SlidersHorizontal } from 'lucide-react'
+import { Search, SlidersHorizontal } from 'lucide-react'
 import { Button } from '../components/ui/button'
 import {
   DropdownMenu,
@@ -35,6 +35,10 @@ export default function Toolbar<TData>({
       <div className="flex items-center gap-2">
         <ExpensesForm />
 
+        <Button variant="outline" className="h-8">
+          <Search width={12} height={12} />
+        </Button>
+
         <Input
           placeholder="Filter description..."
           value={
@@ -43,7 +47,7 @@ export default function Toolbar<TData>({
           onChange={(event) =>
             table.getColumn('description')?.setFilterValue(event.target.value)
           }
-          className="h-8 max-w-sm"
+          className="h-8 max-w-md"
         />
         {table.getColumn('categoryName') && (
           <DataTableFacetedFilter

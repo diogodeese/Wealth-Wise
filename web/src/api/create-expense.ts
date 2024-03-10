@@ -7,7 +7,3 @@ export async function createExpense(
 ): Promise<Expense> {
   return await api.post('/expenses', data)
 }
-
-// export const CreateExpense = () => {
-
-// }

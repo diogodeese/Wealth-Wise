@@ -142,7 +142,7 @@ const Layout = ({ children }: LayoutProps) => {
             },
             {
               title: 'Dividends',
-              to: '/dashboard',
+              to: '/dividends',
               icon: HandCoins,
               variant: 'ghost'
             },

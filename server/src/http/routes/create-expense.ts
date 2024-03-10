@@ -22,17 +22,37 @@ export async function createExpense(app: FastifyInstance) {
 
       const parsedDate = new Date(date)
 
-      const expense = await prisma.expense.create({
-        data: {
-          userId: request.userId!,
-          amount,
-          description,
-          categoryId,
-          date: parsedDate
-        }
-      })
+      try {
+        // Create the expense in the database
+        const expense = await prisma.expense.create({
+          data: {
+            userId: request.userId!,
+            amount,
+            description,
+            categoryId,
+            date: parsedDate
+          },
+          // Include related data in the response
+          include: {
+            user: true,
+            category: true
+          }
+        })
 
-      return reply.status(201).send({ expense: expense })
+        return reply.status(201).send({
+          id: expense.id,
+          userId: expense.userId,
+          categoryId: expense.categoryId,
+          category: expense.category,
+          amount: expense.amount,
+          description: expense.description,
+          date: expense.date,
+          createdAt: expense.createdAt
+        })
+      } catch (error) {
+        console.error('Error creating expense:', error)
+        return reply.status(500).send({ error: 'Internal server error' })
+      }
     }
   )
 }

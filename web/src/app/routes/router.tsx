@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
 import Dashboard from '../pages/Dashboard'
+import Dividends from '../pages/Dividends'
 import Expenses from '../pages/Expenses'
 import Landing from '../pages/Landing'
 import Login from '../pages/Login'
@@ -46,6 +47,14 @@ export const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Expenses />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: '/dividends',
+    element: (
+      <ProtectedRoute>
+        <Dividends />
       </ProtectedRoute>
     )
   },

@@ -127,8 +127,6 @@ export function ExpensesForm() {
     } catch (error) {
       console.error(error)
     }
-
-    console.log(values)
   }
 
   const { data: categories } = useExpenseCategories()
@@ -156,6 +154,7 @@ export function ExpensesForm() {
             Fill out the form below to add an expense to your account.
           </DialogDescription>
         </DialogHeader>
+
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -212,7 +211,6 @@ export function ExpensesForm() {
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="date"
