@@ -25,16 +25,6 @@ export const columns: ColumnDef<Expense>[] = [
     enableHiding: false
   },
   {
-    accessorKey: 'description',
-    header: 'Description',
-    enableHiding: true,
-    cell: ({ row }) => (
-      <div className="line-clamp-2 max-w-72 overflow-hidden">
-        {row.original.description}
-      </div>
-    )
-  },
-  {
     accessorKey: 'amount',
     header: ({ column }) => {
       return <DataTableColumnHeader title={'Amount'} column={column} />
@@ -42,6 +32,16 @@ export const columns: ColumnDef<Expense>[] = [
     enableHiding: false,
     cell: ({ row }) => (
       <div className="p-4">{row.original.amount.toFixed(2)}€</div>
+    )
+  },
+  {
+    accessorKey: 'description',
+    header: 'Description',
+    enableHiding: true,
+    cell: ({ row }) => (
+      <div className="line-clamp-2 max-w-72 overflow-hidden">
+        {row.original.description}
+      </div>
     )
   },
   // {
