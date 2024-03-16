@@ -2,13 +2,13 @@ import { useExpenseCategories } from '@/api/get-expense-categories'
 import { Table } from '@tanstack/react-table'
 import { Search, SlidersHorizontal } from 'lucide-react'
 import { Button } from '../components/ui/button'
+import { DatePickerWithRange } from '../components/ui/date-range-picker'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger
 } from '../components/ui/dropdown-menu'
-import { Input } from '../components/ui/input'
 import { DataTableFacetedFilter } from './faceted-filter'
 import { ExpensesForm } from './form'
 
@@ -39,16 +39,8 @@ export default function Toolbar<TData>({
           <Search width={12} height={12} />
         </Button>
 
-        <Input
-          placeholder="Filter description..."
-          value={
-            (table.getColumn('description')?.getFilterValue() as string) ?? ''
-          }
-          onChange={(event) =>
-            table.getColumn('description')?.setFilterValue(event.target.value)
-          }
-          className="h-8 max-w-md"
-        />
+        {table.getColumn('date') && <DatePickerWithRange />}
+
         {table.getColumn('categoryName') && (
           <DataTableFacetedFilter
             column={table.getColumn('categoryName')}

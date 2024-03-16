@@ -39,7 +39,9 @@ export function DataTableFacetedFilter<TData, TValue>({
 }: DataTableFacetedFilterProps<TData, TValue>) {
   const [searchParams, setSearchParams] = useSearchParams()
   const facets = column?.getFacetedUniqueValues()
-  const selectedValues = new Set(column?.getFilterValue() as string[])
+
+  const categories = searchParams.get('categories')
+  const selectedValues = new Set(categories ? categories.split(',') : [])
 
   const handleFilterChange = (filters: Set<string>) => {
     const categoryIds: string[] = []
@@ -54,6 +56,9 @@ export function DataTableFacetedFilter<TData, TValue>({
     } else {
       setSearchParams({})
     }
+
+    const filterValues = Array.from(selectedValues)
+    column?.setFilterValue(filterValues.length ? filterValues : undefined)
   }
 
   return (
@@ -111,15 +116,11 @@ export function DataTableFacetedFilter<TData, TValue>({
                     onSelect={() => {
                       if (isSelected) {
                         selectedValues.delete(option.value)
-                        handleFilterChange(selectedValues)
                       } else {
                         selectedValues.add(option.value)
-                        handleFilterChange(selectedValues)
                       }
-                      const filterValues = Array.from(selectedValues)
-                      column?.setFilterValue(
-                        filterValues.length ? filterValues : undefined
-                      )
+
+                      handleFilterChange(selectedValues)
                     }}
                   >
                     <div

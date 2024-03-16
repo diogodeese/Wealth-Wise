@@ -23,7 +23,7 @@ import { DataTablePagination } from './pagination'
 import Toolbar from './toolbar'
 
 interface DataTableProps<Expense> {
-  columns: ColumnDef<Expense, keyof Expense>[] // We're using 'any' for the value type for flexibility
+  columns: ColumnDef<Expense, keyof Expense>[]
   data: Expense[]
 }
 
@@ -56,7 +56,7 @@ export function DataTable<TData>({ columns, data }: DataTableProps<TData>) {
   return (
     <div>
       <Toolbar table={table} />
-      <div className="rounded-md border my-4">
+      <div className="my-4 rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
