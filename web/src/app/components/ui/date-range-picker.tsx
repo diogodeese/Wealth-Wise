@@ -1,6 +1,6 @@
 'use client'
 import { CalendarIcon } from '@radix-ui/react-icons'
-import { format } from 'date-fns'
+import { format, subMonths } from 'date-fns'
 import { DateRange } from 'react-day-picker'
 
 import { Button } from '@/app/components/ui/button'
@@ -17,6 +17,8 @@ export function DatePickerWithRange({
   className
 }: React.HTMLAttributes<HTMLDivElement>) {
   const [date, setDate] = React.useState<DateRange | undefined>()
+
+  const lastMonthDate = subMonths(new Date(), 1)
 
   return (
     <div className={cn('grid gap-2', className)}>
@@ -39,7 +41,7 @@ export function DatePickerWithRange({
                 format(date.from, 'LLL dd, y')
               )
             ) : (
-              <span>Pick a date</span>
+              <span>Date</span>
             )}
           </Button>
         </PopoverTrigger>
@@ -47,7 +49,7 @@ export function DatePickerWithRange({
           <Calendar
             initialFocus
             mode="range"
-            defaultMonth={date?.from}
+            defaultMonth={lastMonthDate}
             selected={date}
             onSelect={setDate}
             numberOfMonths={2}
