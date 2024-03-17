@@ -27,13 +27,20 @@ export function LastYear() {
   }
 
   const lastYearExpenses = getLastYearExpenses(data)
-  console.log(lastYearExpenses)
 
-  const lastYearExpensesValue = lastYearExpenses.reduce(
+  const lastYearExpensesTotal = lastYearExpenses.reduce(
     (acc, expense) => acc + expense.amount,
     0
   )
-  const [integerPart, decimalPart] = lastYearExpensesValue.toFixed(2).split('.')
+
+  // Format the total expenses value to always have two decimal places
+  const formattedTotal = lastYearExpensesTotal.toFixed(2)
+
+  // Split the formatted value into integer and decimal parts
+  const [integerPart, decimalPart] = formattedTotal.split('.')
+
+  // Pad the decimal part with zeros if needed
+  const paddedDecimalPart = decimalPart ? decimalPart.padEnd(2, '0') : ''
 
   return (
     <Card>
@@ -57,7 +64,9 @@ export function LastYear() {
       <CardContent>
         <div className="text-2xl font-bold text-red-400">
           {integerPart}
-          {decimalPart && <span className="text-lg">.{decimalPart}€</span>}
+          {decimalPart && (
+            <span className="text-lg">.{paddedDecimalPart}€</span>
+          )}
         </div>
         {decimalPart && (
           <p className="text-xs text-muted-foreground">+45.3% from last year</p>

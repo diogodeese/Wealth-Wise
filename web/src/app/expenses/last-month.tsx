@@ -40,10 +40,14 @@ export function LastMonth() {
   }
 
   const lastMonthExpenses = getLastMonthExpenses(data)
-  const lastMonthExpensesValue = JSON.stringify(
-    lastMonthExpenses.reduce((acc, expense) => acc + expense.amount, 0)
+  const lastMonthExpensesTotal = lastMonthExpenses.reduce(
+    (acc, expense) => acc + expense.amount,
+    0
   )
-  const [integerPart, decimalPart] = lastMonthExpensesValue.split('.')
+
+  const formattedTotal = lastMonthExpensesTotal.toFixed(2)
+  const [integerPart, decimalPart] = formattedTotal.split('.')
+  const paddedDecimalPart = decimalPart.padEnd(2, '0')
 
   return (
     <Card>
@@ -66,7 +70,7 @@ export function LastMonth() {
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-bold text-red-400">
-          {integerPart}.<span className="text-xl">{decimalPart}€</span>
+          {integerPart}.<span className="text-xl">{paddedDecimalPart}€</span>
         </div>
         <p className="text-xs text-muted-foreground">+180.1% from last month</p>
       </CardContent>
