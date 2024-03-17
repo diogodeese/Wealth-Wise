@@ -165,47 +165,25 @@ export function ExpensesForm() {
                 control={form.control}
                 name="amount"
                 render={({ field }) => (
-                  <FormItem className="w-full">
+                  <FormItem className="flex flex-1 flex-col">
                     <FormLabel>Amount</FormLabel>
                     <FormControl>
-                      <Input
-                        type="number"
-                        step="0.10"
-                        placeholder="Enter amount"
-                        className="block w-full rounded-md shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                        {...field}
-                      />
+                      <div className="flex w-full items-center">
+                        <Input
+                          type="number"
+                          step="0.01"
+                          min="0"
+                          inputMode="numeric"
+                          pattern="[0-9]*"
+                          placeholder="100,00"
+                          className="block rounded-md shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                          {...field}
+                        />
+                        <span className="ml-2 text-gray-500">€</span>
+                      </div>
                     </FormControl>
                     <FormDescription>
                       Enter the amount of the expense.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex gap-8">
-              <FormField
-                control={form.control}
-                name="categoryId"
-                render={() => (
-                  <FormItem className="flex flex-1 flex-col">
-                    <FormLabel>Category</FormLabel>
-                    <Combobox
-                      label="Select Category"
-                      data={comboboxCategories || []}
-                      onSelect={(categoryId: string) => {
-                        const selectedCategory = categories?.find(
-                          (category) => category?.id === categoryId
-                        )
-
-                        if (selectedCategory) {
-                          form.setValue('categoryId', selectedCategory.id)
-                        }
-                      }}
-                    />
-                    <FormDescription>
-                      Choose the category of the expense.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -248,6 +226,34 @@ export function ExpensesForm() {
                     </Popover>
                     <FormDescription>
                       Select the date of the expense.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="flex gap-8">
+              <FormField
+                control={form.control}
+                name="categoryId"
+                render={() => (
+                  <FormItem className="flex flex-1 flex-col">
+                    <FormLabel>Category</FormLabel>
+                    <Combobox
+                      label="Select Category"
+                      data={comboboxCategories || []}
+                      onSelect={(categoryId: string) => {
+                        const selectedCategory = categories?.find(
+                          (category) => category?.id === categoryId
+                        )
+
+                        if (selectedCategory) {
+                          form.setValue('categoryId', selectedCategory.id)
+                        }
+                      }}
+                    />
+                    <FormDescription>
+                      Choose the category of the expense.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>

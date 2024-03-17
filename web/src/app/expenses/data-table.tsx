@@ -56,7 +56,7 @@ export function DataTable<TData>({ columns, data }: DataTableProps<TData>) {
   return (
     <div>
       <Toolbar table={table} />
-      <div className="my-4 rounded-md border">
+      <div className="my-4 min-h-[731.5px] rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

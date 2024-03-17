@@ -7,6 +7,7 @@ import { getCountries } from './routes/get-countries'
 import { getCurrencies } from './routes/get-currencies'
 import { getExpenseCategories } from './routes/get-expense-categories'
 import { getExpenses } from './routes/get-expenses'
+import { getTotalExpensesWithAverageLastYear } from './routes/get-total-expenses-with-average-last-year'
 import { loginUser } from './routes/login-user'
 import { regenerateToken } from './routes/regenerate-token'
 import { registerUser } from './routes/register-user'
@@ -30,17 +31,25 @@ app.register(async (app, opts) => {
   })
 })
 
+// Authentication
 app.register(loginUser)
 app.register(registerUser)
 app.register(verifyToken)
 app.register(regenerateToken)
+
+// Dataset's
 app.register(getCountries)
 app.register(getCurrencies)
-app.register(getExpenseCategories)
-app.register(createExpenseCategory)
+
+// Expenses
 app.register(getExpenses)
+app.register(getTotalExpensesWithAverageLastYear)
 app.register(createExpense)
 app.register(deleteExpense)
+
+// Expense Categories
+app.register(getExpenseCategories)
+app.register(createExpenseCategory)
 
 app.listen({ port: 3000 }, () => {
   console.log(`HTTP server running.`)
