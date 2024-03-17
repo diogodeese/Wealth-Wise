@@ -1,45 +1,13 @@
 import { useExpenses } from '@/api/get-expenses'
-import Expense from '@/types/expense'
+import { getLastYearExpensesTotal } from '@/utils/expenses/get-last-year-total-expenses'
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 
 export function LastYear() {
   const { data } = useExpenses()
 
-  const getLastYearExpenses = (expenses: Expense[] | undefined): Expense[] => {
-    if (!expenses) {
-      return []
-    }
-
-    const currentDate = new Date()
-    const startOfLastYearDate = new Date(currentDate.getFullYear() - 1, 0, 1)
-    const endOfLastYearDate = new Date(currentDate.getFullYear() - 1, 11, 31)
-
-    const lastYearExpenses = expenses.filter((expense) => {
-      const expenseDate = new Date(expense.date)
-      expenseDate.setHours(0, 0, 0, 0)
-
-      return (
-        expenseDate >= startOfLastYearDate && expenseDate <= endOfLastYearDate
-      )
-    })
-
-    return lastYearExpenses
-  }
-
-  const lastYearExpenses = getLastYearExpenses(data)
-
-  const lastYearExpensesTotal = lastYearExpenses.reduce(
-    (acc, expense) => acc + expense.amount,
-    0
-  )
-
-  // Format the total expenses value to always have two decimal places
+  const lastYearExpensesTotal = getLastYearExpensesTotal(data)
   const formattedTotal = lastYearExpensesTotal.toFixed(2)
-
-  // Split the formatted value into integer and decimal parts
   const [integerPart, decimalPart] = formattedTotal.split('.')
-
-  // Pad the decimal part with zeros if needed
   const paddedDecimalPart = decimalPart ? decimalPart.padEnd(2, '0') : ''
 
   return (
@@ -51,14 +19,12 @@ export function LastYear() {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
           className="h-4 w-4 text-muted-foreground"
         >
-          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-          <circle cx="9" cy="7" r="4" />
-          <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
         </svg>
       </CardHeader>
       <CardContent>
