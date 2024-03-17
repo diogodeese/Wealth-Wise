@@ -11,6 +11,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '../components/ui/dropdown-menu'
+import { ToastAction } from '../components/ui/toast'
+import { toast } from '../components/ui/use-toast'
 
 interface ActionProps {
   expenseId: string
@@ -32,15 +34,28 @@ export function Actions({ expenseId }: ActionProps) {
 
         return newData
       })
+
+      toast({
+        title: 'Expense Deleted',
+        description: 'The expense has been successfully deleted.',
+        action: <ToastAction altText="Undo">Undo</ToastAction>
+      })
     },
     onError(error) {
+      toast({
+        variant: 'destructive',
+        title: 'Error Deleting Expense',
+        description: 'There was an error deleting the expense.',
+        action: <ToastAction altText="Try Again">Try Again</ToastAction>
+      })
+
       console.error('Error deleting expense:', error)
     }
   })
 
   async function handleDeleteExpense(expenseId: string) {
     try {
-      await deleteExpenseFn(expenseId)
+      return await deleteExpenseFn(expenseId)
     } catch (error) {
       console.error('Error deleting expense:', error)
     }
@@ -65,7 +80,9 @@ export function Actions({ expenseId }: ActionProps) {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="text-red-400"
-          onClick={() => handleDeleteExpense(expenseId)}
+          onClick={() => {
+            handleDeleteExpense(expenseId)
+          }}
         >
           <Trash size={16} />
           Delete
