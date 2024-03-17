@@ -1,14 +1,26 @@
-import { useExpenses } from '@/api/get-expenses'
-import { getLastYearExpensesTotal } from '@/utils/expenses/get-last-year-total-expenses'
+import { useTotalExpensesForYear } from '@/api/get-total-expenses-for-year'
+import { calculatePercentageDifference } from '@/utils/calculate-percentage-difference'
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 
 export function LastYear() {
-  const { data } = useExpenses()
+  const currentDate = new Date()
+  const currentYear = currentDate.getFullYear()
+  const lastYear = currentYear - 1
+  const comparisonYear = lastYear - 1
 
-  const lastYearExpensesTotal = getLastYearExpensesTotal(data)
-  const formattedTotal = lastYearExpensesTotal.toFixed(2)
+  const { data: totalExpensesForYear } = useTotalExpensesForYear(lastYear)
+
+  const formattedTotal = (totalExpensesForYear ?? 0).toFixed(2)
   const [integerPart, decimalPart] = formattedTotal.split('.')
   const paddedDecimalPart = decimalPart ? decimalPart.padEnd(2, '0') : ''
+
+  // Calculate percentage difference based on the comparison year (2022)
+  const comparisonYearTotalExpenses =
+    useTotalExpensesForYear(comparisonYear).data ?? 0
+  const percentageDifference = calculatePercentageDifference(
+    totalExpensesForYear ?? 0,
+    comparisonYearTotalExpenses
+  )
 
   return (
     <Card>
@@ -34,9 +46,11 @@ export function LastYear() {
             <span className="text-lg">.{paddedDecimalPart}€</span>
           )}
         </div>
-        {decimalPart && (
-          <p className="text-xs text-muted-foreground">+45.3% from last year</p>
-        )}
+        <p className="text-xs text-muted-foreground">
+          {Number.isFinite(percentageDifference)
+            ? `${percentageDifference >= 0 ? '+' : ''}${percentageDifference.toFixed(1)}% from ${comparisonYear}`
+            : `No expenses in ${comparisonYear} for comparison`}
+        </p>
       </CardContent>
     </Card>
   )

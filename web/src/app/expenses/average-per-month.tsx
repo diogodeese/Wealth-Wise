@@ -1,39 +1,20 @@
 import { useTotalExpensesWithAverageLastTwelveMonths } from '@/api/get-average-monthly-expenses'
-import { useTotalExpensesForMonth } from '@/api/get-total-expenses-for-month'
-import { calculatePercentageDifference } from '@/utils/calculate-percentage-difference'
-import { format, subMonths } from 'date-fns'
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 
-export function LastMonth() {
-  const currentDate = new Date()
-
-  const lastMonthDate = subMonths(currentDate, 1)
-  const lastMonth = parseInt(format(lastMonthDate, 'MM'))
-  const lastMonthYear = parseInt(format(lastMonthDate, 'yyyy'))
-
-  const { data: lastMonthExpensesTotal } = useTotalExpensesForMonth(
-    lastMonth,
-    lastMonthYear
-  )
-
-  const formattedTotal = (lastMonthExpensesTotal ?? 0).toFixed(2)
-  const [integerPart, decimalPart] = formattedTotal.split('.')
-  const paddedDecimalPart = decimalPart.padEnd(2, '0')
-
+export function AveragePerMonth() {
   const { data: totalExpensesData } =
     useTotalExpensesWithAverageLastTwelveMonths()
 
   const { averageTotalAmount } = totalExpensesData || {}
 
-  const percentageDifference = calculatePercentageDifference(
-    lastMonthExpensesTotal ?? 0,
-    averageTotalAmount ?? 0
-  )
+  const formattedTotal = (averageTotalAmount ?? 0).toFixed(2)
+  const [integerPart, decimalPart] = formattedTotal.split('.')
+  const paddedDecimalPart = decimalPart.padEnd(2, '0')
 
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">Last Month</CardTitle>
+        <CardTitle className="text-sm font-medium">Average Per Month</CardTitle>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -52,8 +33,7 @@ export function LastMonth() {
           {integerPart}.<span className="text-xl">{paddedDecimalPart}€</span>
         </div>
         <p className="text-xs text-muted-foreground">
-          {percentageDifference >= 0 ? '+' : ''}
-          {percentageDifference.toFixed(2)}% from average
+          Based on the last 12 month's
         </p>
       </CardContent>
     </Card>

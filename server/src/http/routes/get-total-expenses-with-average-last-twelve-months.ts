@@ -8,11 +8,11 @@ interface TotalExpenseByMonth {
   totalAmount: number
 }
 
-export async function getTotalExpensesWithAverageLastYear(
+export async function getTotalExpensesWithAverageLastTwelveMonths(
   app: FastifyInstance
 ) {
   app.get(
-    '/api/total-expenses-with-average-last-year',
+    '/api/total-expenses-with-average-last-twelve-months',
     { preHandler: [verifyToken] },
     async (request: FastifyRequest, reply: FastifyReply) => {
       const authenticatedRequest = request as AuthenticatedRequest

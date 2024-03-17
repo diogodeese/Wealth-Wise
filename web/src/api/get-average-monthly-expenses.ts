@@ -15,8 +15,8 @@ export async function getTotalExpensesWithAverageLastYear(): Promise<TotalExpens
   return await api.get('/total-expenses-with-average-last-year')
 }
 
-export const useTotalExpensesWithAverageLastYear = () =>
+export const useTotalExpensesWithAverageLastTwelveMonths = () =>
   useQuery({
-    queryKey: ['total-expenses-with-average-last-year'],
+    queryKey: ['total-expenses-with-average-last-twelve-months'],
     queryFn: getTotalExpensesWithAverageLastYear
   })
