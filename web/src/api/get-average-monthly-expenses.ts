@@ -12,7 +12,7 @@ interface TotalExpensesData {
 }
 
 export async function getTotalExpensesWithAverageLastYear(): Promise<TotalExpensesData> {
-  return await api.get('/total-expenses-with-average-last-year')
+  return await api.get('/total-expenses-with-average-last-twelve-months')
 }
 
 export const useTotalExpensesWithAverageLastTwelveMonths = () =>
