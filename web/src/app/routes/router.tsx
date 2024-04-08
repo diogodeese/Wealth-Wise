@@ -19,7 +19,7 @@ export const router = createBrowserRouter([
     )
   },
   {
-    path: '/register',
+    path: 'auth/register',
     element: (
       <UnprotectedRoute>
         <Register />
@@ -27,7 +27,7 @@ export const router = createBrowserRouter([
     )
   },
   {
-    path: '/login',
+    path: 'auth/sign-in',
     element: (
       <UnprotectedRoute>
         <Login />
