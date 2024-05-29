@@ -40,10 +40,14 @@ export async function getTotalExpensesForMonth(app: FastifyInstance) {
         })
 
         // Calculate the total amount of expenses for the specified month
-        const totalExpensesForMonth = expensesForMonth.reduce(
-          (acc: number, expense: Prisma.ExpenseUncheckedCreateInput) =>
-            acc + expense.amount,
-          0
+        const totalExpensesForMonth = parseFloat(
+          expensesForMonth
+            .reduce(
+              (acc: number, expense: Prisma.ExpenseUncheckedCreateInput) =>
+                acc + expense.amount,
+              0
+            )
+            .toFixed(2)
         )
 
         return reply.status(200).send({ data: { totalExpensesForMonth } })
