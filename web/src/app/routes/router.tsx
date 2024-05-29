@@ -1,4 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom'
+import Categories from '../pages/Categories'
 import Dashboard from '../pages/Dashboard'
 import Dividends from '../pages/Dividends'
 import Expenses from '../pages/Expenses'
@@ -19,7 +20,7 @@ export const router = createBrowserRouter([
     )
   },
   {
-    path: 'auth/register',
+    path: '/auth/register',
     element: (
       <UnprotectedRoute>
         <Register />
@@ -27,11 +28,19 @@ export const router = createBrowserRouter([
     )
   },
   {
-    path: 'auth/sign-in',
+    path: '/auth/sign-in',
     element: (
       <UnprotectedRoute>
         <Login />
       </UnprotectedRoute>
+    )
+  },
+  {
+    path: '/administration/categories',
+    element: (
+      <ProtectedRoute>
+        <Categories />
+      </ProtectedRoute>
     )
   },
   {

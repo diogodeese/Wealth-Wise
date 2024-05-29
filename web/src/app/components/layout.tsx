@@ -191,6 +191,18 @@ const Layout = ({ children }: LayoutProps) => {
           ]}
         />
         <Separator />
+        <Nav
+          isCollapsed={isCollapsed}
+          links={[
+            {
+              title: 'Categories',
+              to: '/administration/categories',
+              icon: Banknote,
+              variant: 'ghost'
+            }
+          ]}
+        />
+        <Separator />
         <ThemeToggle isCollapsed={isCollapsed} />
       </ResizablePanel>
       <ResizableHandle />

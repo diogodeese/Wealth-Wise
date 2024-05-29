@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 export default {
   darkMode: ['class'],
   content: [
@@ -17,6 +18,9 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['Inter']
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
