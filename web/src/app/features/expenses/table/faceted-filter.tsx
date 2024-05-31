@@ -2,8 +2,8 @@ import { CheckIcon, PlusCircledIcon } from '@radix-ui/react-icons'
 import { Column } from '@tanstack/react-table'
 import * as React from 'react'
 
-import { Badge } from '@/app/components/ui/badge'
-import { Button } from '@/app/components/ui/button'
+import { Badge } from '@/app/shared/components/ui/badge'
+import { Button } from '@/app/shared/components/ui/button'
 import {
   Command,
   CommandEmpty,
@@ -12,13 +12,13 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator
-} from '@/app/components/ui/command'
+} from '@/app/shared/components/ui/command'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger
-} from '@/app/components/ui/popover'
-import { Separator } from '@/app/components/ui/separator'
+} from '@/app/shared/components/ui/popover'
+import { Separator } from '@/app/shared/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { useSearchParams } from 'react-router-dom'
 

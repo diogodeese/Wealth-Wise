@@ -1,5 +1,10 @@
 import { useTotalExpensesWithAverageLastTwelveMonths } from '@/api/get-average-monthly-expenses'
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle
+} from '@/app/shared/components/ui/card'
 
 export function AveragePerMonth() {
   const { data: totalExpensesData } =

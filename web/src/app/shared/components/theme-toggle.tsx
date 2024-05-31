@@ -3,7 +3,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger
-} from '@/app/components/ui/dropdown-menu'
+} from '@/app/shared/components/ui/dropdown-menu'
 import { useTheme } from '@/utils/use-theme'
 import { Moon, Sun } from 'lucide-react'
 import { Button } from './ui/button'

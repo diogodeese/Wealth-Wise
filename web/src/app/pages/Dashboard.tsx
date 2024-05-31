@@ -1,4 +1,4 @@
-import Layout from '@/app/components/layout'
+import Layout from '@/app/shared/components/layout'
 import { PieChart } from '@mui/x-charts/PieChart'
 
 export default function Dashboard() {

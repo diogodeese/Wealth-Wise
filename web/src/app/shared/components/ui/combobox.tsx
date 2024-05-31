@@ -1,16 +1,16 @@
-import { Button } from '@/app/components/ui/button'
+import { Button } from '@/app/shared/components/ui/button'
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem
-} from '@/app/components/ui/command'
+} from '@/app/shared/components/ui/command'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger
-} from '@/app/components/ui/popover'
+} from '@/app/shared/components/ui/popover'
 import { cn } from '@/lib/utils'
 import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
 import { useState } from 'react'

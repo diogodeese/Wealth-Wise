@@ -3,13 +3,13 @@ import { CalendarIcon } from '@radix-ui/react-icons'
 import { format, subMonths } from 'date-fns'
 import { DateRange } from 'react-day-picker'
 
-import { Button } from '@/app/components/ui/button'
-import { Calendar } from '@/app/components/ui/calendar'
+import { Button } from '@/app/shared/components/ui/button'
+import { Calendar } from '@/app/shared/components/ui/calendar'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger
-} from '@/app/components/ui/popover'
+} from '@/app/shared/components/ui/popover'
 import { cn } from '@/lib/utils'
 import React from 'react'
 

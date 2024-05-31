@@ -1,6 +1,11 @@
 import { useTotalExpensesForYear } from '@/api/get-total-expenses-for-year'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle
+} from '@/app/shared/components/ui/card'
 import { calculatePercentageDifference } from '@/utils/calculate-percentage-difference'
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 
 export function LastYear() {
   const currentDate = new Date()
@@ -14,7 +19,7 @@ export function LastYear() {
   const [integerPart, decimalPart] = formattedTotal.split('.')
   const paddedDecimalPart = decimalPart ? decimalPart.padEnd(2, '0') : ''
 
-  // Calculate percentage difference based on the comparison year (2022)
+  // Calculate percentage difference based on the comparison year
   const comparisonYearTotalExpenses =
     useTotalExpensesForYear(comparisonYear).data ?? 0
   const percentageDifference = calculatePercentageDifference(

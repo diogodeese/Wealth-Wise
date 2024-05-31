@@ -1,7 +1,7 @@
+import { Loading } from '@/app/shared/components/loading'
 import { isAuthenticated } from '@/utils/is-authenticated'
 import { ReactNode, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Loading } from '../components/loading'
 
 interface Props {
   children: ReactNode

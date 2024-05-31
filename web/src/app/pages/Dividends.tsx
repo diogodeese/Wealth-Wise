@@ -1,5 +1,10 @@
-import Layout from '@/app/components/layout'
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
+import Layout from '@/app/shared/components/layout'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle
+} from '../shared/components/ui/card'
 
 export default function Dividends() {
   return (

@@ -1,9 +1,10 @@
-import Layout from '@/app/components/layout'
-import ExpensesTable from '@/app/expenses/table'
-import { AveragePerMonth } from '../expenses/average-per-month'
-import { CurrentMonth } from '../expenses/current-month'
-import { LastMonth } from '../expenses/last-month'
-import { LastYear } from '../expenses/last-year'
+import ExpensesTable from '../features/expenses/table/table'
+import Layout from '../shared/components/layout'
+
+import { AveragePerMonth } from '../features/expenses/components/average-per-month'
+import { CurrentMonth } from '../features/expenses/components/current-month'
+import { LastMonth } from '../features/expenses/components/last-month'
+import { LastYear } from '../features/expenses/components/last-year'
 
 export default function Expenses() {
   return (

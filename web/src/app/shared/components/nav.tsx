@@ -1,11 +1,11 @@
 import { LucideIcon } from 'lucide-react'
 
-import { buttonVariants } from '@/app/components/ui/button'
+import { buttonVariants } from '@/app/shared/components/ui/button'
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger
-} from '@/app/components/ui/tooltip'
+} from '@/app/shared/components/ui/tooltip'
 import { cn } from '@/lib/utils'
 import { Link } from 'react-router-dom'
 

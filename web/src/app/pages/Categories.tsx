@@ -1,5 +1,5 @@
 import { useExpenseCategories } from '@/api/get-expense-categories'
-import Layout from '@/app/components/layout'
+import Layout from '@/app/shared/components/layout'
 
 export default function Categories() {
   const response = useExpenseCategories()

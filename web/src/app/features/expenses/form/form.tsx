@@ -1,7 +1,8 @@
 import { createExpense } from '@/api/create-expense'
 import { useExpenseCategories } from '@/api/get-expense-categories'
-import { Button } from '@/app/components/ui/button'
-import { Calendar } from '@/app/components/ui/calendar'
+import { Button } from '@/app/shared/components/ui/button'
+import { Calendar } from '@/app/shared/components/ui/calendar'
+import { Combobox } from '@/app/shared/components/ui/combobox'
 import {
   Dialog,
   DialogContent,
@@ -9,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger
-} from '@/app/components/ui/dialog'
+} from '@/app/shared/components/ui/dialog'
 import {
   Form,
   FormControl,
@@ -18,12 +19,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage
-} from '@/app/components/ui/form'
+} from '@/app/shared/components/ui/form'
+import { Input } from '@/app/shared/components/ui/input'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger
-} from '@/app/components/ui/popover'
+} from '@/app/shared/components/ui/popover'
+import { Textarea } from '@/app/shared/components/ui/textarea'
 import { cn } from '@/lib/utils'
 import Expense from '@/types/expense'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -32,9 +35,6 @@ import { format } from 'date-fns'
 import { CalendarIcon, Plus } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { Combobox } from '../components/ui/combobox'
-import { Input } from '../components/ui/input'
-import { Textarea } from '../components/ui/textarea'
 
 const expensesFormSchema = z.object({
   amount: z

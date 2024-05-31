@@ -1,8 +1,13 @@
 import { useTotalExpensesWithAverageLastTwelveMonths } from '@/api/get-average-monthly-expenses'
 import { useTotalExpensesForMonth } from '@/api/get-total-expenses-for-month'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle
+} from '@/app/shared/components/ui/card'
 import { calculatePercentageDifference } from '@/utils/calculate-percentage-difference'
 import { format, subMonths } from 'date-fns'
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 
 export function LastMonth() {
   const currentDate = new Date()

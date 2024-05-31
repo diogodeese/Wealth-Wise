@@ -1,8 +1,5 @@
 import { deleteExpense } from '@/api/delete-expense'
-import Expense from '@/types/expense'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Clipboard, MoreHorizontal, Trash } from 'lucide-react'
-import { Button } from '../components/ui/button'
+import { Button } from '@/app/shared/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,9 +7,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '../components/ui/dropdown-menu'
-import { ToastAction } from '../components/ui/toast'
-import { toast } from '../components/ui/use-toast'
+} from '@/app/shared/components/ui/dropdown-menu'
+import { ToastAction } from '@/app/shared/components/ui/toast'
+import { toast } from '@/app/shared/components/ui/use-toast'
+import Expense from '@/types/expense'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Clipboard, MoreHorizontal, Trash } from 'lucide-react'
 
 interface ActionProps {
   expenseId: string

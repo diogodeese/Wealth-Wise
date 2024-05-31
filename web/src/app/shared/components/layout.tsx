@@ -1,5 +1,6 @@
 import WealthWiseSimpleBlack from '@/assets/wealth-wise-simple-black/wealth-wise-simple-black'
 import WealthWiseSimpleWhite from '@/assets/wealth-wise-simple-white/wealth-wise-simple-white'
+import { cn } from '@/lib/utils'
 import { useTheme } from '@/utils/use-theme'
 import {
   ArrowUpDown,
@@ -14,7 +15,6 @@ import {
 } from 'lucide-react'
 import { ReactNode, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { cn } from '../../lib/utils'
 import { Nav } from './nav'
 import { ThemeToggle } from './theme-toggle'
 import {
@@ -29,7 +29,7 @@ interface LayoutProps {
 }
 
 const Layout = ({ children }: LayoutProps) => {
-  const themeMode = useTheme().theme
+  const themeMode = useTheme()
 
   const defaultLayout = [15, 85]
   const minSizes = [12, 70]

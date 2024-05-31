@@ -5,13 +5,13 @@ import {
 } from '@radix-ui/react-icons'
 import { Column } from '@tanstack/react-table'
 
-import { Button } from '@/app/components/ui/button'
+import { Button } from '@/app/shared/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger
-} from '@/app/components/ui/dropdown-menu'
+} from '@/app/shared/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
 
 interface DataTableColumnHeaderProps<TData, TValue>

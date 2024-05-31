@@ -1,16 +1,16 @@
 import { useExpenseCategories } from '@/api/get-expense-categories'
-import { Table } from '@tanstack/react-table'
-import { Search, SlidersHorizontal } from 'lucide-react'
-import { Button } from '../components/ui/button'
-import { DatePickerWithRange } from '../components/ui/date-range-picker'
+import { Button } from '@/app/shared/components/ui/button'
+import { DatePickerWithRange } from '@/app/shared/components/ui/date-range-picker'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger
-} from '../components/ui/dropdown-menu'
+} from '@/app/shared/components/ui/dropdown-menu'
+import { Table } from '@tanstack/react-table'
+import { Search, SlidersHorizontal } from 'lucide-react'
+import { ExpensesForm } from '../form/form'
 import { DataTableFacetedFilter } from './faceted-filter'
-import { ExpensesForm } from './form'
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>

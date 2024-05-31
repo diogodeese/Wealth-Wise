@@ -1,4 +1,4 @@
-import { ThemeProviderContext } from '@/app/components/theme-provider' // Adjust the path as per your project structure
+import { ThemeProviderContext } from '@/app/shared/components/theme-provider' // Adjust the path as per your project structure
 import { useContext } from 'react'
 
 export const useTheme = () => {

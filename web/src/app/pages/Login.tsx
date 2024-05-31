@@ -1,10 +1,5 @@
 import { login } from '@/api/login'
-import { setToken } from '@/utils/set-token'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
-import { z } from 'zod'
-import { Button } from '../components/ui/button'
+import { Button } from '@/app/shared/components/ui/button'
 import {
   Form,
   FormControl,
@@ -12,8 +7,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage
-} from '../components/ui/form'
-import { Input } from '../components/ui/input'
+} from '@/app/shared/components/ui/form'
+import { Input } from '@/app/shared/components/ui/input'
+import { setToken } from '@/utils/set-token'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { z } from 'zod'
 
 const loginFormSchema = z.object({
   email: z.string().email({

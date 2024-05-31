@@ -5,7 +5,7 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@/app/components/ui/table'
+} from '@/app/shared/components/ui/table'
 import {
   ColumnDef,
   ColumnFiltersState,
