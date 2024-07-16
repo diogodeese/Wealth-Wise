@@ -8,7 +8,11 @@ export async function getExpenseCategories(app: FastifyInstance) {
     '/api/expense-categories',
     { preHandler: [verifyToken] },
     async (request: AuthenticatedRequest, reply: FastifyReply) => {
-      const expenseCategories = await prisma.expenseCategory.findMany()
+      const expenseCategories = await prisma.expenseCategory.findMany({
+        orderBy: {
+          id: 'desc'
+        }
+      })
 
       return reply.status(200).send(expenseCategories)
     }

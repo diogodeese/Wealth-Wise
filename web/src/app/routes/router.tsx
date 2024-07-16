@@ -36,7 +36,7 @@ export const router = createBrowserRouter([
     )
   },
   {
-    path: '/administration/categories',
+    path: '/administration/expense-categories',
     element: (
       <ProtectedRoute>
         <Categories />

@@ -22,7 +22,13 @@ export async function createExpenseCategory(app: FastifyInstance) {
         }
       })
 
-      return reply.status(201).send({ expenseCategoryId: expenseCategory.id })
+      return reply
+        .status(201)
+        .send({
+          id: expenseCategory.id,
+          name: expenseCategory.name,
+          description: expenseCategory.description
+        })
     }
   )
 }

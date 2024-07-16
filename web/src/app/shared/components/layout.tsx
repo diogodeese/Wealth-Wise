@@ -2,17 +2,7 @@ import WealthWiseSimpleBlack from '@/assets/wealth-wise-simple-black/wealth-wise
 import WealthWiseSimpleWhite from '@/assets/wealth-wise-simple-white/wealth-wise-simple-white'
 import { cn } from '@/lib/utils'
 import { useTheme } from '@/utils/use-theme'
-import {
-  ArrowUpDown,
-  Banknote,
-  Bitcoin,
-  CreditCard,
-  HandCoins,
-  History,
-  LayoutGrid,
-  TrendingUp,
-  WalletCards
-} from 'lucide-react'
+import { Banknote, HandCoins, LayoutGrid, WalletCards } from 'lucide-react'
 import { ReactNode, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Nav } from './nav'
@@ -145,24 +135,6 @@ const Layout = ({ children }: LayoutProps) => {
               to: '/dividends',
               icon: HandCoins,
               variant: 'ghost'
-            },
-            {
-              title: 'Analytics',
-              to: '/dashboard',
-              icon: TrendingUp,
-              variant: 'ghost'
-            },
-            {
-              title: 'Transactions',
-              to: '/dashboard',
-              icon: ArrowUpDown,
-              variant: 'ghost'
-            },
-            {
-              title: 'History',
-              to: '/dashboard',
-              icon: History,
-              variant: 'ghost'
             }
           ]}
         />
@@ -175,18 +147,6 @@ const Layout = ({ children }: LayoutProps) => {
               to: '/dashboard',
               icon: Banknote,
               variant: 'ghost'
-            },
-            {
-              title: 'Cards',
-              to: '/dashboard',
-              icon: CreditCard,
-              variant: 'ghost'
-            },
-            {
-              title: 'Crypto',
-              to: '/dashboard',
-              icon: Bitcoin,
-              variant: 'ghost'
             }
           ]}
         />
@@ -196,7 +156,7 @@ const Layout = ({ children }: LayoutProps) => {
           links={[
             {
               title: 'Categories',
-              to: '/administration/categories',
+              to: '/administration/expense-categories',
               icon: Banknote,
               variant: 'ghost'
             }

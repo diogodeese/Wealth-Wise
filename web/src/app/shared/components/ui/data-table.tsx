@@ -20,14 +20,20 @@ import {
 } from '@tanstack/react-table'
 import React from 'react'
 import { DataTablePagination } from './pagination'
-import Toolbar from './toolbar'
 
-interface DataTableProps<Expense> {
-  columns: ColumnDef<Expense, keyof Expense>[]
-  data: Expense[]
+interface DataTableProps<TData> {
+  columns: ColumnDef<TData, keyof TData>[]
+  data: TData[]
+  ToolbarComponent?: React.ComponentType<{
+    table: ReturnType<typeof useReactTable<TData>>
+  }>
 }
 
-export function DataTable<TData>({ columns, data }: DataTableProps<TData>) {
+export function DataTable<TData>({
+  columns,
+  data,
+  ToolbarComponent
+}: DataTableProps<TData>) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
 
@@ -55,7 +61,7 @@ export function DataTable<TData>({ columns, data }: DataTableProps<TData>) {
 
   return (
     <div>
-      <Toolbar table={table} />
+      {ToolbarComponent ? <ToolbarComponent table={table} /> : null}
       <div className="my-4 min-h-[731.5px] rounded-md border">
         <Table>
           <TableHeader>
