@@ -44,16 +44,35 @@ export const columns: ColumnDef<Expense>[] = [
       </div>
     )
   },
-  // {
-  //   accessorKey: 'paymentMethod',
-  //   header: 'Payment Method',
-  //   enableHiding: true
-  // },
   {
     accessorKey: 'receipt',
     header: 'Receipt',
-    enableHiding: true
+    enableHiding: true,
+    cell: ({ row }) => (
+      <div>
+        {row.original.receipt ? (
+          <a
+            href={row.original.receipt}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View Receipt
+          </a>
+        ) : (
+          'No Receipt Available'
+        )}
+      </div>
+    )
   },
+  // Uncomment and adjust as needed
+  // {
+  //   accessorKey: 'paymentMethod',
+  //   header: 'Payment Method',
+  //   enableHiding: true,
+  //   cell: ({ row }) => (
+  //     <div>{row.original.paymentMethod}</div>
+  //   )
+  // },
   {
     id: 'actions',
     enableHiding: false,

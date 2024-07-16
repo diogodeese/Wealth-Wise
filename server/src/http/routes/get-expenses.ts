@@ -1,3 +1,5 @@
+// routes/expenses.ts
+
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import { AuthenticatedRequest } from '../../interfaces/request'
 import { prisma } from '../../lib/prisma'
@@ -8,6 +10,10 @@ interface WhereCondition {
   categoryId?: {
     in: string[]
   }
+  date?: {
+    gte?: Date // Greater than or equal to
+    lte?: Date // Less than or equal to
+  }
 }
 
 export async function getExpenses(app: FastifyInstance) {
@@ -17,8 +23,10 @@ export async function getExpenses(app: FastifyInstance) {
     async (request: FastifyRequest, reply: FastifyReply) => {
       const authenticatedRequest = request as AuthenticatedRequest
 
-      const { categories } = authenticatedRequest.query as {
+      const { categories, from, to } = authenticatedRequest.query as {
         categories?: string
+        from?: string
+        to?: string
       }
 
       let whereCondition: WhereCondition = {
@@ -28,6 +36,13 @@ export async function getExpenses(app: FastifyInstance) {
       if (categories) {
         whereCondition.categoryId = {
           in: categories.split(',')
+        }
+      }
+
+      if (from && to) {
+        whereCondition.date = {
+          gte: new Date(from),
+          lte: new Date(to)
         }
       }
 
