@@ -1,7 +1,3 @@
-import { CheckIcon, PlusCircledIcon } from '@radix-ui/react-icons'
-import { Column } from '@tanstack/react-table'
-import * as React from 'react'
-
 import { Badge } from '@/app/shared/components/ui/badge'
 import { Button } from '@/app/shared/components/ui/button'
 import {
@@ -20,6 +16,9 @@ import {
 } from '@/app/shared/components/ui/popover'
 import { Separator } from '@/app/shared/components/ui/separator'
 import { cn } from '@/lib/utils'
+import { CheckIcon, PlusCircledIcon } from '@radix-ui/react-icons'
+import { Column } from '@tanstack/react-table'
+import * as React from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 interface DataTableFacetedFilterProps<TData, TValue> {
@@ -30,35 +29,61 @@ interface DataTableFacetedFilterProps<TData, TValue> {
     value: string
     icon?: React.ComponentType<{ className?: string }>
   }[]
+  onFilterChange: (filters: Set<string>) => void
+  selectedCategories: string[] // Added selectedCategories prop
+  onSearch: () => void // Callback to trigger search/update table
+  updateCategories: (categories: string[]) => void // Callback to update selectedCategories
 }
 
 export function DataTableFacetedFilter<TData, TValue>({
   column,
   title,
-  options
+  options,
+  onFilterChange,
+  selectedCategories,
+  onSearch,
+  updateCategories // Added updateCategories prop
 }: DataTableFacetedFilterProps<TData, TValue>) {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const facets = column?.getFacetedUniqueValues()
 
-  const categories = searchParams.get('categories')
-  const selectedValues = new Set(categories ? categories.split(',') : [])
+  // Initialize selected values from URL params or from props
+  const categoriesFromUrl = searchParams.get('categories')
+  const initialSelectedValues = categoriesFromUrl
+    ? new Set(categoriesFromUrl.split(','))
+    : new Set<string>(selectedCategories)
+
+  const [selectedValues, setSelectedValues] = React.useState<Set<string>>(
+    initialSelectedValues
+  )
+
+  React.useEffect(() => {
+    // Update selectedValues when selectedCategories prop changes
+    setSelectedValues(new Set(selectedCategories))
+  }, [selectedCategories])
 
   const handleFilterChange = (filters: Set<string>) => {
-    const categoryIds: string[] = []
+    const filterValue =
+      filters.size > 0 ? Array.from(filters).join(', ') : undefined
+    column?.setFilterValue(filterValue)
+    onFilterChange(filters)
+    onSearch() // Trigger search/update immediately after filter change
+    updateCategories(Array.from(selectedValues)) // Update selectedCategories
+  }
 
-    filters.forEach((categoryId) => {
-      categoryIds.push(categoryId)
-    })
-
-    const categoryParam = categoryIds.join(',')
-    if (categoryIds.length > 0) {
-      setSearchParams({ categories: categoryParam })
+  const handleToggleCategory = (value: string) => {
+    const updatedValues = new Set(selectedValues)
+    if (updatedValues.has(value)) {
+      updatedValues.delete(value)
     } else {
-      setSearchParams({})
+      updatedValues.add(value)
     }
+    setSelectedValues(updatedValues)
+  }
 
-    const filterValues = Array.from(selectedValues)
-    column?.setFilterValue(filterValues.length ? filterValues : undefined)
+  const handleClearFilters = () => {
+    setSelectedValues(new Set())
+    handleFilterChange(new Set())
   }
 
   return (
@@ -113,15 +138,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                 return (
                   <CommandItem
                     key={option.value}
-                    onSelect={() => {
-                      if (isSelected) {
-                        selectedValues.delete(option.value)
-                      } else {
-                        selectedValues.add(option.value)
-                      }
-
-                      handleFilterChange(selectedValues)
-                    }}
+                    onSelect={() => handleToggleCategory(option.value)}
                   >
                     <div
                       className={cn(
@@ -151,10 +168,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                 <CommandSeparator />
                 <CommandGroup>
                   <CommandItem
-                    onSelect={() => {
-                      column?.setFilterValue(undefined)
-                      handleFilterChange(new Set())
-                    }}
+                    onSelect={handleClearFilters}
                     className="justify-center text-center"
                   >
                     Clear filters
