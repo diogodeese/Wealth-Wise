@@ -143,8 +143,8 @@ export function ExpensesForm() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="h-8 gap-2">
-          <Plus width={16} height={16} /> <span>New Expense</span>
+        <Button variant={'outline'} size={'sm'} className="h-8">
+          <Plus className="mr-2 h-4 w-4" /> <span>New Expense</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">

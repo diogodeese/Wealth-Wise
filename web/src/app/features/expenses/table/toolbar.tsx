@@ -133,11 +133,12 @@ export default function Toolbar<TData>({
 
         <Button
           type="button"
-          variant="outline"
-          className="h-8 gap-2"
+          variant={'outline'}
+          size={'sm'}
+          className="h-8"
           onClick={handleSearch}
         >
-          <Search width={16} height={16} /> <span>Filter</span>
+          <Search className="mr-2 h-4 w-4" /> <span>Filter</span>
         </Button>
 
         {table.getColumn('date') && (

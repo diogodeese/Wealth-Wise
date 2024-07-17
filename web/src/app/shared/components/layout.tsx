@@ -2,7 +2,13 @@ import WealthWiseSimpleBlack from '@/assets/wealth-wise-simple-black/wealth-wise
 import WealthWiseSimpleWhite from '@/assets/wealth-wise-simple-white/wealth-wise-simple-white'
 import { cn } from '@/lib/utils'
 import { useTheme } from '@/utils/use-theme'
-import { Banknote, HandCoins, LayoutGrid, WalletCards } from 'lucide-react'
+import {
+  Banknote,
+  HandCoins,
+  LayoutGrid,
+  Siren,
+  WalletCards
+} from 'lucide-react'
 import { ReactNode, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Nav } from './nav'
@@ -146,6 +152,12 @@ const Layout = ({ children }: LayoutProps) => {
               title: 'Savings',
               to: '/dashboard',
               icon: Banknote,
+              variant: 'ghost'
+            },
+            {
+              title: 'Emergency Fund',
+              to: '/dashboard',
+              icon: Siren,
               variant: 'ghost'
             }
           ]}
