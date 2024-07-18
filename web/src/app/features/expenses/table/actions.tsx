@@ -13,6 +13,7 @@ import { toast } from '@/app/shared/components/ui/use-toast'
 import Expense from '@/types/expense'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Clipboard, MoreHorizontal, Trash } from 'lucide-react'
+import { useSearchParams } from 'react-router-dom'
 
 interface ActionProps {
   expenseId: string
@@ -20,20 +21,28 @@ interface ActionProps {
 
 export function Actions({ expenseId }: ActionProps) {
   const queryClient = useQueryClient()
+  const [searchParams] = useSearchParams()
+
+  const fromFilter = searchParams.get('from') || undefined
+  const toFilter = searchParams.get('to') || undefined
+  const categoriesFilter = searchParams.get('categories')?.split(',')
 
   const { mutateAsync: deleteExpenseFn } = useMutation({
     mutationKey: ['delete-expense'],
     mutationFn: deleteExpense,
     onSuccess(deletedExpenseId: string) {
-      queryClient.setQueryData<Expense[] | undefined>(['expenses'], (data) => {
-        if (!data) return []
+      queryClient.setQueryData<Expense[] | undefined>(
+        ['expenses', fromFilter, toFilter, categoriesFilter],
+        (data) => {
+          if (!data) return []
 
-        const newData = data.filter(
-          (expense) => expense.id !== deletedExpenseId
-        )
+          const newData = data.filter(
+            (expense) => expense.id !== deletedExpenseId
+          )
 
-        return newData
-      })
+          return newData
+        }
+      )
 
       toast({
         title: 'Expense Deleted',

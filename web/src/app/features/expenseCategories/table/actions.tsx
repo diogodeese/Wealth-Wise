@@ -1,3 +1,4 @@
+import { deleteExpenseCategory } from '@/api/delete-expense-category'
 import { Button } from '@/app/shared/components/ui/button'
 import {
   DropdownMenu,
@@ -6,9 +7,62 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/app/shared/components/ui/dropdown-menu'
+import { toast } from '@/app/shared/components/ui/use-toast'
+import ExpenseCategory from '@/types/expense-category'
+import { ToastAction } from '@radix-ui/react-toast'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { MoreHorizontal, Pencil, Trash } from 'lucide-react'
 
-export function Actions() {
+interface ActionProps {
+  expenseCategoryId: string
+}
+
+export function Actions({ expenseCategoryId }: ActionProps) {
+  const queryClient = useQueryClient()
+
+  const { mutateAsync: deleteExpenseCategoryFn } = useMutation({
+    mutationKey: ['delete-expense-category'],
+    mutationFn: deleteExpenseCategory,
+    onSuccess(deletedExpenseCategoryId: string) {
+      queryClient.setQueryData<ExpenseCategory[] | undefined>(
+        ['expense-categories'],
+        (data) => {
+          if (!data) return []
+
+          const newData = data.filter(
+            (expenseCategory) => expenseCategory.id !== deletedExpenseCategoryId
+          )
+
+          return newData
+        }
+      )
+
+      toast({
+        title: 'Expense Category Deleted',
+        description: 'The expense category has been successfully deleted.',
+        action: <ToastAction altText="Undo">Undo</ToastAction>
+      })
+    },
+    onError(error) {
+      toast({
+        variant: 'destructive',
+        title: 'Error Deleting Expense Category',
+        description: 'There was an error deleting the expense category.',
+        action: <ToastAction altText="Try Again">Try Again</ToastAction>
+      })
+
+      console.error('Error deleting expense category:', error)
+    }
+  })
+
+  async function handleDeleteExpenseCategory(expenseCategoryId: string) {
+    try {
+      return await deleteExpenseCategoryFn(expenseCategoryId)
+    } catch (error) {
+      console.error('Error deleting expense:', error)
+    }
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -30,7 +84,7 @@ export function Actions() {
         <DropdownMenuItem
           className="text-red-400"
           onClick={() => {
-            console.log('delete')
+            handleDeleteExpenseCategory(expenseCategoryId)
           }}
         >
           <Trash size={16} />

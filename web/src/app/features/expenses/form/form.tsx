@@ -27,13 +27,16 @@ import {
   PopoverTrigger
 } from '@/app/shared/components/ui/popover'
 import { Textarea } from '@/app/shared/components/ui/textarea'
+import { toast } from '@/app/shared/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import Expense from '@/types/expense'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import { CalendarIcon, Plus } from 'lucide-react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useSearchParams } from 'react-router-dom'
 import { z } from 'zod'
 
 const expensesFormSchema = z.object({
@@ -75,14 +78,20 @@ const expensesFormSchema = z.object({
 
 export function ExpensesForm() {
   const queryClient = useQueryClient()
+  const [searchParams] = useSearchParams()
+  const [isOpen, setIsOpen] = useState(false)
+
+  const fromFilter = searchParams.get('from') || undefined
+  const toFilter = searchParams.get('to') || undefined
+  const categoriesFilter = searchParams.get('categories')?.split(',')
 
   const form = useForm<z.infer<typeof expensesFormSchema>>({
     resolver: zodResolver(expensesFormSchema),
     defaultValues: {
-      amount: undefined,
-      categoryId: undefined,
+      amount: 0.0,
+      categoryId: '',
       date: new Date(),
-      description: undefined
+      description: ''
     }
   })
 
@@ -92,32 +101,43 @@ export function ExpensesForm() {
     onSuccess(response: Expense) {
       const expense: Expense = response
 
-      queryClient.setQueryData<Expense[] | undefined>(['expenses'], (data) => {
-        const newData = data ? [...data] : []
+      queryClient.setQueryData<Expense[] | undefined>(
+        ['expenses', fromFilter, toFilter, categoriesFilter],
+        (data) => {
+          const newData = data ? [...data] : []
 
-        newData.push({
-          id: expense.id,
-          userId: expense.userId,
-          amount: expense.amount,
-          date: expense.date,
-          categoryId: expense.categoryId,
-          category: categories?.find(
-            (category) => category.id === expense.categoryId
-          ) || { id: '', name: '', description: '' },
-          description: expense.description,
-          currency: expense.currency,
-          location: expense.location,
-          receipt: expense.receipt,
-          createdAt: expense.createdAt,
-          updatedAt: expense.updatedAt
-        })
+          newData.push({
+            id: expense.id,
+            userId: expense.userId,
+            amount: expense.amount,
+            date: expense.date,
+            categoryId: expense.categoryId,
+            category: categories?.find(
+              (category) => category.id === expense.categoryId
+            ) || { id: '', name: '', description: '' },
+            description: expense.description,
+            currency: expense.currency,
+            location: expense.location,
+            receipt: expense.receipt,
+            createdAt: expense.createdAt,
+            updatedAt: expense.updatedAt
+          })
 
-        newData.sort(
-          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-        )
+          newData.sort(
+            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+          )
 
-        return newData
+          return newData
+        }
+      )
+
+      toast({
+        variant: 'default',
+        title: 'Expense Created Successfully',
+        description: 'Your expense was created and added to the table.'
       })
+
+      setIsOpen(false)
     }
   })
 
@@ -141,9 +161,14 @@ export function ExpensesForm() {
   }
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant={'outline'} size={'sm'} className="h-8">
+        <Button
+          variant={'outline'}
+          size={'sm'}
+          className="h-8"
+          onClick={() => setIsOpen(true)}
+        >
           <Plus className="mr-2 h-4 w-4" /> <span>New Expense</span>
         </Button>
       </DialogTrigger>
@@ -175,9 +200,13 @@ export function ExpensesForm() {
                           min="0"
                           inputMode="numeric"
                           pattern="[0-9]*"
-                          placeholder="100,00"
+                          placeholder="100.00"
                           className="block rounded-md shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                           {...field}
+                          value={field.value || ''}
+                          onChange={(event) =>
+                            field.onChange(event.target.value)
+                          }
                         />
                         <span className="ml-2 text-gray-500">€</span>
                       </div>
@@ -206,7 +235,7 @@ export function ExpensesForm() {
                             )}
                           >
                             {field.value ? (
-                              format(field.value, 'PPP')
+                              format(new Date(field.value), 'PPP')
                             ) : (
                               <span>Select a date</span>
                             )}
@@ -217,8 +246,10 @@ export function ExpensesForm() {
                       <PopoverContent className="w-auto p-0" align="start">
                         <Calendar
                           mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
+                          selected={field.value || null}
+                          onSelect={(date) =>
+                            field.onChange(date || new Date())
+                          }
                           disabled={(date) => date >= new Date()}
                           initialFocus
                         />
@@ -243,13 +274,7 @@ export function ExpensesForm() {
                       label="Select Category"
                       data={comboboxCategories || []}
                       onSelect={(categoryId: string) => {
-                        const selectedCategory = categories?.find(
-                          (category) => category?.id === categoryId
-                        )
-
-                        if (selectedCategory) {
-                          form.setValue('categoryId', selectedCategory.id)
-                        }
+                        form.setValue('categoryId', categoryId)
                       }}
                     />
                     <FormDescription>

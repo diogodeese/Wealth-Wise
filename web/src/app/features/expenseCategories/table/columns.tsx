@@ -1,6 +1,7 @@
 import ExpenseCategory from '@/types/expense-category'
 import { ColumnDef } from '@tanstack/react-table'
 import { Check, X } from 'lucide-react'
+import { DataTableColumnHeader } from '../../../shared/components/ui/column-header'
 import { Actions } from './actions'
 
 export const columns: ColumnDef<ExpenseCategory>[] = [
@@ -10,7 +11,9 @@ export const columns: ColumnDef<ExpenseCategory>[] = [
   },
   {
     accessorKey: 'essential',
-    header: 'Essential',
+    header: ({ column }) => {
+      return <DataTableColumnHeader title={'Essential'} column={column} />
+    },
     cell: ({ row }) => (
       <div className="flex max-w-16 items-center justify-center">
         {row.original.essential ? (
@@ -23,7 +26,9 @@ export const columns: ColumnDef<ExpenseCategory>[] = [
   },
   {
     accessorKey: 'recurring',
-    header: 'Recurring',
+    header: ({ column }) => {
+      return <DataTableColumnHeader title={'Recurring'} column={column} />
+    },
     cell: ({ row }) => (
       <div className="flex max-w-16 items-center justify-center">
         {row.original.recurring ? (
@@ -36,7 +41,14 @@ export const columns: ColumnDef<ExpenseCategory>[] = [
   },
   {
     accessorKey: 'budgetCap',
-    header: 'Budget Cap'
+    header: ({ column }) => {
+      return <DataTableColumnHeader title={'Budget Cap'} column={column} />
+    },
+    cell: ({ row }) => (
+      <div className="line-clamp-2 overflow-hidden pl-4">
+        {row.original.budgetCap ? row.original.budgetCap : 'N/A'}
+      </div>
+    )
   },
   {
     accessorKey: 'description',
@@ -50,8 +62,10 @@ export const columns: ColumnDef<ExpenseCategory>[] = [
   {
     id: 'actions',
     enableHiding: false,
-    cell: () => {
-      return <Actions />
+    cell: ({ row }) => {
+      const expenseCategory = row.original
+
+      return <Actions expenseCategoryId={expenseCategory.id} />
     }
   }
 ]

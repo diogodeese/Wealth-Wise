@@ -1,8 +1,8 @@
 import Expense from '@/types/expense'
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
+import { DataTableColumnHeader } from '../../../shared/components/ui/column-header'
 import { Actions } from './actions'
-import { DataTableColumnHeader } from './column-header'
 
 export const columns: ColumnDef<Expense>[] = [
   {

@@ -1,4 +1,5 @@
 import { createExpenseCategory } from '@/api/create-expense-category'
+import { Checkbox } from '@/app/components/ui/checkbox'
 import { Button } from '@/app/shared/components/ui/button'
 import {
   Dialog,
@@ -28,6 +29,8 @@ import { z } from 'zod'
 
 const expenseCategoriesFormSchema = z.object({
   name: z.string(),
+  essential: z.boolean(),
+  recurring: z.boolean(),
   description: z.string().max(256, {
     message: 'Descriptions must be smaller than 256 characters'
   })
@@ -39,8 +42,10 @@ export function ExpenseCategoriesForm() {
   const form = useForm<z.infer<typeof expenseCategoriesFormSchema>>({
     resolver: zodResolver(expenseCategoriesFormSchema),
     defaultValues: {
-      name: undefined,
-      description: undefined
+      name: '',
+      essential: false,
+      recurring: false,
+      description: ''
     }
   })
 
@@ -58,6 +63,8 @@ export function ExpenseCategoriesForm() {
           newData.push({
             id: expenseCategory.id,
             name: expenseCategory.name,
+            essential: expenseCategory.essential,
+            recurring: expenseCategory.recurring,
             description: expenseCategory.description
           })
 
@@ -110,6 +117,7 @@ export function ExpenseCategoriesForm() {
                       placeholder="Enter category name"
                       className="block w-full rounded-md shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                       {...field}
+                      value={field.value}
                     />
                   </FormControl>
                   <FormDescription>
@@ -119,6 +127,67 @@ export function ExpenseCategoriesForm() {
                 </FormItem>
               )}
             />
+
+            <div className="flex gap-8">
+              <FormField
+                control={form.control}
+                name="essential"
+                render={({ field }) => (
+                  <FormItem className="flex items-start space-x-2">
+                    <FormControl>
+                      <Checkbox
+                        id="essential"
+                        className="mt-[6px]"
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <div className="grid gap-1.5 leading-none">
+                      <FormLabel
+                        htmlFor="essential"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        Essential
+                      </FormLabel>
+                      <FormDescription className="text-sm text-muted-foreground">
+                        Mark if this category is a necessary expense.
+                      </FormDescription>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="recurring"
+                render={({ field }) => (
+                  <FormItem className="flex items-start space-x-2">
+                    <FormControl>
+                      <Checkbox
+                        id="recurring"
+                        className="mt-[6px]"
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <div className="grid gap-1.5 leading-none">
+                      <FormLabel
+                        htmlFor="recurring"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        Recurring
+                      </FormLabel>
+                      <FormDescription className="text-sm text-muted-foreground">
+                        Indicate if this expense repeats regularly.
+                      </FormDescription>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
             <FormField
               control={form.control}
               name="description"
