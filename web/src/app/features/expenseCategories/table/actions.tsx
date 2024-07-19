@@ -9,6 +9,7 @@ import {
 } from '@/app/shared/components/ui/dropdown-menu'
 import { toast } from '@/app/shared/components/ui/use-toast'
 import ExpenseCategory from '@/types/expense-category'
+import { handleError } from '@/utils/error-handler'
 import { ToastAction } from '@radix-ui/react-toast'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { MoreHorizontal, Pencil, Trash } from 'lucide-react'
@@ -43,11 +44,16 @@ export function Actions({ expenseCategoryId }: ActionProps) {
         action: <ToastAction altText="Undo">Undo</ToastAction>
       })
     },
-    onError(error) {
+    onError(error: unknown) {
+      const errorMessage = handleError(
+        error,
+        'There was an error deleting the expense category.'
+      )
+
       toast({
         variant: 'destructive',
         title: 'Error Deleting Expense Category',
-        description: 'There was an error deleting the expense category.',
+        description: errorMessage,
         action: <ToastAction altText="Try Again">Try Again</ToastAction>
       })
 

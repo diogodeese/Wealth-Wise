@@ -27,11 +27,22 @@ export async function deleteExpenseCategory(app: FastifyInstance) {
         })
 
         if (!userExpenseCategory) {
-          return reply
-            .status(404)
-            .send({
-              error: 'Expense category not found or does not belong to user'
-            })
+          return reply.status(404).send({
+            error: 'Expense category not found or does not belong to user'
+          })
+        }
+
+        // Check if the expense category is in use
+        const expenseInUse = await prisma.expense.findFirst({
+          where: {
+            categoryId: id
+          }
+        })
+
+        if (expenseInUse) {
+          return reply.status(400).send({
+            error: 'Expense category cannot be deleted because it is in use'
+          })
         }
 
         // Delete the userExpenseCategory entry
