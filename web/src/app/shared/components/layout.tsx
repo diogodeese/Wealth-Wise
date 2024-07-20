@@ -156,7 +156,7 @@ const Layout = ({ children }: LayoutProps) => {
             },
             {
               title: 'Emergency Fund',
-              to: '/dashboard',
+              to: '/emergency-fund',
               icon: Siren,
               variant: 'ghost'
             }

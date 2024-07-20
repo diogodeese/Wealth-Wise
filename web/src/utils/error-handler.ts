@@ -1,4 +1,3 @@
-// Define a type for error response
 interface ErrorResponse {
   error?: string
   message?: string

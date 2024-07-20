@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt'
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import z from 'zod'
-import { prisma } from '../../lib/prisma'
-import { generateToken } from '../../utils/generate-token'
+import { prisma } from '../../../lib/prisma'
+import { generateToken } from '../../../utils/generate-token'
 
 export async function registerUser(app: FastifyInstance) {
   app.post(
