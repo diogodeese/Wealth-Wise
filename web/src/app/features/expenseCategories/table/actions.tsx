@@ -10,16 +10,18 @@ import {
 import { toast } from '@/app/shared/components/ui/use-toast'
 import ExpenseCategory from '@/types/expense-category'
 import { handleError } from '@/utils/error-handler'
-import { ToastAction } from '@radix-ui/react-toast'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { MoreHorizontal, Pencil, Trash } from 'lucide-react'
+import { useState } from 'react'
+import { ExpenseCategoriesForm } from '../form/form'
 
 interface ActionProps {
-  expenseCategoryId: string
+  expenseCategory: ExpenseCategory
 }
 
-export function Actions({ expenseCategoryId }: ActionProps) {
+export function Actions({ expenseCategory }: ActionProps) {
   const queryClient = useQueryClient()
+  const [isEditing, setIsEditing] = useState(false)
 
   const { mutateAsync: deleteExpenseCategoryFn } = useMutation({
     mutationKey: ['delete-expense-category'],
@@ -40,8 +42,7 @@ export function Actions({ expenseCategoryId }: ActionProps) {
 
       toast({
         title: 'Expense Category Deleted',
-        description: 'The expense category has been successfully deleted.',
-        action: <ToastAction altText="Undo">Undo</ToastAction>
+        description: 'The expense category has been successfully deleted.'
       })
     },
     onError(error: unknown) {
@@ -53,8 +54,7 @@ export function Actions({ expenseCategoryId }: ActionProps) {
       toast({
         variant: 'destructive',
         title: 'Error Deleting Expense Category',
-        description: errorMessage,
-        action: <ToastAction altText="Try Again">Try Again</ToastAction>
+        description: errorMessage
       })
 
       console.error('Error deleting expense category:', error)
@@ -70,33 +70,43 @@ export function Actions({ expenseCategoryId }: ActionProps) {
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="h-8 w-8 p-0">
-          <span className="sr-only">Open menu</span>
-          <MoreHorizontal className="h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem
-          onClick={() => {
-            console.log('edit')
-          }}
-        >
-          <Pencil size={16} />
-          Edit
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          className="text-red-400"
-          onClick={() => {
-            handleDeleteExpenseCategory(expenseCategoryId)
-          }}
-        >
-          <Trash size={16} />
-          Delete
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      {isEditing && (
+        <ExpenseCategoriesForm
+          mode="edit"
+          category={expenseCategory}
+          onClose={() => setIsEditing(false)}
+          isOpen={true}
+        />
+      )}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuItem
+            onClick={() => {
+              setIsEditing(true)
+            }}
+          >
+            <Pencil size={16} />
+            Edit
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="text-red-400"
+            onClick={() => {
+              handleDeleteExpenseCategory(expenseCategory.id)
+            }}
+          >
+            <Trash size={16} />
+            Delete
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
   )
 }

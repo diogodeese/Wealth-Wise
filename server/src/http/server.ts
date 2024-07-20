@@ -14,6 +14,7 @@ import { getTotalExpensesWithAverageLastTwelveMonths } from './routes/get-total-
 import { loginUser } from './routes/login-user'
 import { regenerateToken } from './routes/regenerate-token'
 import { registerUser } from './routes/register-user'
+import { updateExpenseCategory } from './routes/update-expense-category'
 import { verifyToken } from './routes/verify-token'
 
 const app = fastify()
@@ -55,6 +56,7 @@ app.register(deleteExpense)
 // Expense Categories
 app.register(getExpenseCategories)
 app.register(createExpenseCategory)
+app.register(updateExpenseCategory)
 app.register(deleteExpenseCategory)
 
 app.listen({ port: 3000 }, () => {

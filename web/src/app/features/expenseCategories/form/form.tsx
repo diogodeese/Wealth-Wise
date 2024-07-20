@@ -1,4 +1,5 @@
 import { createExpenseCategory } from '@/api/create-expense-category'
+import { updateExpenseCategory } from '@/api/update-expense-category'
 import { Checkbox } from '@/app/components/ui/checkbox'
 import { Button } from '@/app/shared/components/ui/button'
 import {
@@ -6,8 +7,7 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogTitle,
-  DialogTrigger
+  DialogTitle
 } from '@/app/shared/components/ui/dialog'
 import {
   Form,
@@ -23,7 +23,6 @@ import { Textarea } from '@/app/shared/components/ui/textarea'
 import ExpenseCategory from '@/types/expense-category'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Plus } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -36,68 +35,108 @@ const expenseCategoriesFormSchema = z.object({
   })
 })
 
-export function ExpenseCategoriesForm() {
-  const queryClient = useQueryClient()
+interface ExpenseCategoriesFormProps {
+  mode: 'create' | 'edit'
+  category?: ExpenseCategory
+  onClose: () => void
+  isOpen: boolean
+}
 
+export function ExpenseCategoriesForm({
+  mode,
+  category,
+  onClose,
+  isOpen
+}: ExpenseCategoriesFormProps) {
+  const queryClient = useQueryClient()
   const form = useForm<z.infer<typeof expenseCategoriesFormSchema>>({
     resolver: zodResolver(expenseCategoriesFormSchema),
     defaultValues: {
-      name: '',
-      essential: false,
-      recurring: false,
-      description: ''
+      name: category?.name ?? '',
+      essential: category?.essential ?? false,
+      recurring: category?.recurring ?? false,
+      description: category?.description ?? ''
     }
   })
 
-  const { mutateAsync: createExpenseCategoryFn } = useMutation({
-    mutationKey: ['create-expense-category'],
-    mutationFn: createExpenseCategory,
-    onSuccess(response: ExpenseCategory) {
-      const expenseCategory: ExpenseCategory = response
+  const { reset } = form
 
+  // Mutation function should handle both create and update
+  const mutationFn = async (data: {
+    id?: string
+    name: string
+    essential: boolean
+    recurring: boolean
+    description: string
+  }) => {
+    if (mode === 'create') {
+      return createExpenseCategory(data)
+    } else {
+      if (!data.id) throw new Error('ID is required for updating')
+      return updateExpenseCategory(data.id, data)
+    }
+  }
+
+  const mutationKey =
+    mode === 'create'
+      ? ['create-expense-category']
+      : ['update-expense-category']
+
+  const { mutateAsync: handleCategoryFn } = useMutation({
+    mutationKey,
+    mutationFn,
+    onSuccess(response: ExpenseCategory) {
+      const updatedCategory: ExpenseCategory = response
       queryClient.setQueryData<ExpenseCategory[] | undefined>(
         ['expense-categories'],
         (data) => {
-          const newData = data ? [...data] : []
-
-          newData.push({
-            id: expenseCategory.id,
-            name: expenseCategory.name,
-            essential: expenseCategory.essential,
-            recurring: expenseCategory.recurring,
-            description: expenseCategory.description
-          })
-
-          newData.sort((a, b) => (a.id < b.id ? -1 : 1))
-
-          return newData
+          if (mode === 'create') {
+            const newData = data
+              ? [...data, updatedCategory]
+              : [updatedCategory]
+            newData.sort((a, b) => (a.id < b.id ? -1 : 1))
+            return newData
+          } else {
+            const newData = data
+              ? data.map((cat) =>
+                  cat.id === updatedCategory.id ? updatedCategory : cat
+                )
+              : [updatedCategory]
+            return newData
+          }
         }
       )
+      // Close and reset the form
+      onClose()
+      reset()
     }
   })
 
   async function onSubmit(values: z.infer<typeof expenseCategoriesFormSchema>) {
     try {
-      await createExpenseCategoryFn(values)
+      if (mode === 'create') {
+        await handleCategoryFn(values)
+      } else if (category) {
+        await handleCategoryFn({ ...values, id: category.id })
+      }
     } catch (error) {
       console.error(error)
     }
   }
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant={'outline'} size={'sm'} className="h-8">
-          <Plus className="mr-2 h-4 w-4" />
-          <span>New category</span>
-        </Button>
-      </DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Add Expense Category</DialogTitle>
+          <DialogTitle>
+            {mode === 'create'
+              ? 'Add Expense Category'
+              : 'Edit Expense Category'}
+          </DialogTitle>
           <DialogDescription>
-            Fill out the form below to add a new expense category to your
-            account.
+            {mode === 'create'
+              ? 'Fill out the form below to add a new expense category to your account.'
+              : 'Modify the details of the selected expense category.'}
           </DialogDescription>
         </DialogHeader>
 
@@ -117,7 +156,6 @@ export function ExpenseCategoriesForm() {
                       placeholder="Enter category name"
                       className="block w-full rounded-md shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                       {...field}
-                      value={field.value}
                     />
                   </FormControl>
                   <FormDescription>
@@ -139,7 +177,7 @@ export function ExpenseCategoriesForm() {
                         id="essential"
                         className="mt-[6px]"
                         checked={field.value}
-                        onCheckedChange={field.onChange}
+                        onCheckedChange={(checked) => field.onChange(checked)}
                       />
                     </FormControl>
                     <div className="grid gap-1.5 leading-none">
@@ -168,7 +206,7 @@ export function ExpenseCategoriesForm() {
                         id="recurring"
                         className="mt-[6px]"
                         checked={field.value}
-                        onCheckedChange={field.onChange}
+                        onCheckedChange={(checked) => field.onChange(checked)}
                       />
                     </FormControl>
                     <div className="grid gap-1.5 leading-none">
@@ -210,7 +248,9 @@ export function ExpenseCategoriesForm() {
               )}
             />
 
-            <Button type="submit">Submit</Button>
+            <Button type="submit">
+              {mode === 'create' ? 'Submit' : 'Save Changes'}
+            </Button>
           </form>
         </Form>
       </DialogContent>

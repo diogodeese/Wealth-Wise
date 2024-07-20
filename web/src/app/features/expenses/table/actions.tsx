@@ -8,7 +8,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/app/shared/components/ui/dropdown-menu'
-import { ToastAction } from '@/app/shared/components/ui/toast'
 import { toast } from '@/app/shared/components/ui/use-toast'
 import Expense from '@/types/expense'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -46,16 +45,15 @@ export function Actions({ expenseId }: ActionProps) {
 
       toast({
         title: 'Expense Deleted',
-        description: 'The expense has been successfully deleted.',
-        action: <ToastAction altText="Undo">Undo</ToastAction>
+        description: 'The expense has been successfully deleted.'
+        // action: <ToastAction altText="Undo">Undo</ToastAction>
       })
     },
     onError(error) {
       toast({
         variant: 'destructive',
         title: 'Error Deleting Expense',
-        description: 'There was an error deleting the expense.',
-        action: <ToastAction altText="Try Again">Try Again</ToastAction>
+        description: 'There was an error deleting the expense.'
       })
 
       console.error('Error deleting expense:', error)

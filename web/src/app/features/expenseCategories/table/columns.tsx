@@ -65,7 +65,7 @@ export const columns: ColumnDef<ExpenseCategory>[] = [
     cell: ({ row }) => {
       const expenseCategory = row.original
 
-      return <Actions expenseCategoryId={expenseCategory.id} />
+      return <Actions expenseCategory={expenseCategory} />
     }
   }
 ]

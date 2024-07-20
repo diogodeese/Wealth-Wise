@@ -5,7 +5,7 @@ import { prisma } from '../../lib/prisma'
 import { verifyToken } from '../middleware/verify-token'
 
 const paramsSchema = z.object({
-  id: z.string()
+  expenseId: z.string()
 })
 
 export async function deleteExpense(app: FastifyInstance) {
@@ -16,12 +16,12 @@ export async function deleteExpense(app: FastifyInstance) {
       const authenticatedRequest = request as AuthenticatedRequest
 
       try {
-        const { id } = paramsSchema.parse(request.params)
+        const { expenseId } = paramsSchema.parse(request.params)
 
         // Check if the expense belongs to the authenticated user
         const expense = await prisma.expense.findUnique({
           where: {
-            id: id
+            id: expenseId
           },
           select: {
             userId: true
@@ -34,7 +34,7 @@ export async function deleteExpense(app: FastifyInstance) {
 
         await prisma.expense.delete({
           where: {
-            id: id
+            id: expenseId
           }
         })
 
