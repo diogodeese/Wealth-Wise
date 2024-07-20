@@ -1,8 +1,8 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
-import { AuthenticatedRequest } from '../../interfaces/request'
-import { prisma } from '../../lib/prisma'
-import { verifyToken } from '../middleware/verify-token'
+import { AuthenticatedRequest } from '../../../interfaces/request'
+import { prisma } from '../../../lib/prisma'
+import { verifyToken } from '../../middleware/verify-token'
 
 const paramsSchema = z.object({
   id: z.string()

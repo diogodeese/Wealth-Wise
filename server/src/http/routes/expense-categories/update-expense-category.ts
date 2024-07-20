@@ -1,8 +1,8 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import z from 'zod'
-import { AuthenticatedRequest } from '../../interfaces/request'
-import { prisma } from '../../lib/prisma'
-import { verifyToken } from '../middleware/verify-token'
+import { AuthenticatedRequest } from '../../../interfaces/request'
+import { prisma } from '../../../lib/prisma'
+import { verifyToken } from '../../middleware/verify-token'
 
 // Define schemas
 const paramsSchema = z.object({
@@ -27,23 +27,19 @@ export async function updateExpenseCategory(app: FastifyInstance) {
         // Validate request body
         const parsedBody = updateExpenseCategoryBody.safeParse(request.body)
         if (!parsedBody.success) {
-          return reply
-            .status(400)
-            .send({
-              error: 'Validation failed',
-              details: parsedBody.error.errors
-            })
+          return reply.status(400).send({
+            error: 'Validation failed',
+            details: parsedBody.error.errors
+          })
         }
 
         // Validate request params
         const parsedParams = paramsSchema.safeParse(request.params)
         if (!parsedParams.success) {
-          return reply
-            .status(400)
-            .send({
-              error: 'Invalid category ID',
-              details: parsedParams.error.errors
-            })
+          return reply.status(400).send({
+            error: 'Invalid category ID',
+            details: parsedParams.error.errors
+          })
         }
 
         const { name, essential, recurring, description } = parsedBody.data

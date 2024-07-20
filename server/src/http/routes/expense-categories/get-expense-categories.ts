@@ -1,7 +1,7 @@
 import { FastifyInstance, FastifyReply } from 'fastify'
-import { AuthenticatedRequest } from '../../interfaces/request'
-import { prisma } from '../../lib/prisma'
-import { verifyToken } from '../middleware/verify-token'
+import { AuthenticatedRequest } from '../../../interfaces/request'
+import { prisma } from '../../../lib/prisma'
+import { verifyToken } from '../../middleware/verify-token'
 
 export async function getExpenseCategories(app: FastifyInstance) {
   app.get(
