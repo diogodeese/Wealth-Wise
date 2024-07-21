@@ -1,5 +1,5 @@
-import { createExpense } from '@/api/create-expense'
-import { useExpenseCategories } from '@/api/get-expense-categories'
+import { useExpenseCategories } from '@/api/expense-categories/get-expense-categories'
+import { createExpense } from '@/api/expenses/create-expense'
 import { Button } from '@/app/shared/components/ui/button'
 import { Calendar } from '@/app/shared/components/ui/calendar'
 import { Combobox } from '@/app/shared/components/ui/combobox'

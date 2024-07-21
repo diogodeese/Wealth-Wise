@@ -1,4 +1,4 @@
-import { deleteExpense } from '@/api/delete-expense'
+import { deleteExpense } from '@/api/expenses/delete-expense'
 import { Button } from '@/app/shared/components/ui/button'
 import {
   DropdownMenu,

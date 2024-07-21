@@ -1,5 +1,5 @@
-import { regenerateToken } from '@/api/regenerate-token'
-import { verifyToken } from '@/api/verify-token'
+import { regenerateToken } from '@/api/auth/regenerate-token'
+import { verifyToken } from '@/api/auth/verify-token'
 import { decodeToken } from './decode-token'
 import { getToken } from './get-token'
 import { setToken } from './set-token'

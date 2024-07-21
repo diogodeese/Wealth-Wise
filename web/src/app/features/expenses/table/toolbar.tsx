@@ -1,4 +1,4 @@
-import { useExpenseCategories } from '@/api/get-expense-categories'
+import { useExpenseCategories } from '@/api/expense-categories/get-expense-categories'
 import { Button } from '@/app/shared/components/ui/button'
 import { DatePickerWithRange } from '@/app/shared/components/ui/date-range-picker'
 import {

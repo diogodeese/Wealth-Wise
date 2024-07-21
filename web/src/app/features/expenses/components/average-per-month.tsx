@@ -1,4 +1,4 @@
-import { useTotalExpensesWithAverageLastTwelveMonths } from '@/api/get-average-monthly-expenses'
+import { useTotalExpensesWithAverageLastTwelveMonths } from '@/api/expenses/get-average-monthly-expenses'
 import {
   Card,
   CardContent,

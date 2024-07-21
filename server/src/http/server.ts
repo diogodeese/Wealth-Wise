@@ -16,6 +16,7 @@ import { getTotalExpensesForYear } from './routes/expenses/get-total-expenses-fo
 import { getTotalExpensesWithAverageLastTwelveMonths } from './routes/expenses/get-total-expenses-with-average-last-twelve-months'
 import { getCountries } from './routes/get-countries'
 import { getCurrencies } from './routes/get-currencies'
+import { getEmergencyFund } from './routes/get-emergency-fund'
 
 const app = fastify()
 
@@ -58,6 +59,8 @@ app.register(getExpenseCategories)
 app.register(createExpenseCategory)
 app.register(updateExpenseCategory)
 app.register(deleteExpenseCategory)
+
+app.register(getEmergencyFund)
 
 app.listen({ port: 3000 }, () => {
   console.log(`HTTP server running.`)

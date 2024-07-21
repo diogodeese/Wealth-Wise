@@ -1,4 +1,4 @@
-import { useTotalExpensesForYear } from '@/api/get-total-expenses-for-year'
+import { useTotalExpensesForYear } from '@/api/expenses/get-total-expenses-for-year'
 import {
   Card,
   CardContent,

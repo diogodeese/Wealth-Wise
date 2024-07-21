@@ -1,4 +1,4 @@
-import { useTotalExpensesForMonth } from '@/api/get-total-expenses-for-month'
+import { useTotalExpensesForMonth } from '@/api/expenses/get-total-expenses-for-month'
 import {
   Card,
   CardContent,

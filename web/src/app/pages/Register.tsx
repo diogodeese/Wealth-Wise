@@ -1,4 +1,4 @@
-import { register } from '@/api/register'
+import { register } from '@/api/auth/register'
 import { Button } from '@/app/shared/components/ui/button'
 import {
   Form,

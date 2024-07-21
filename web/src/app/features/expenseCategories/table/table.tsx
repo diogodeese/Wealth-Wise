@@ -1,4 +1,4 @@
-import { useExpenseCategories } from '@/api/get-expense-categories'
+import { useExpenseCategories } from '@/api/expense-categories/get-expense-categories'
 import { DataTable } from '../../../shared/components/ui/data-table'
 import { columns } from './columns'
 import Toolbar from './toolbar'
@@ -7,7 +7,7 @@ export default function ExpenseCategoriesTable() {
   const { data } = useExpenseCategories()
 
   return (
-    <div className="py-8">
+    <div>
       <DataTable
         columns={columns}
         data={data || []}

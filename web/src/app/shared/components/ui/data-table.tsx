@@ -62,7 +62,7 @@ export function DataTable<TData>({
   return (
     <div>
       {ToolbarComponent ? <ToolbarComponent table={table} /> : null}
-      <div className="my-4 min-h-[731.5px] rounded-md border">
+      <div className="my-4 min-h-[730px] rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

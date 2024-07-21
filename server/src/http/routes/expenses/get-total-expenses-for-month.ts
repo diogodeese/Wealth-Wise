@@ -1,8 +1,8 @@
 import { Prisma } from '@prisma/client'
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
-import { AuthenticatedRequest } from '../../interfaces/request'
-import { prisma } from '../../lib/prisma'
-import { verifyToken } from '../middleware/verify-token'
+import { AuthenticatedRequest } from '../../../interfaces/request'
+import { prisma } from '../../../lib/prisma'
+import { verifyToken } from '../../middleware/verify-token'
 
 interface MonthRequestParams {
   month: number

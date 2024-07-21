@@ -1,4 +1,4 @@
-import { useExpenses } from '@/api/get-expenses'
+import { useExpenses } from '@/api/expenses/get-expenses'
 import { useSearchParams } from 'react-router-dom'
 import { DataTable } from '../../../shared/components/ui/data-table'
 import { columns } from './columns'

@@ -1,5 +1,5 @@
-import { createExpenseCategory } from '@/api/create-expense-category'
-import { updateExpenseCategory } from '@/api/update-expense-category'
+import { createExpenseCategory } from '@/api/expense-categories/create-expense-category'
+import { updateExpenseCategory } from '@/api/expense-categories/update-expense-category'
 import { Checkbox } from '@/app/components/ui/checkbox'
 import { Button } from '@/app/shared/components/ui/button'
 import {

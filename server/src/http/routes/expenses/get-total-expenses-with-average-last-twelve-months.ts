@@ -1,7 +1,7 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
-import { AuthenticatedRequest } from '../../interfaces/request'
-import { prisma } from '../../lib/prisma'
-import { verifyToken } from '../middleware/verify-token'
+import { AuthenticatedRequest } from '../../../interfaces/request'
+import { prisma } from '../../../lib/prisma'
+import { verifyToken } from '../../middleware/verify-token'
 
 interface TotalExpenseByMonth {
   month: string
@@ -18,17 +18,18 @@ export async function getTotalExpensesWithAverageLastTwelveMonths(
       const authenticatedRequest = request as AuthenticatedRequest
 
       try {
-        // Get total expenses for each month over the last 12 months
+        // Get total expenses for each month over the last 12 complete months
         const totalExpensesByMonth: TotalExpenseByMonth[] =
           await prisma.$queryRaw`
           SELECT DATE_FORMAT(date, '%m/%Y') AS month, SUM(amount) AS totalAmount
           FROM Expense
           WHERE userId = ${authenticatedRequest.userId}
-            AND date >= DATE_SUB(CURRENT_DATE(), INTERVAL 12 MONTH)
+            AND date < DATE_FORMAT(CURRENT_DATE(), '%Y-%m-01')
+            AND date >= DATE_SUB(DATE_FORMAT(CURRENT_DATE(), '%Y-%m-01'), INTERVAL 12 MONTH)
           GROUP BY month
         `
 
-        // Calculate the average of total expenses over the last 12 months
+        // Calculate the average of total expenses over the last 12 complete months
         const totalAmounts = totalExpensesByMonth.map(
           (entry: TotalExpenseByMonth) => entry.totalAmount
         )
