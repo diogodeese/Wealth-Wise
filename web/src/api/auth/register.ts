@@ -2,9 +2,11 @@ import api from '@/lib/axios'
 
 interface RegisterData {
   email: string
+  alternativeEmail?: string
   password: string
   name: string
   surname: string
+  country?: string
 }
 
 interface RegisterResponse {

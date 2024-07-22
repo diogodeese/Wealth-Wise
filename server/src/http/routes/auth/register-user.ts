@@ -9,15 +9,15 @@ export async function registerUser(app: FastifyInstance) {
     '/api/register',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const registerBody = z.object({
-        email: z.string(),
-        password: z.string(),
         name: z.string(),
-        surname: z.string()
+        surname: z.string(),
+        email: z.string(),
+        alternativeEmail: z.string(),
+        password: z.string()
       })
 
-      const { email, password, name, surname } = registerBody.parse(
-        request.body
-      )
+      const { name, surname, email, alternativeEmail, password } =
+        registerBody.parse(request.body)
 
       const existingUser = await prisma.user.findUnique({
         where: {
@@ -33,11 +33,11 @@ export async function registerUser(app: FastifyInstance) {
 
       const newUser = await prisma.user.create({
         data: {
-          email,
-          password: hashedPassword,
           name,
-          surname
-          // Add other fields as necessary
+          surname,
+          email,
+          alternativeEmail,
+          password: hashedPassword
         }
       })
 

@@ -12,7 +12,7 @@ import { Input } from '@/app/shared/components/ui/input'
 import { setToken } from '@/utils/set-token'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { z } from 'zod'
 
 const loginFormSchema = z.object({
@@ -38,29 +38,34 @@ export default function Login() {
   const onSubmit = async (formData: z.infer<typeof loginFormSchema>) => {
     try {
       const data = await login(formData)
-
       await setToken(data.token)
       navigate('/dashboard', { replace: true })
     } catch (error) {
-      console.error('Login failed: ', error)
+      form.setError('root', {
+        type: 'manual',
+        message: 'Invalid email or password'
+      })
     }
   }
 
   return (
-    <div className="flex h-screen flex-col items-center justify-center gap-6">
-      Login
+    <div className="flex h-screen flex-col items-center justify-center gap-4 p-6">
+      <h1 className="text-2xl font-semibold">Sign In</h1>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="w-full max-w-sm space-y-4"
+        >
           <FormField
             control={form.control}
             name="email"
-            render={({ field }) => (
+            render={({ field, formState }) => (
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input type="email" {...field} />
                 </FormControl>
-                <FormMessage />
+                <FormMessage>{formState.errors.email?.message}</FormMessage>
               </FormItem>
             )}
           />
@@ -68,18 +73,31 @@ export default function Login() {
           <FormField
             control={form.control}
             name="password"
-            render={({ field }) => (
+            render={({ field, formState }) => (
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
                   <Input type="password" {...field} />
                 </FormControl>
-                <FormMessage />
+                <FormMessage>{formState.errors.password?.message}</FormMessage>
               </FormItem>
             )}
           />
 
-          <Button type="submit">Submit</Button>
+          <FormMessage>{form.formState.errors.root?.message}</FormMessage>
+
+          <Button type="submit" className="w-full">
+            Submit
+          </Button>
+
+          <div className="text-sm">
+            <p className="mt-4">
+              Do not have an account yet?{' '}
+              <Link to="/auth/register" className="text-blue-400">
+                Register here
+              </Link>
+            </p>
+          </div>
         </form>
       </Form>
     </div>
