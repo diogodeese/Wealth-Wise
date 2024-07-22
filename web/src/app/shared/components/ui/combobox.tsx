@@ -56,7 +56,7 @@ export function Combobox({
       <PopoverContent className="w-full p-0">
         <Command>
           <CommandInput placeholder={label} className="h-9" />
-          <ScrollArea className="h-60">
+          <ScrollArea className="h-fit">
             <CommandEmpty>No framework found.</CommandEmpty>
             <CommandGroup>
               {data.map((item) => (

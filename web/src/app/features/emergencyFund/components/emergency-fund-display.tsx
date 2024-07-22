@@ -1,13 +1,26 @@
 interface EmergencyFundDisplayProps {
   emergencyFund: number
+  averageTotalAmount: number
 }
 
 export function EmergencyFundDisplay({
-  emergencyFund
+  emergencyFund,
+  averageTotalAmount
 }: EmergencyFundDisplayProps) {
   return (
-    <div className="flex h-32 w-32 items-center justify-center rounded-full border border-zinc-300 bg-gray-100 text-lg font-semibold text-gray-800">
-      {emergencyFund.toFixed(2)}€
+    <div className="relative flex h-64 w-64 items-center justify-center rounded-full border-2 border-teal-500 bg-teal-700 p-4 text-center text-white shadow-lg">
+      <div>
+        <div className="mb-4 flex items-center justify-center">
+          <span className="text-xl font-bold">{emergencyFund.toFixed(2)}€</span>
+        </div>
+        <p className="text-sm">
+          You're spending{' '}
+          <span className="font-semibold">
+            {averageTotalAmount.toFixed(2)}€
+          </span>{' '}
+          per month on average.
+        </p>
+      </div>
     </div>
   )
 }

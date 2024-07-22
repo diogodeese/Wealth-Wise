@@ -1,6 +1,12 @@
 import { useEmergencyFund } from '@/api/get-emergency-fund'
 import Layout from '@/app/shared/components/layout'
 import { useState } from 'react'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger
+} from '../components/ui/accordion'
 import { Checkbox } from '../components/ui/checkbox'
 import { EmergencyFundDisplay } from '../features/emergencyFund/components/emergency-fund-display'
 import { Combobox } from '../shared/components/ui/combobox'
@@ -26,10 +32,9 @@ export default function EmergencyFund() {
 
   return (
     <Layout>
-      <div className="space-y-6 p-4">
+      <div className="flex h-[94vh] flex-col justify-between">
         <h1 className="mb-4 text-2xl font-bold">Emergency Fund Calculator</h1>
-
-        <div className="grid gap-8 sm:grid-cols-3">
+        <div className="grid gap-12 sm:grid-cols-3">
           <div>
             <label className="mb-1 block text-sm font-medium">
               Fund Months
@@ -83,9 +88,50 @@ export default function EmergencyFund() {
             </p>
           </div>
         </div>
+        <div className="flex flex-grow flex-col justify-center">
+          <div className="mt-8 flex justify-center">
+            <EmergencyFundDisplay
+              emergencyFund={data?.emergencyFund ?? 0}
+              averageTotalAmount={data?.averageTotalAmount ?? 0}
+            />
+          </div>
+        </div>
+        <div className="mb-4 ">
+          <h2 className="text-base font-bold">Emergency Fund FAQ</h2>
 
-        <div className="mt-8 flex justify-center">
-          <EmergencyFundDisplay emergencyFund={data?.emergencyFund ?? 0} />
+          <Accordion type="single" collapsible>
+            <AccordionItem value="what-is">
+              <AccordionTrigger>What is an Emergency Fund?</AccordionTrigger>
+              <AccordionContent>
+                An emergency fund is a savings account set aside to cover
+                unexpected expenses, such as medical emergencies, car repairs,
+                or sudden job loss. It helps maintain financial stability during
+                unforeseen events.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="why-important">
+              <AccordionTrigger>Why is it Important?</AccordionTrigger>
+              <AccordionContent>
+                <ul className="list-disc pl-5">
+                  <li>Provides financial security and peace of mind.</li>
+                  <li>Prevents debt accumulation in emergencies.</li>
+                  <li>
+                    Helps you stay on track with your long-term financial goals.
+                  </li>
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="how-much-save">
+              <AccordionTrigger>How much should I save?</AccordionTrigger>
+              <AccordionContent>
+                Aim to save at least three to six months' worth of living
+                expenses. Adjust your savings based on personal circumstances
+                and risk tolerance.
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </div>
     </Layout>
