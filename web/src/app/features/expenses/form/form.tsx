@@ -98,8 +98,9 @@ export function ExpensesForm() {
   const { mutateAsync: createExpenseFn } = useMutation({
     mutationKey: ['create-expense'],
     mutationFn: createExpense,
-    onSuccess(response: Expense) {
+    onSuccess(response: Expense & { warning?: string }) {
       const expense: Expense = response
+      const warning = response.warning
 
       queryClient.setQueryData<Expense[] | undefined>(
         ['expenses', fromFilter, toFilter, categoriesFilter],
@@ -131,11 +132,19 @@ export function ExpensesForm() {
         }
       )
 
-      toast({
-        variant: 'default',
-        title: 'Expense Created Successfully',
-        description: 'Your expense was created and added to the table.'
-      })
+      if (warning) {
+        toast({
+          variant: 'destructive',
+          title: 'Budget Warning',
+          description: warning
+        })
+      } else {
+        toast({
+          variant: 'default',
+          title: 'Expense Created Successfully',
+          description: 'Your expense was created and added to the table.'
+        })
+      }
 
       setIsOpen(false)
     }

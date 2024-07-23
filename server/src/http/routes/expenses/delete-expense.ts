@@ -4,20 +4,21 @@ import { AuthenticatedRequest } from '../../../interfaces/request'
 import { prisma } from '../../../lib/prisma'
 import { verifyToken } from '../../middleware/verify-token'
 
+// Define the Zod schema for route parameters
 const paramsSchema = z.object({
   expenseId: z.string()
 })
 
 export async function deleteExpense(app: FastifyInstance) {
   app.delete(
-    '/api/expenses/:id',
+    '/api/expenses/:expenseId',
     { preHandler: [verifyToken] },
     async (request: FastifyRequest, reply: FastifyReply) => {
       const authenticatedRequest = request as AuthenticatedRequest
 
       try {
+        // Parse the route parameters using Zod
         const { expenseId } = paramsSchema.parse(request.params)
-
         // Check if the expense belongs to the authenticated user
         const expense = await prisma.expense.findUnique({
           where: {

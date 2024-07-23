@@ -103,7 +103,7 @@ export default function Toolbar<TData>({
           )
         )
       : undefined
-    console.log(selectedCategories)
+
     handleFilterExpenses({
       dateFrom: fromUTC ? fromUTC.toISOString().split('T')[0] : undefined,
       dateTo: toUTC ? toUTC.toISOString().split('T')[0] : undefined,

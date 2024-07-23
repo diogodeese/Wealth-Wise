@@ -46,7 +46,6 @@ export function Actions({ expenseId }: ActionProps) {
       toast({
         title: 'Expense Deleted',
         description: 'The expense has been successfully deleted.'
-        // action: <ToastAction altText="Undo">Undo</ToastAction>
       })
     },
     onError(error) {
