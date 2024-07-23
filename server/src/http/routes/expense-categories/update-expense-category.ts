@@ -13,7 +13,8 @@ const updateExpenseCategoryBody = z.object({
   name: z.string().optional(),
   essential: z.boolean().optional(),
   recurring: z.boolean().optional(),
-  description: z.string().optional()
+  description: z.string().optional(),
+  budgetCap: z.number().optional()
 })
 
 export async function updateExpenseCategory(app: FastifyInstance) {
@@ -42,7 +43,8 @@ export async function updateExpenseCategory(app: FastifyInstance) {
           })
         }
 
-        const { name, essential, recurring, description } = parsedBody.data
+        const { name, essential, recurring, description, budgetCap } =
+          parsedBody.data
         const { expenseCategoryId } = parsedParams.data
 
         // Verify if the expense category exists and belongs to the user
@@ -67,7 +69,8 @@ export async function updateExpenseCategory(app: FastifyInstance) {
             name,
             essential,
             recurring,
-            description
+            description,
+            budgetCap
           }
         })
 
@@ -76,7 +79,8 @@ export async function updateExpenseCategory(app: FastifyInstance) {
           name: updatedExpenseCategory.name,
           essential: updatedExpenseCategory.essential,
           recurring: updatedExpenseCategory.recurring,
-          description: updatedExpenseCategory.description
+          description: updatedExpenseCategory.description,
+          budgetCap: updatedExpenseCategory.budgetCap
         })
       } catch (error) {
         return reply.status(500).send({ error: 'Internal Server Error' })

@@ -41,12 +41,12 @@ model Account {
 }
 
 model ExpenseCategory {
-  id          String   @id @default(uuid())
-  name        String   @unique
+  id          String  @id @default(uuid())
+  name        String  @unique
   description String?
-  essential   Boolean  @default(false)
-  budgetCap   Decimal?
-  recurring   Boolean  @default(false)
+  essential   Boolean @default(false)
+  budgetCap   Float?
+  recurring   Boolean @default(false)
   colorCode   String?
 
   expenses            Expense[]

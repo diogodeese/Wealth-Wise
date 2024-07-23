@@ -32,7 +32,14 @@ const expenseCategoriesFormSchema = z.object({
   recurring: z.boolean(),
   description: z.string().max(256, {
     message: 'Descriptions must be smaller than 256 characters'
-  })
+  }),
+  budgetCap: z
+    .string()
+    .transform((val) => parseFloat(val))
+    .refine((val) => !isNaN(val), {
+      message: 'Budget must be a valid number',
+      path: ['budgetCap']
+    })
 })
 
 interface ExpenseCategoriesFormProps {
@@ -55,7 +62,8 @@ export function ExpenseCategoriesForm({
       name: category?.name ?? '',
       essential: category?.essential ?? false,
       recurring: category?.recurring ?? false,
-      description: category?.description ?? ''
+      description: category?.description ?? '',
+      budgetCap: 0.0
     }
   })
 
@@ -68,6 +76,7 @@ export function ExpenseCategoriesForm({
     essential: boolean
     recurring: boolean
     description: string
+    budgetCap: number
   }) => {
     if (mode === 'create') {
       return createExpenseCategory(data)
@@ -225,6 +234,37 @@ export function ExpenseCategoriesForm({
                 )}
               />
             </div>
+
+            <FormField
+              control={form.control}
+              name="budgetCap"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Budget</FormLabel>
+                  <FormControl>
+                    <div className="flex w-full items-center">
+                      <Input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        placeholder="100.00"
+                        className="block rounded-md shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        {...field}
+                        value={field.value || ''}
+                        onChange={(event) => field.onChange(event.target.value)}
+                      />
+                      <span className="ml-2 text-gray-500">€</span>
+                    </div>
+                  </FormControl>
+                  <FormDescription>
+                    Set a budget for this category.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <FormField
               control={form.control}

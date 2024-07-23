@@ -42,7 +42,7 @@ import { z } from 'zod'
 const expensesFormSchema = z.object({
   amount: z
     .string()
-    .transform((val) => parseFloat(val)) // Transform string to number
+    .transform((val) => parseFloat(val))
     .refine((val) => !isNaN(val), {
       message: 'Amount must be a valid number',
       path: ['amount']

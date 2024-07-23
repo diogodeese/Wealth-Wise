@@ -45,8 +45,10 @@ export const columns: ColumnDef<ExpenseCategory>[] = [
       return <DataTableColumnHeader title={'Budget Cap'} column={column} />
     },
     cell: ({ row }) => (
-      <div className="line-clamp-2 overflow-hidden pl-4">
-        {row.original.budgetCap ? row.original.budgetCap : 'N/A'}
+      <div className="p-4">
+        {row.original.budgetCap
+          ? Number(row.original.budgetCap).toFixed(2) + '€'
+          : 'N/A'}
       </div>
     )
   },
