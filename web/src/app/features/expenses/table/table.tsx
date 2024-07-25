@@ -21,7 +21,7 @@ export default function ExpensesTable() {
   }))
 
   return (
-    <div className="mt-8 h-full">
+    <div className="mt-8 h-full ">
       <DataTable
         key={key}
         columns={columns}

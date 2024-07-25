@@ -7,6 +7,7 @@ import Expenses from '../pages/Expenses'
 import Landing from '../pages/Landing'
 import Login from '../pages/Login'
 import NotFound from '../pages/NotFound'
+import RecurringExpenses from '../pages/RecurringExpenses'
 import Register from '../pages/Register'
 import ProtectedRoute from './protected-route'
 import UnprotectedRoute from './unprotected-route'
@@ -25,6 +26,14 @@ export const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Categories />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: '/administration/recurring-expenses',
+    element: (
+      <ProtectedRoute>
+        <RecurringExpenses />
       </ProtectedRoute>
     )
   },

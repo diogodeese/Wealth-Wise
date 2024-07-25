@@ -63,7 +63,7 @@ export function ExpenseCategoriesForm({
       essential: category?.essential ?? false,
       recurring: category?.recurring ?? false,
       description: category?.description ?? '',
-      budgetCap: 0.0
+      budgetCap: category?.budgetCap ?? 0.0
     }
   })
 

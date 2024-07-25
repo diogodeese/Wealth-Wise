@@ -26,6 +26,7 @@ model User {
   account             Account?
   expenses            Expense[]
   UserExpenseCategory UserExpenseCategory[]
+  RecurringExpense    RecurringExpense[]
 }
 
 model Account {
@@ -51,6 +52,7 @@ model ExpenseCategory {
 
   expenses            Expense[]
   UserExpenseCategory UserExpenseCategory[]
+  RecurringExpense    RecurringExpense[]
 }
 
 model UserExpenseCategory {
@@ -69,12 +71,22 @@ model Expense {
   amount      Float
   description String
   categoryId  String
-  currency    String? // Currency of the expense (nullable)
-  location    String? // Location where the expense occurred (nullable)
-  receipt     String? // Receipt details (e.g., URL or file path) (nullable)
   date        DateTime // Date of the expense
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+
+  user     User            @relation(fields: [userId], references: [id])
+  category ExpenseCategory @relation(fields: [categoryId], references: [id])
+}
+
+model RecurringExpense {
+  id            String   @id @default(uuid())
+  userId        String
+  amount        Float
+  description   String
+  categoryId    String
+  recurrenceDay Int // Day of the month when the expense should recur
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   user     User            @relation(fields: [userId], references: [id])
   category ExpenseCategory @relation(fields: [categoryId], references: [id])

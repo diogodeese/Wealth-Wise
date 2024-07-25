@@ -5,6 +5,7 @@ import { useTheme } from '@/utils/use-theme'
 import {
   Banknote,
   HandCoins,
+  Hourglass,
   LayoutGrid,
   Siren,
   WalletCards
@@ -171,6 +172,12 @@ const Layout = ({ children }: LayoutProps) => {
               to: '/administration/expense-categories',
               icon: Banknote,
               variant: 'ghost'
+            },
+            {
+              title: 'Recurring Expenses',
+              to: '/administration/recurring-expenses',
+              icon: Hourglass,
+              variant: 'ghost'
             }
           ]}
         />
@@ -183,7 +190,7 @@ const Layout = ({ children }: LayoutProps) => {
         minSize={minSizes[1]}
         maxSize={maxSizes[1]}
       >
-        <div className="container py-8">{children}</div>
+        <div className="container min-h-screen py-8">{children}</div>
       </ResizablePanel>
     </ResizablePanelGroup>
   )
