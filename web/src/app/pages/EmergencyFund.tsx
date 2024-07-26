@@ -1,14 +1,14 @@
 import { useEmergencyFund } from '@/api/get-emergency-fund'
 import Layout from '@/app/shared/components/layout'
 import { useState } from 'react'
+import { EmergencyFundDisplay } from '../features/emergencyFund/components/emergency-fund-display'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger
-} from '../components/ui/accordion'
-import { Checkbox } from '../components/ui/checkbox'
-import { EmergencyFundDisplay } from '../features/emergencyFund/components/emergency-fund-display'
+} from '../shared/components/ui/accordion'
+import { Checkbox } from '../shared/components/ui/checkbox'
 import { Combobox } from '../shared/components/ui/combobox'
 
 export default function EmergencyFund() {
