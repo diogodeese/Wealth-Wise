@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt'
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import z from 'zod'
 import { prisma } from '../../../lib/prisma'
-import { generateToken } from '../../../utils/generate-token'
+import { generateTokens } from '../../../utils/generate-tokens'
 
 export async function registerUser(app: FastifyInstance) {
   app.post(
@@ -12,7 +12,7 @@ export async function registerUser(app: FastifyInstance) {
         name: z.string(),
         surname: z.string(),
         email: z.string(),
-        alternativeEmail: z.string(),
+        alternativeEmail: z.string().optional(),
         password: z.string()
       })
 
@@ -20,9 +20,7 @@ export async function registerUser(app: FastifyInstance) {
         registerBody.parse(request.body)
 
       const existingUser = await prisma.user.findUnique({
-        where: {
-          email
-        }
+        where: { email }
       })
 
       if (existingUser) {
@@ -41,9 +39,28 @@ export async function registerUser(app: FastifyInstance) {
         }
       })
 
-      const token = generateToken(newUser.id)
+      const { accessToken, refreshToken } = generateTokens(newUser.id)
 
-      reply.send({ token })
+      reply.cookie('accessToken', accessToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        maxAge: 3600 * 1000 // 1 hour
+      })
+      reply.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        maxAge: 30 * 24 * 3600 * 1000 // 30 days
+      })
+
+      reply.status(200).send({
+        data: {
+          message: 'Registration successful',
+          accessToken,
+          refreshToken
+        }
+      })
     }
   )
 }

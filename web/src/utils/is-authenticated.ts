@@ -1,30 +1,29 @@
-import { regenerateToken } from '@/api/auth/regenerate-token'
-import { verifyToken } from '@/api/auth/verify-token'
-import { decodeToken } from './decode-token'
-import { getToken } from './get-token'
-import { setToken } from './set-token'
+import { jwtDecode, JwtPayload } from 'jwt-decode'
+import { getAccessToken } from './get-tokens'
+import { refreshAccessToken } from './refresh-access-token'
+
+interface DecodedToken extends JwtPayload {
+  exp: number
+}
 
 export async function isAuthenticated(): Promise<boolean> {
-  const token = getToken()
+  let token = getAccessToken()
 
   if (token) {
-    const isValid = await verifyToken()
+    const decodedToken = jwtDecode<DecodedToken>(token)
+    const expirationTime = decodedToken.exp * 1000
+    const timeUntilExpiration = expirationTime - Date.now()
 
-    if (isValid) {
-      const decodedToken = decodeToken(token)
-      const expirationTime = decodedToken.exp * 1000
-      const timeUntilExpiration = expirationTime - Date.now()
-
-      if (timeUntilExpiration < 3600000) {
-        // 3600000 milliseconds = 1 hour
-        // Token is close to expiring, regenerate it
-        const newToken = await regenerateToken()
-        if (newToken) {
-          setToken(newToken)
-        }
+    if (timeUntilExpiration < 360000 && timeUntilExpiration > 0) {
+      try {
+        token = await refreshAccessToken()
+        return !!token
+      } catch (error) {
+        console.error('Failed to refresh token:', error)
+        return false
       }
-      return true
     }
+    return true
   }
   return false
 }

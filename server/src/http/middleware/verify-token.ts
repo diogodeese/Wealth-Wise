@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import { FastifyReply } from 'fastify'
-import jwt, { Jwt, JwtPayload } from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 import { AuthenticatedRequest } from '../../interfaces/request'
 dotenv.config()
 
@@ -9,7 +9,7 @@ export function verifyToken(
   reply: FastifyReply,
   done: Function
 ) {
-  const token = request.headers['authorization']?.replace('Bearer ', '')
+  const token = request.cookies.accessToken
 
   if (!token) {
     return reply.code(401).send({ message: 'Unauthorized' })
@@ -21,18 +21,11 @@ export function verifyToken(
     throw new Error('JWT_SECRET is not defined in the environment variables')
   }
 
-  let decodedToken: (Jwt & JwtPayload) | undefined
-
   try {
-    decodedToken = jwt.verify(token, jwtSecret) as Jwt & JwtPayload
+    const decodedToken = jwt.verify(token, jwtSecret) as JwtPayload
+    request.userId = decodedToken.userId
+    done()
   } catch (error) {
     return reply.code(401).send({ message: 'Unauthorized' })
   }
-
-  if (!decodedToken) {
-    return reply.code(401).send({ message: 'Unauthorized' })
-  }
-
-  request.userId = decodedToken.userId
-  return done()
 }

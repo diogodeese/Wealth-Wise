@@ -1,5 +1,4 @@
 import { register } from '@/api/auth/register'
-import { useCountries } from '@/api/get-countries'
 import { Button } from '@/app/shared/components/ui/button'
 import {
   Form,
@@ -42,7 +41,7 @@ const registerFormSchema = z
 
 export default function Register() {
   const navigate = useNavigate()
-  const { data: countries, isLoading } = useCountries()
+  // const { data: countries, isLoading } = useCountries()
 
   const form = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),

@@ -1,13 +1,15 @@
-import { getToken } from '@/utils/get-token'
+import { getAccessToken, getRefreshToken } from '@/utils/get-tokens'
+import { refreshAccessToken } from '@/utils/refresh-access-token'
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const api: AxiosInstance = axios.create({
   baseURL: 'http://localhost:3000/api'
 })
 
 api.interceptors.request.use(
-  (config) => {
-    const token = getToken()
+  async (config) => {
+    const token = getAccessToken()
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
@@ -15,14 +17,34 @@ api.interceptors.request.use(
 
     return config
   },
-  (error) => {
-    return Promise.reject(error)
-  }
+  (error) => Promise.reject(error)
 )
+
+api.defaults.withCredentials = true
 
 api.interceptors.response.use(
   (response: AxiosResponse) => response.data,
-  (error: AxiosError) => {
+  async (error: AxiosError) => {
+    const navigate = useNavigate()
+
+    if (error.response?.status === 401 && error.config) {
+      try {
+        const refreshToken = getRefreshToken()
+        if (!refreshToken) {
+          navigate('/login')
+          return Promise.reject(error)
+        }
+
+        const newToken = await refreshAccessToken()
+        if (newToken) {
+          error.config.headers.Authorization = `Bearer ${newToken}`
+          return api.request(error.config)
+        }
+      } catch (refreshError) {
+        console.error('Token refresh failed:', refreshError)
+        navigate('/login')
+      }
+    }
     handleApiError(error)
     return Promise.reject(error)
   }
@@ -37,7 +59,9 @@ function handleApiError(error: AxiosError) {
   } else {
     console.error('Request setup error:', error.message)
   }
-  console.error('Error config:', error.config)
+  if (error.config) {
+    console.error('Error config:', error.config)
+  }
 }
 
 export default api

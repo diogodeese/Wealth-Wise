@@ -34,6 +34,8 @@
     "clsx": "^2.1.0",
     "cmdk": "^0.2.1",
     "date-fns": "^3.3.1",
+    "js-cookie": "^3.0.5",
+    "jwt-decode": "^4.0.0",
     "localforage": "^1.10.0",
     "lucide-react": "^0.319.0",
     "match-sorter": "^6.3.3",
@@ -51,6 +53,8 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
+    "@types/jwt-decode": "^3.1.0",
     "@types/node": "^20.11.11",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",

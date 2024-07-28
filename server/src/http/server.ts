@@ -1,9 +1,7 @@
 import cors from '@fastify/cors'
 import fastify from 'fastify'
 import { loginUser } from './routes/auth/login-user'
-import { regenerateToken } from './routes/auth/regenerate-token'
 import { registerUser } from './routes/auth/register-user'
-import { verifyToken } from './routes/auth/verify-token'
 import { createExpenseCategory } from './routes/expense-categories/create-expense-category'
 import { deleteExpenseCategory } from './routes/expense-categories/delete-expense-category'
 import { getExpenseCategories } from './routes/expense-categories/get-expense-categories'
@@ -23,12 +21,17 @@ import { cronJobRecurringExpenses } from '../cron-jobs/recurring-expenses'
 import { getRecurringExpenses } from './routes/recurring-expenses/get-recurring-expenses'
 import { updateRecurringExpense } from './routes/recurring-expenses/update-recurring-expense'
 
+import type { FastifyCookieOptions } from '@fastify/cookie'
+import cookie from '@fastify/cookie'
+import { refreshToken } from './routes/auth/refresh-token'
+
 const app = fastify()
 
 app.register(cors, {
-  origin: 'http://localhost:5173', // Allow requests from this origin
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed HTTP methods
-  allowedHeaders: ['Content-Type', 'Authorization'] // Specify allowed headers
+  origin: 'http://localhost:5173',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 })
 
 app.register(async (app, opts) => {
@@ -37,15 +40,21 @@ app.register(async (app, opts) => {
     res.header('Access-Control-Allow-Origin', 'http://localhost:5173')
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+    res.header('Access-Control-Allow-Credentials', 'true')
+
     next()
   })
 })
 
+app.register(cookie, {
+  secret: 'my-secret', // for cookies signature
+  parseOptions: {} // options for parsing cookies
+} as FastifyCookieOptions)
+
 // Authentication
 app.register(loginUser)
 app.register(registerUser)
-app.register(verifyToken)
-app.register(regenerateToken)
+app.register(refreshToken)
 
 // Dataset's
 app.register(getCountries)

@@ -9,7 +9,7 @@ import {
   FormMessage
 } from '@/app/shared/components/ui/form'
 import { Input } from '@/app/shared/components/ui/input'
-import { setToken } from '@/utils/set-token'
+import { setTokens } from '@/utils/set-tokens'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Eye, EyeOff } from 'lucide-react'
 import { useState } from 'react'
@@ -45,7 +45,7 @@ export default function Login() {
   const onSubmit = async (formData: z.infer<typeof loginFormSchema>) => {
     try {
       const data = await login(formData)
-      await setToken(data.token)
+      setTokens(data.accessToken, data.refreshToken)
       navigate('/dashboard', { replace: true })
     } catch (error) {
       form.setError('root', {
