@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger
 } from '@/app/shared/components/ui/dropdown-menu'
 import { toast } from '@/app/shared/components/ui/use-toast'
-import Expense from '@/types/expense'
+import Expense from '@/types/expenses/expense'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Clipboard, MoreHorizontal, Trash } from 'lucide-react'
 import { useSearchParams } from 'react-router-dom'

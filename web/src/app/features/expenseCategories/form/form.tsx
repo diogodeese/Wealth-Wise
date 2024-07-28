@@ -18,9 +18,10 @@ import {
   FormLabel,
   FormMessage
 } from '@/app/shared/components/ui/form'
+
 import { Input } from '@/app/shared/components/ui/input'
 import { Textarea } from '@/app/shared/components/ui/textarea'
-import ExpenseCategory from '@/types/expense-category'
+import ExpenseCategory from '@/types/expense-categories/expense-category'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
@@ -56,6 +57,7 @@ export function ExpenseCategoriesForm({
   isOpen
 }: ExpenseCategoriesFormProps) {
   const queryClient = useQueryClient()
+
   const form = useForm<z.infer<typeof expenseCategoriesFormSchema>>({
     resolver: zodResolver(expenseCategoriesFormSchema),
     defaultValues: {

@@ -1,4 +1,4 @@
-import ExpenseCategory from '@/types/expense-category'
+import ExpenseCategory from '@/types/expense-categories/expense-category'
 import { ColumnDef } from '@tanstack/react-table'
 import { Check, X } from 'lucide-react'
 import { DataTableColumnHeader } from '../../../shared/components/ui/column-header'

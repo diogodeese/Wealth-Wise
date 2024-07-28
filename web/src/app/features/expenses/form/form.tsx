@@ -29,7 +29,7 @@ import {
 import { Textarea } from '@/app/shared/components/ui/textarea'
 import { toast } from '@/app/shared/components/ui/use-toast'
 import { cn } from '@/lib/utils'
-import Expense from '@/types/expense'
+import Expense from '@/types/expenses/expense'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { format } from 'date-fns'
@@ -117,11 +117,7 @@ export function ExpensesForm() {
               (category) => category.id === expense.categoryId
             ) || { id: '', name: '', description: '' },
             description: expense.description,
-            currency: expense.currency,
-            location: expense.location,
-            receipt: expense.receipt,
-            createdAt: expense.createdAt,
-            updatedAt: expense.updatedAt
+            createdAt: expense.createdAt
           })
 
           newData.sort(

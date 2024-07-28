@@ -1,39 +1,40 @@
-import { deleteExpenseCategory } from '@/api/expense-categories/delete-expense-category'
+import { deleteRecurringExpense } from '@/api/recurring-expenses/delete-recurring-expense'
 import { Button } from '@/app/shared/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/app/shared/components/ui/dropdown-menu'
 import { toast } from '@/app/shared/components/ui/use-toast'
-import ExpenseCategory from '@/types/expense-categories/expense-category'
-import { handleError } from '@/utils/error-handler'
+import RecurringExpense from '@/types/recurring-expenses/recurring-expense'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { MoreHorizontal, Pencil, Trash } from 'lucide-react'
 import { useState } from 'react'
-import { ExpenseCategoriesForm } from '../form/form'
+import { RecurringExpensesForm } from '../form/form'
 
 interface ActionProps {
-  expenseCategory: ExpenseCategory
+  recurringExpense: RecurringExpense
 }
 
-export function Actions({ expenseCategory }: ActionProps) {
+export function Actions({ recurringExpense }: ActionProps) {
   const queryClient = useQueryClient()
   const [isEditing, setIsEditing] = useState(false)
 
-  const { mutateAsync: deleteExpenseCategoryFn } = useMutation({
-    mutationKey: ['delete-expense-category'],
-    mutationFn: deleteExpenseCategory,
-    onSuccess(deletedExpenseCategoryId: string) {
-      queryClient.setQueryData<ExpenseCategory[] | undefined>(
-        ['expense-categories'],
+  const { mutateAsync: deleteRecurringExpenseFn } = useMutation({
+    mutationKey: ['delete-recurring-expense'],
+    mutationFn: deleteRecurringExpense,
+    onSuccess(deletedRecurringExpenseId: string) {
+      queryClient.setQueryData<RecurringExpense[] | undefined>(
+        ['recurring-expenses'],
         (data) => {
           if (!data) return []
 
           const newData = data.filter(
-            (expenseCategory) => expenseCategory.id !== deletedExpenseCategoryId
+            (recurringExpense) =>
+              recurringExpense.id !== deletedRecurringExpenseId
           )
 
           return newData
@@ -41,40 +42,35 @@ export function Actions({ expenseCategory }: ActionProps) {
       )
 
       toast({
-        title: 'Expense Category Deleted',
-        description: 'The expense category has been successfully deleted.'
+        title: 'Recurring Expense Deleted',
+        description: 'The recurring expense has been successfully deleted.'
       })
     },
-    onError(error: unknown) {
-      const errorMessage = handleError(
-        error,
-        'There was an error deleting the expense category.'
-      )
-
+    onError(error) {
       toast({
         variant: 'destructive',
-        title: 'Error Deleting Expense Category',
-        description: errorMessage
+        title: 'Error Deleting Recurring Expense',
+        description: 'There was an error deleting the recurring expense.'
       })
 
-      console.error('Error deleting expense category:', error)
+      console.error('Error deleting recurring expense:', error)
     }
   })
 
-  async function handleDeleteExpenseCategory(expenseCategoryId: string) {
+  async function handleDeleteRecurringExpense(recurringExpenseId: string) {
     try {
-      return await deleteExpenseCategoryFn(expenseCategoryId)
+      await deleteRecurringExpenseFn(recurringExpenseId)
     } catch (error) {
-      console.error('Error deleting expense:', error)
+      console.error('Error deleting recurring expense:', error)
     }
   }
 
   return (
     <>
       {isEditing && (
-        <ExpenseCategoriesForm
+        <RecurringExpensesForm
           mode="edit"
-          category={expenseCategory}
+          recurringExpense={recurringExpense}
           onClose={() => setIsEditing(false)}
           isOpen={true}
         />
@@ -96,11 +92,10 @@ export function Actions({ expenseCategory }: ActionProps) {
             <Pencil size={16} />
             Edit
           </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem
             className="text-red-400"
-            onClick={() => {
-              handleDeleteExpenseCategory(expenseCategory.id)
-            }}
+            onClick={() => handleDeleteRecurringExpense(recurringExpense.id)}
           >
             <Trash size={16} />
             Delete

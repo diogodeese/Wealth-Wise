@@ -1,5 +1,5 @@
 import api from '@/lib/axios'
-import ExpenseCategory from '@/types/expense-category'
+import ExpenseCategory from '@/types/expense-categories/expense-category'
 import { useQuery } from '@tanstack/react-query'
 
 export async function getExpenseCategories(): Promise<ExpenseCategory[]> {

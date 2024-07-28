@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { ExpenseCategorySchema } from './expense-category'
+import { ExpenseCategorySchema } from '../expense-categories/expense-category'
 
 const ExpenseSchema = z.object({
   id: z.string(),
@@ -8,12 +8,8 @@ const ExpenseSchema = z.object({
   category: z.lazy(() => ExpenseCategorySchema),
   amount: z.number(),
   description: z.string().optional(),
-  currency: z.string().optional(),
-  location: z.string().optional(),
-  receipt: z.string().optional(),
   date: z.date(),
-  createdAt: z.string().optional(),
-  updatedAt: z.string().optional()
+  createdAt: z.date().optional()
 })
 
 type Expense = z.input<typeof ExpenseSchema>

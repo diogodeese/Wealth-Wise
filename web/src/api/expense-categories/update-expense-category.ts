@@ -1,6 +1,6 @@
 import api from '@/lib/axios'
-import CreateExpenseCategoryRequest from '@/types/create-expense-category-request'
-import ExpenseCategory from '@/types/expense-category'
+import CreateExpenseCategoryRequest from '@/types/expense-categories/create-expense-category-request'
+import ExpenseCategory from '@/types/expense-categories/expense-category'
 
 export function updateExpenseCategory(
   expenseCategoryId: string,

@@ -1,5 +1,3 @@
-// routes/expenses.ts
-
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import { AuthenticatedRequest } from '../../../interfaces/request'
 import { prisma } from '../../../lib/prisma'

@@ -4,7 +4,6 @@ import { loginUser } from './routes/auth/login-user'
 import { regenerateToken } from './routes/auth/regenerate-token'
 import { registerUser } from './routes/auth/register-user'
 import { verifyToken } from './routes/auth/verify-token'
-import { createRecurringExpense } from './routes/create-recurring-expense'
 import { createExpenseCategory } from './routes/expense-categories/create-expense-category'
 import { deleteExpenseCategory } from './routes/expense-categories/delete-expense-category'
 import { getExpenseCategories } from './routes/expense-categories/get-expense-categories'
@@ -18,8 +17,11 @@ import { getTotalExpensesWithAverageLastTwelveMonths } from './routes/expenses/g
 import { getCountries } from './routes/get-countries'
 import { getCurrencies } from './routes/get-currencies'
 import { getEmergencyFund } from './routes/get-emergency-fund'
+import { createRecurringExpense } from './routes/recurring-expenses/create-recurring-expense'
 
 import { cronJobRecurringExpenses } from '../cron-jobs/recurring-expenses'
+import { getRecurringExpenses } from './routes/recurring-expenses/get-recurring-expenses'
+import { updateRecurringExpense } from './routes/recurring-expenses/update-recurring-expense'
 
 const app = fastify()
 
@@ -67,7 +69,9 @@ app.register(deleteExpenseCategory)
 app.register(getEmergencyFund)
 
 // Recurring Expenses
+app.register(getRecurringExpenses)
 app.register(createRecurringExpense)
+app.register(updateRecurringExpense)
 
 // Cron Jobs
 cronJobRecurringExpenses.start()

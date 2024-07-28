@@ -1,9 +1,10 @@
 import Layout from '@/app/shared/components/layout'
+import RecurringExpensesTable from '../features/recurringExpenses/table/table'
 
 export default function RecurringExpenses() {
   return (
     <Layout>
-      <h1>RecurringExpenses</h1>
+      <RecurringExpensesTable />
     </Layout>
   )
 }

@@ -1,22 +1,21 @@
-import Expense from '@/types/expenses/expense'
+import Expense from '@/types/recurring-expenses/recurring-expense'
 import { ColumnDef } from '@tanstack/react-table'
-import { format } from 'date-fns'
 import { DataTableColumnHeader } from '../../../shared/components/ui/column-header'
 import { Actions } from './actions'
 
 export const columns: ColumnDef<Expense>[] = [
   {
-    accessorKey: 'date',
-    header: ({ column }) => {
-      return <DataTableColumnHeader title={'Date'} column={column} />
-    },
-    sortDescFirst: true,
+    accessorKey: 'recurrenceDay',
+    header: 'Recurrence Day',
     enableHiding: false,
-    cell: ({ row }) => {
-      const { date } = row.original
-      const formattedDate = date ? format(new Date(date), 'dd/MM/yyyy') : ''
+    cell: ({ getValue }) => {
+      const recurrenceDay = getValue<number>()
 
-      return <div>{formattedDate}</div>
+      return (
+        <div className="pl-[15%]">
+          {recurrenceDay < 10 ? `0${recurrenceDay}` : recurrenceDay}
+        </div>
+      )
     }
   },
   {
@@ -44,22 +43,13 @@ export const columns: ColumnDef<Expense>[] = [
       </div>
     )
   },
-  // Uncomment and adjust as needed
-  // {
-  //   accessorKey: 'paymentMethod',
-  //   header: 'Payment Method',
-  //   enableHiding: true,
-  //   cell: ({ row }) => (
-  //     <div>{row.original.paymentMethod}</div>
-  //   )
-  // },
   {
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
-      const expense = row.original
+      const recurringExpense = row.original
 
-      return <Actions expenseId={expense.id} />
+      return <Actions recurringExpense={recurringExpense} />
     }
   }
 ]
