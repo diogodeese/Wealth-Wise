@@ -30,24 +30,21 @@ export async function refreshToken(app: FastifyInstance) {
         expiresIn: jwtRefreshExpiresIn
       })
 
+      console.log('Refresh Success')
+
       reply.cookie('accessToken', newAccessToken, {
         httpOnly: true,
         secure: true,
-        maxAge: 3600 * 1000
+        maxAge: 3600 * 1000,
+        path: '/'
       })
 
       reply.cookie('refreshToken', newRefreshToken, {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
-        maxAge: 30 * 24 * 3600 * 1000
-      })
-
-      reply.status(200).send({
-        data: {
-          accessToken: newAccessToken,
-          refreshToken: newRefreshToken
-        }
+        maxAge: 30 * 24 * 3600 * 1000,
+        path: '/'
       })
     } catch (error) {
       return reply.status(401).send({ message: 'Invalid refresh token' })

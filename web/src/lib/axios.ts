@@ -31,7 +31,7 @@ api.interceptors.response.use(
       try {
         const refreshToken = getRefreshToken()
         if (!refreshToken) {
-          navigate('/login')
+          navigate('/auth/sign-in', { replace: true })
           return Promise.reject(error)
         }
 
@@ -42,7 +42,7 @@ api.interceptors.response.use(
         }
       } catch (refreshError) {
         console.error('Token refresh failed:', refreshError)
-        navigate('/login')
+        navigate('/auth/sign-in', { replace: true })
       }
     }
     handleApiError(error)

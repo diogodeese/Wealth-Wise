@@ -1,4 +1,4 @@
-interface ErrorResponse {
+export interface ErrorResponse {
   error?: string
   message?: string
   response: {
@@ -9,13 +9,12 @@ interface ErrorResponse {
 }
 
 // Type guard for checking error response
-const isErrorResponse = (error: unknown): error is ErrorResponse => {
+export const isErrorResponse = (error: unknown): error is ErrorResponse => {
   return (error as ErrorResponse)?.message !== undefined
 }
 
 // Global error handling function
 export const handleError = (error: unknown, defaultMessage: string) => {
-  // Use type guard to safely access error properties
   const errorMessage = isErrorResponse(error)
     ? error.response.data.error
     : defaultMessage

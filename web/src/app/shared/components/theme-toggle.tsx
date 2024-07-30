@@ -19,19 +19,16 @@ export function ThemeToggle({ isCollapsed }: ThemeToggleProps) {
   return (
     <div
       data-collapsed={isCollapsed}
-      className="group absolute bottom-0 flex flex-col items-center justify-center gap-4 px-2 py-2 data-[collapsed=true]:py-2"
+      className="flex w-full justify-center px-2 py-2"
     >
       <DropdownMenu>
         {isCollapsed ? (
           <Tooltip delayDuration={0}>
-            <TooltipTrigger
-              asChild
-              className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2"
-            >
+            <TooltipTrigger asChild className="w-full">
               <DropdownMenuTrigger>
                 <a
                   className={
-                    'flex h-9 w-9 items-center justify-center px-2 outline-none'
+                    'flex h-9 w-full items-center justify-center px-2 outline-none'
                   }
                 >
                   <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />{' '}
@@ -49,7 +46,7 @@ export function ThemeToggle({ isCollapsed }: ThemeToggleProps) {
             <Button
               variant="ghost"
               size="default"
-              className="flex w-full items-center justify-start p-3 outline-none"
+              className="flex w-full items-center justify-start p-3 outline-none focus-visible:outline-none focus-visible:ring-0"
             >
               <Sun className="mr-2 h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
               <Moon className="absolute mr-2 h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />

@@ -1,3 +1,4 @@
+import { logout } from '@/api/auth/logout'
 import WealthWiseSimpleBlack from '@/assets/wealth-wise-simple-black/wealth-wise-simple-black'
 import WealthWiseSimpleWhite from '@/assets/wealth-wise-simple-white/wealth-wise-simple-white'
 import { cn } from '@/lib/utils'
@@ -14,6 +15,7 @@ import { ReactNode, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Nav } from './nav'
 import { ThemeToggle } from './theme-toggle'
+import { Button } from './ui/button'
 import {
   ResizableHandle,
   ResizablePanel,
@@ -26,10 +28,10 @@ interface LayoutProps {
 }
 
 const Layout = ({ children }: LayoutProps) => {
-  const themeMode = useTheme()
+  const { theme } = useTheme()
 
   const defaultLayout = [15, 85]
-  const minSizes = [12, 70]
+  const minSizes = [13, 70]
   const maxSizes = [15, 95]
 
   const localStorageLayout = localStorage.getItem(
@@ -92,7 +94,7 @@ const Layout = ({ children }: LayoutProps) => {
           >
             {isCollapsed ? (
               <>
-                {themeMode === 'light' ? (
+                {theme === 'light' ? (
                   <WealthWiseSimpleWhite />
                 ) : (
                   <WealthWiseSimpleBlack />
@@ -100,7 +102,7 @@ const Layout = ({ children }: LayoutProps) => {
               </>
             ) : (
               <>
-                {themeMode === 'light' ? (
+                {theme === 'light' ? (
                   <>
                     <WealthWiseSimpleWhite />
                     <span className="text-base">Wealth Wise</span>
@@ -150,15 +152,15 @@ const Layout = ({ children }: LayoutProps) => {
           isCollapsed={isCollapsed}
           links={[
             {
-              title: 'Savings',
-              to: '/dashboard',
-              icon: Banknote,
-              variant: 'ghost'
-            },
-            {
               title: 'Emergency Fund',
               to: '/emergency-fund',
               icon: Siren,
+              variant: 'ghost'
+            },
+            {
+              title: 'Loan Calculator',
+              to: '/loan-calculator',
+              icon: Banknote,
               variant: 'ghost'
             }
           ]}
@@ -182,6 +184,7 @@ const Layout = ({ children }: LayoutProps) => {
           ]}
         />
         <Separator />
+        <Button onClick={logout}>Logout</Button>
         <ThemeToggle isCollapsed={isCollapsed} />
       </ResizablePanel>
       <ResizableHandle />

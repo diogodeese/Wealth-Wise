@@ -5,6 +5,7 @@ import EmergencyFund from '../pages/EmergencyFund'
 import Categories from '../pages/ExpenseCategories'
 import Expenses from '../pages/Expenses'
 import Landing from '../pages/Landing'
+import LoanCalculator from '../pages/LoanCalculator'
 import Login from '../pages/Login'
 import NotFound from '../pages/NotFound'
 import RecurringExpenses from '../pages/RecurringExpenses'
@@ -82,6 +83,14 @@ export const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Expenses />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: '/loan-calculator',
+    element: (
+      <ProtectedRoute>
+        <LoanCalculator />
       </ProtectedRoute>
     )
   },

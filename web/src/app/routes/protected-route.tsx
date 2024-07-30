@@ -9,21 +9,30 @@ interface Props {
 
 const ProtectedRoute: React.FC<Props> = ({ children }) => {
   const [loading, setLoading] = useState(true)
-  const [authStatus, setAuthStatus] = useState(false)
+  const [authStatus, setAuthStatus] = useState<boolean | null>(null) // null means unknown
   const navigate = useNavigate()
 
   useEffect(() => {
-    isAuthenticated().then((result: boolean) => {
-      setAuthStatus(result)
-      setLoading(false)
-    })
+    const checkAuth = async () => {
+      try {
+        const result = await isAuthenticated()
+        setAuthStatus(result)
+      } catch (error) {
+        console.error('Authentication check failed:', error)
+        setAuthStatus(false)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    checkAuth()
   }, [])
 
   useEffect(() => {
-    if (!loading && !authStatus) {
+    if (authStatus === false) {
       navigate('/auth/sign-in', { replace: true })
     }
-  }, [loading, authStatus, navigate])
+  }, [authStatus, navigate])
 
   if (loading) {
     return <Loading />

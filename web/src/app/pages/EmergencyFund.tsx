@@ -8,8 +8,8 @@ import {
   AccordionItem,
   AccordionTrigger
 } from '../shared/components/ui/accordion'
-import { Checkbox } from '../shared/components/ui/checkbox'
 import { Combobox } from '../shared/components/ui/combobox'
+import { Switch } from '../shared/components/ui/switch'
 
 export default function EmergencyFund() {
   const [fundMonths, setFundMonths] = useState<number | null>(6)
@@ -56,7 +56,7 @@ export default function EmergencyFund() {
 
           <div className="mt-6">
             <label className="flex items-center">
-              <Checkbox
+              <Switch
                 checked={essentialsOnly}
                 onClick={() => setEssentialsOnly(!essentialsOnly)}
               />

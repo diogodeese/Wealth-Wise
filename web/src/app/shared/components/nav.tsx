@@ -59,7 +59,7 @@ export function Nav({ links, isCollapsed }: NavProps) {
               )}
             >
               <link.icon className="mr-2 h-5 w-5" />
-              <span className="text-sm">{link.title}</span>
+              <span className="text-sm font-normal">{link.title}</span>
             </Link>
           )
         )}

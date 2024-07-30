@@ -23,7 +23,9 @@ import { updateRecurringExpense } from './routes/recurring-expenses/update-recur
 
 import type { FastifyCookieOptions } from '@fastify/cookie'
 import cookie from '@fastify/cookie'
+import { logoutUser } from './routes/auth/logout-user'
 import { refreshToken } from './routes/auth/refresh-token'
+import { validateToken } from './routes/auth/validate-token'
 
 const app = fastify()
 
@@ -53,8 +55,10 @@ app.register(cookie, {
 
 // Authentication
 app.register(loginUser)
+app.register(logoutUser)
 app.register(registerUser)
 app.register(refreshToken)
+app.register(validateToken)
 
 // Dataset's
 app.register(getCountries)

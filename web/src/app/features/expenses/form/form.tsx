@@ -203,15 +203,24 @@ export function ExpensesForm() {
                           type="number"
                           step="0.01"
                           min="0"
-                          inputMode="numeric"
-                          pattern="[0-9]*"
+                          inputMode="decimal"
                           placeholder="100.00"
                           className="block rounded-md shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                           {...field}
                           value={field.value || ''}
-                          onChange={(event) =>
-                            field.onChange(event.target.value)
-                          }
+                          onChange={(event) => {
+                            const value = event.target.value
+                            const regex = /^\d*\.?\d{0,2}$/
+                            if (regex.test(value)) {
+                              field.onChange(value)
+                            }
+                          }}
+                          onBlur={(event) => {
+                            const value = parseFloat(
+                              event.target.value
+                            ).toFixed(2)
+                            field.onChange(value)
+                          }}
                         />
                         <span className="ml-2 text-gray-500">€</span>
                       </div>
@@ -223,6 +232,7 @@ export function ExpensesForm() {
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="date"
@@ -311,8 +321,9 @@ export function ExpensesForm() {
                 </FormItem>
               )}
             />
-
-            <Button type="submit">Submit</Button>
+            <div className="flex justify-end">
+              <Button type="submit">Submit</Button>
+            </div>
           </form>
         </Form>
       </DialogContent>

@@ -181,9 +181,19 @@ export function RecurringExpensesForm({
                           className="block rounded-md shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                           {...field}
                           value={field.value || ''}
-                          onChange={(event) =>
-                            field.onChange(event.target.value)
-                          }
+                          onChange={(event) => {
+                            const value = event.target.value
+                            const regex = /^\d*\.?\d{0,2}$/
+                            if (regex.test(value)) {
+                              field.onChange(value)
+                            }
+                          }}
+                          onBlur={(event) => {
+                            const value = parseFloat(
+                              event.target.value
+                            ).toFixed(2)
+                            field.onChange(value)
+                          }}
                         />
                         <span className="ml-2 text-gray-500">€</span>
                       </div>

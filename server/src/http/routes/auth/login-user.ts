@@ -57,22 +57,24 @@ export async function loginUser(app: FastifyInstance) {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
-        maxAge: 3600 * 1000 // 1 hour
+        maxAge: 3600 * 1000, // 1 hour
+        path: '/'
       })
       reply.cookie('refreshToken', refreshToken, {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
-        maxAge: 30 * 24 * 3600 * 1000 // 30 days
+        maxAge: 30 * 24 * 3600 * 1000, // 30 days
+        path: '/'
       })
 
-      reply.status(200).send({
-        data: {
-          message: 'Logged in successfully',
-          accessToken,
-          refreshToken
-        }
-      })
+      // reply.status(200).send({
+      //   data: {
+      //     message: 'Logged in successfully',
+      //     accessToken,
+      //     refreshToken
+      //   }
+      // })
     }
   )
 }

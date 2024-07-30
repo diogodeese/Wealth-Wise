@@ -10,6 +10,8 @@ import {
 } from '@/app/shared/components/ui/form'
 import { Input } from '@/app/shared/components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Eye, EyeOff } from 'lucide-react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { z } from 'zod'
@@ -41,6 +43,9 @@ const registerFormSchema = z
 
 export default function Register() {
   const navigate = useNavigate()
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+
   // const { data: countries, isLoading } = useCountries()
 
   const form = useForm<z.infer<typeof registerFormSchema>>({
@@ -55,6 +60,14 @@ export default function Register() {
       country: ''
     }
   })
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword)
+  }
 
   const onSubmit = async (formData: z.infer<typeof registerFormSchema>) => {
     try {
@@ -138,7 +151,28 @@ export default function Register() {
               <FormItem>
                 <FormLabel>Password *</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} />
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? 'text' : 'password'}
+                      {...field}
+                    />
+                    <Button
+                      type="button"
+                      variant={'ghost'}
+                      onClick={togglePasswordVisibility}
+                      className="absolute right-0 top-0 hover:bg-transparent"
+                    >
+                      {field.value.length > 0 && (
+                        <>
+                          {field.value && showPassword ? (
+                            <EyeOff height={16} width={16} />
+                          ) : (
+                            <Eye height={16} width={16} />
+                          )}
+                        </>
+                      )}
+                    </Button>
+                  </div>
                 </FormControl>
                 <FormMessage>{formState.errors.password?.message}</FormMessage>
               </FormItem>
@@ -152,7 +186,28 @@ export default function Register() {
               <FormItem>
                 <FormLabel>Confirm Password *</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} />
+                  <div className="relative">
+                    <Input
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      {...field}
+                    />
+                    <Button
+                      type="button"
+                      variant={'ghost'}
+                      onClick={toggleConfirmPasswordVisibility}
+                      className="absolute right-0 top-0 hover:bg-transparent"
+                    >
+                      {field.value.length > 0 && (
+                        <>
+                          {field.value && showConfirmPassword ? (
+                            <EyeOff height={16} width={16} />
+                          ) : (
+                            <Eye height={16} width={16} />
+                          )}
+                        </>
+                      )}
+                    </Button>
+                  </div>
                 </FormControl>
                 <FormMessage>
                   {formState.errors.confirmPassword?.message}
