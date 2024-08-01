@@ -71,7 +71,16 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background font-sans text-foreground; /* Apply Roboto to body text */
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-header; /* Apply Helvetica to headers */
   }
 
   /* Chrome, Safari, Edge, Opera */
@@ -81,8 +90,10 @@
     margin: 0;
   }
 
-  /* Firefox */
   input[type='number'] {
-    -moz-appearance: textfield;
+    -webkit-appearance: none; /* Safari, Chrome */
+    -moz-appearance: textfield; /* Firefox */
+    appearance: none; /* Standard */
+    margin: 0; /* Remove default margin */
   }
 }

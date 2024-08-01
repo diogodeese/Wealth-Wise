@@ -46,7 +46,7 @@ export function ThemeToggle({ isCollapsed }: ThemeToggleProps) {
             <Button
               variant="ghost"
               size="default"
-              className="flex w-full items-center justify-start p-3 outline-none focus-visible:outline-none focus-visible:ring-0"
+              className="flex w-full select-none items-center justify-start p-3 outline-none focus-visible:outline-none focus-visible:ring-0"
             >
               <Sun className="mr-2 h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
               <Moon className="absolute mr-2 h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />

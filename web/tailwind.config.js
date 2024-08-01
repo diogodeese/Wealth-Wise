@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-
 export default {
   darkMode: ['class'],
   content: [
@@ -19,7 +18,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Poppins']
+        sans: ['Roboto', 'sans-serif'],
+        header: ['Helvetica', 'sans-serif'],
       },
       colors: {
         border: 'hsl(var(--border))',
