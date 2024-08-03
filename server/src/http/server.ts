@@ -1,7 +1,15 @@
 import cors from '@fastify/cors'
+import dotenv from 'dotenv'
 import fastify from 'fastify'
+
+import type { FastifyCookieOptions } from '@fastify/cookie'
+import cookie from '@fastify/cookie'
+
 import { loginUser } from './routes/auth/login-user'
+import { logoutUser } from './routes/auth/logout-user'
+import { refreshToken } from './routes/auth/refresh-token'
 import { registerUser } from './routes/auth/register-user'
+import { validateToken } from './routes/auth/validate-token'
 import { createExpenseCategory } from './routes/expense-categories/create-expense-category'
 import { deleteExpenseCategory } from './routes/expense-categories/delete-expense-category'
 import { getExpenseCategories } from './routes/expense-categories/get-expense-categories'
@@ -16,16 +24,12 @@ import { getCountries } from './routes/get-countries'
 import { getCurrencies } from './routes/get-currencies'
 import { getEmergencyFund } from './routes/get-emergency-fund'
 import { createRecurringExpense } from './routes/recurring-expenses/create-recurring-expense'
-
-import { cronJobRecurringExpenses } from '../cron-jobs/recurring-expenses'
 import { getRecurringExpenses } from './routes/recurring-expenses/get-recurring-expenses'
 import { updateRecurringExpense } from './routes/recurring-expenses/update-recurring-expense'
 
-import type { FastifyCookieOptions } from '@fastify/cookie'
-import cookie from '@fastify/cookie'
-import { logoutUser } from './routes/auth/logout-user'
-import { refreshToken } from './routes/auth/refresh-token'
-import { validateToken } from './routes/auth/validate-token'
+import { cronJobRecurringExpenses } from '../cron-jobs/recurring-expenses'
+
+dotenv.config()
 
 const app = fastify()
 
@@ -49,7 +53,7 @@ app.register(async (app, opts) => {
 })
 
 app.register(cookie, {
-  secret: 'my-secret', // for cookies signature
+  secret: process.env.COOKIE_SECRET, // for cookies signature
   parseOptions: {} // options for parsing cookies
 } as FastifyCookieOptions)
 

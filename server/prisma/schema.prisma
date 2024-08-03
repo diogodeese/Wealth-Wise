@@ -47,7 +47,6 @@ model ExpenseCategory {
   description String?
   essential   Boolean @default(false)
   budgetCap   Float?
-  recurring   Boolean @default(false)
   colorCode   String?
 
   expenses            Expense[]

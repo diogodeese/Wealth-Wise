@@ -6,7 +6,6 @@ export const ExpenseCategorySchema = z.object({
   description: z.string().optional(),
   essential: z.boolean().default(false),
   budgetCap: z.number().optional(),
-  recurring: z.boolean().default(false),
   colorCode: z.string().optional()
 })
 

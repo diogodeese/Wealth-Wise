@@ -15,12 +15,11 @@ export async function createExpenseCategory(app: FastifyInstance) {
         const createExpenseCategoryBody = z.object({
           name: z.string(),
           essential: z.boolean(),
-          recurring: z.boolean(),
           description: z.string(),
           budgetCap: z.number().optional()
         })
 
-        const { name, essential, recurring, description, budgetCap } =
+        const { name, essential, description, budgetCap } =
           createExpenseCategoryBody.parse(request.body)
 
         // Verify if the user exists
@@ -36,7 +35,6 @@ export async function createExpenseCategory(app: FastifyInstance) {
           data: {
             name,
             essential,
-            recurring,
             description,
             budgetCap
           }
@@ -57,7 +55,6 @@ export async function createExpenseCategory(app: FastifyInstance) {
           id: expenseCategory.id,
           name: expenseCategory.name,
           essential: expenseCategory.essential,
-          recurring: expenseCategory.recurring,
           description: expenseCategory.description,
           budgetCap: expenseCategory.budgetCap?.toFixed(2)
         })

@@ -25,21 +25,6 @@ export const columns: ColumnDef<ExpenseCategory>[] = [
     )
   },
   {
-    accessorKey: 'recurring',
-    header: ({ column }) => {
-      return <DataTableColumnHeader title={'Recurring'} column={column} />
-    },
-    cell: ({ row }) => (
-      <div className="flex max-w-16 items-center justify-center">
-        {row.original.recurring ? (
-          <Check className="h-4 w-4" />
-        ) : (
-          <X className="h-4 w-4" />
-        )}
-      </div>
-    )
-  },
-  {
     accessorKey: 'budgetCap',
     header: ({ column }) => {
       return <DataTableColumnHeader title={'Budget Cap'} column={column} />

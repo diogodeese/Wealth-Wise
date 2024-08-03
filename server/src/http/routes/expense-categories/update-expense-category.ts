@@ -12,7 +12,6 @@ const paramsSchema = z.object({
 const updateExpenseCategoryBody = z.object({
   name: z.string().optional(),
   essential: z.boolean().optional(),
-  recurring: z.boolean().optional(),
   description: z.string().optional(),
   budgetCap: z.number().optional()
 })
@@ -43,8 +42,7 @@ export async function updateExpenseCategory(app: FastifyInstance) {
           })
         }
 
-        const { name, essential, recurring, description, budgetCap } =
-          parsedBody.data
+        const { name, essential, description, budgetCap } = parsedBody.data
         const { expenseCategoryId } = parsedParams.data
 
         // Verify if the expense category exists and belongs to the user
@@ -68,7 +66,6 @@ export async function updateExpenseCategory(app: FastifyInstance) {
           data: {
             name,
             essential,
-            recurring,
             description,
             budgetCap
           }
@@ -78,7 +75,6 @@ export async function updateExpenseCategory(app: FastifyInstance) {
           id: updatedExpenseCategory.id,
           name: updatedExpenseCategory.name,
           essential: updatedExpenseCategory.essential,
-          recurring: updatedExpenseCategory.recurring,
           description: updatedExpenseCategory.description,
           budgetCap: updatedExpenseCategory.budgetCap
         })
