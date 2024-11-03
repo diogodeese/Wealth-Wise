@@ -31,8 +31,16 @@
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
     --ring: 240 10% 3.9%;
-
     --radius: 0.5rem;
+
+    --sidebar-background: 240 3% 96%;
+    --sidebar-foreground: 0 0% 24%;
+    --sidebar-primary: 0 0% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 3% 94%;
+    --sidebar-accent-foreground: 0 0% 10%;
+    --sidebar-border: 0 0% 87%;
+    --sidebar-ring: 220 14% 47%;
   }
 
   .dark {
@@ -63,6 +71,15 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
+
+    --sidebar-background: 240 5% 9%;
+    --sidebar-foreground: 0 0% 92%;
+    --sidebar-primary: 0 0% 98%;
+    --sidebar-primary-foreground: 0 0% 10%;
+    --sidebar-accent: 240 5% 15%;
+    --sidebar-accent-foreground: 0 0% 92%;
+    --sidebar-border: 0 0% 28%;
+    --sidebar-ring: 220 14% 47%;
   }
 }
 
@@ -95,5 +112,14 @@
     -moz-appearance: textfield; /* Firefox */
     appearance: none; /* Standard */
     margin: 0; /* Remove default margin */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }

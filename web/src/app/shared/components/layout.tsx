@@ -1,33 +1,24 @@
-import { logout } from '@/api/auth/logout'
-import WealthWiseSimpleBlack from '@/assets/wealth-wise-simple-black/wealth-wise-simple-black'
-import WealthWiseSimpleWhite from '@/assets/wealth-wise-simple-white/wealth-wise-simple-white'
-import { cn } from '@/lib/utils'
-import { useTheme } from '@/utils/use-theme'
-import {
-  Banknote,
-  HandCoins,
-  Hourglass,
-  LayoutGrid,
-  Siren,
-  WalletCards
-} from 'lucide-react'
-import { ReactNode, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Nav } from './nav'
-import { ThemeToggle } from './theme-toggle'
-import { Button } from './ui/button'
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup
-} from './ui/resizable'
-import { Separator } from './ui/separator'
+import { ReactNode } from 'react'
+import { AppSidebar } from './app-sidebar'
+import { SidebarProvider } from './ui/sidebar'
 
 interface LayoutProps {
   children: ReactNode
 }
 
 const Layout = ({ children }: LayoutProps) => {
+  return (
+    <SidebarProvider>
+      <AppSidebar />
+      <main className="w-full p-4">
+        {/* <SidebarTrigger /> */}
+        {children}
+      </main>
+    </SidebarProvider>
+  )
+}
+
+/*const Layout = ({ children }: LayoutProps) => {
   const { theme } = useTheme()
 
   const defaultLayout = [15, 85]
@@ -184,8 +175,25 @@ const Layout = ({ children }: LayoutProps) => {
           ]}
         />
         <Separator />
-        <Button onClick={logout}>Logout</Button>
         <ThemeToggle isCollapsed={isCollapsed} />
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Avatar>
+              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Profile</DropdownMenuLabel>
+            <DropdownMenuItem onClick={logout}>
+              Change Password
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={logout} className="text-red-500">
+              Log out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </ResizablePanel>
       <ResizableHandle />
       <ResizablePanel
@@ -197,6 +205,6 @@ const Layout = ({ children }: LayoutProps) => {
       </ResizablePanel>
     </ResizablePanelGroup>
   )
-}
+}*/
 
 export default Layout

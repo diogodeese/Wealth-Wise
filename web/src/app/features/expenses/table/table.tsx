@@ -1,4 +1,5 @@
 import { useExpenses } from '@/api/expenses/get-expenses'
+import { Expense } from '@/types/expenses/expense'
 import { useSearchParams } from 'react-router-dom'
 import { DataTable } from '../../../shared/components/ui/data-table'
 import { columns } from './columns'
@@ -11,21 +12,23 @@ export default function ExpensesTable() {
   const to = searchParams.get('to') || undefined
   const categories = searchParams.get('categories')?.split(',')
 
-  const { data } = useExpenses(from, to, categories)
+  const { data, isLoading, isError } = useExpenses(from, to, categories)
 
-  const key = data ? JSON.stringify(data) : null
+  if (isLoading) return <div>Loading...</div>
+  if (isError) return <div>Error loading data or no data available.</div>
 
-  const expenses = data?.map((expense) => ({
-    ...expense,
-    categoryName: expense.category.name
-  }))
+  const expenses = data
+    ? data.map((expense: Expense) => ({
+        ...expense,
+        categoryName: expense.category.name
+      }))
+    : []
 
   return (
-    <div className="mt-8 h-full ">
+    <div className="mt-8 h-full">
       <DataTable
-        key={key}
         columns={columns}
-        data={expenses || []}
+        data={expenses} // Pass the mapped expenses
         ToolbarComponent={Toolbar}
       />
     </div>

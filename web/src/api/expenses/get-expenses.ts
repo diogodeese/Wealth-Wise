@@ -1,5 +1,5 @@
 import api from '@/lib/axios'
-import Expense from '@/types/expense'
+import { Expense } from '@/types/expenses/expense'
 import { useQuery } from '@tanstack/react-query'
 
 export async function getExpenses(
@@ -10,10 +10,13 @@ export async function getExpenses(
   const params = new URLSearchParams()
   if (from) params.append('from', from)
   if (to) params.append('to', to)
-  if (categories && categories.length > 0)
+  if (categories && categories.length > 0) {
     params.append('categories', categories.join(','))
+  }
 
-  return await api.get('/expenses', { params })
+  const { data } = await api.get<Expense[]>('/expenses', { params })
+
+  return data
 }
 
 export const useExpenses = (
@@ -21,7 +24,7 @@ export const useExpenses = (
   to?: string,
   categories?: string[]
 ) =>
-  useQuery({
+  useQuery<Expense[]>({
     queryKey: ['expenses', from, to, categories],
     queryFn: () => getExpenses(from, to, categories)
   })

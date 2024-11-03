@@ -17,10 +17,7 @@ export function ThemeToggle({ isCollapsed }: ThemeToggleProps) {
   const { setTheme } = useTheme()
 
   return (
-    <div
-      data-collapsed={isCollapsed}
-      className="flex w-full justify-center px-2 py-2"
-    >
+    <div data-collapsed={isCollapsed} className="flex w-full justify-center">
       <DropdownMenu>
         {isCollapsed ? (
           <Tooltip delayDuration={0}>
@@ -48,13 +45,17 @@ export function ThemeToggle({ isCollapsed }: ThemeToggleProps) {
               size="default"
               className="flex w-full select-none items-center justify-start p-3 outline-none focus-visible:outline-none focus-visible:ring-0"
             >
-              <Sun className="mr-2 h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute mr-2 h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              <Sun className="mr-2 h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+              <Moon className="absolute mr-2 h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
               <span className="text-sm">Theme</span>
             </Button>
           </DropdownMenuTrigger>
         )}
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent
+          align="end"
+          side="top"
+          className="w-[--radix-popper-anchor-width]"
+        >
           <DropdownMenuItem onClick={() => setTheme('light')}>
             Light
           </DropdownMenuItem>

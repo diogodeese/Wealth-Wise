@@ -12,7 +12,7 @@ export function verifyToken(
   const token = request.cookies.accessToken
 
   if (!token) {
-    return reply.code(401).send({ message: 'Unauthorized' })
+    return reply.code(401).send({ message: 'User not authenticated' })
   }
 
   const jwtSecret = process.env.JWT_SECRET
@@ -26,6 +26,6 @@ export function verifyToken(
     request.userId = decodedToken.userId
     done()
   } catch (error) {
-    return reply.code(401).send({ message: 'Unauthorized' })
+    return reply.code(401).send({ message: 'User not authenticated' })
   }
 }

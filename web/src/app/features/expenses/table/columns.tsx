@@ -1,4 +1,4 @@
-import Expense from '@/types/expenses/expense'
+import { Expense } from '@/types/expenses/expense'
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 import { DataTableColumnHeader } from '../../../shared/components/ui/column-header'

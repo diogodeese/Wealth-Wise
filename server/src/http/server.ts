@@ -2,14 +2,19 @@ import cors from '@fastify/cors'
 import dotenv from 'dotenv'
 import fastify from 'fastify'
 
-import type { FastifyCookieOptions } from '@fastify/cookie'
 import cookie from '@fastify/cookie'
+import fastifyStatic from '@fastify/static'
+import { join } from 'path'
+import swaggerJsdoc from 'swagger-jsdoc'
+
+import type { FastifyCookieOptions } from '@fastify/cookie'
 
 import { loginUser } from './routes/auth/login-user'
 import { logoutUser } from './routes/auth/logout-user'
 import { refreshToken } from './routes/auth/refresh-token'
 import { registerUser } from './routes/auth/register-user'
 import { validateToken } from './routes/auth/validate-token'
+import { getEmergencyFund } from './routes/emergency-fund/get-emergency-fund'
 import { createExpenseCategory } from './routes/expense-categories/create-expense-category'
 import { deleteExpenseCategory } from './routes/expense-categories/delete-expense-category'
 import { getExpenseCategories } from './routes/expense-categories/get-expense-categories'
@@ -22,12 +27,41 @@ import { getTotalExpensesForYear } from './routes/expenses/get-total-expenses-fo
 import { getTotalExpensesWithAverageLastTwelveMonths } from './routes/expenses/get-total-expenses-with-average-last-twelve-months'
 import { getCountries } from './routes/get-countries'
 import { getCurrencies } from './routes/get-currencies'
-import { getEmergencyFund } from './routes/get-emergency-fund'
 import { createRecurringExpense } from './routes/recurring-expenses/create-recurring-expense'
 import { getRecurringExpenses } from './routes/recurring-expenses/get-recurring-expenses'
 import { updateRecurringExpense } from './routes/recurring-expenses/update-recurring-expense'
 
 import { cronJobRecurringExpenses } from '../cron-jobs/recurring-expenses'
+
+// OpenAPI/Swagger setup using swagger-jsdoc
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'API Documentation',
+      version: '1.0.0',
+      description: 'API Documentation for the development team'
+    },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT'
+        }
+      }
+    },
+    servers: [
+      {
+        url: 'http://localhost:3000'
+      }
+    ]
+  },
+  apis: ['./src/http/routes/**/*.ts']
+}
+
+// Generate the OpenAPI specification
+const swaggerSpec = swaggerJsdoc(swaggerOptions)
 
 dotenv.config()
 
@@ -42,7 +76,6 @@ app.register(cors, {
 
 app.register(async (app, opts) => {
   app.addHook('onRequest', (req, res, next) => {
-    // Set headers for CORS
     res.header('Access-Control-Allow-Origin', 'http://localhost:5173')
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
@@ -56,6 +89,26 @@ app.register(cookie, {
   secret: process.env.COOKIE_SECRET, // for cookies signature
   parseOptions: {} // options for parsing cookies
 } as FastifyCookieOptions)
+
+// Serve static files
+app.register(fastifyStatic, {
+  root: join(__dirname, 'public'),
+  prefix: '/public/'
+})
+
+if (process.env.NODE_ENV === 'development') {
+  // Serve Redoc documentation
+  app.get('/docs', async (request, reply) => {
+    return reply.sendFile('redoc.html')
+  })
+
+  // Serve OpenAPI JSON
+  app.get('/docs/openapi.json', async (req, reply) => {
+    return reply.send(swaggerSpec)
+  })
+
+  console.log('Documentation: http://localhost:3000/docs')
+}
 
 // Authentication
 app.register(loginUser)
@@ -93,6 +146,10 @@ app.register(updateRecurringExpense)
 // Cron Jobs
 cronJobRecurringExpenses.start()
 
-app.listen({ port: 3000 }, () => {
-  console.log(`HTTP server running.`)
+app.listen({ port: 3000 }, (err) => {
+  if (err) {
+    console.error('Error starting server:', err)
+    process.exit(1)
+  }
+  console.log('HTTP server running on http://localhost:3000')
 })
