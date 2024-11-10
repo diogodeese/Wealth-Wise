@@ -26,6 +26,7 @@ import {
   User2,
   WalletCards
 } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ThemeToggle } from './theme-toggle'
 import { Collapsible, CollapsibleTrigger } from './ui/collapsible'
@@ -94,6 +95,18 @@ const administrationItems = [
   }
 ]
 
+function useLocalStorageState(key: string, defaultValue: boolean) {
+  const [state, setState] = useState(() => {
+    const storedValue = localStorage.getItem(key)
+    return storedValue !== null ? JSON.parse(storedValue) : defaultValue
+  })
+
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(state))
+  }, [key, state])
+
+  return [state, setState]
+}
 export const AppSidebar = () => {
   return (
     <Sidebar collapsible="none" className="h-screen">
@@ -147,13 +160,21 @@ export const AppSidebar = () => {
 }
 
 const MainMenu = () => {
+  const [isMainOpen, setIsMainOpen] = useLocalStorageState('mainMenuOpen', true)
+
   return (
-    <Collapsible defaultOpen className="group/collapsible">
+    <Collapsible
+      open={isMainOpen}
+      onOpenChange={setIsMainOpen}
+      className="group/collapsible"
+    >
       <SidebarGroup>
         <SidebarGroupLabel asChild>
           <CollapsibleTrigger>
             Main
-            <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+            <ChevronDown
+              className={`ml-auto transition-transform ${isMainOpen ? 'rotate-180' : ''}`}
+            />
           </CollapsibleTrigger>
         </SidebarGroupLabel>
         <CollapsibleContent>
@@ -178,13 +199,24 @@ const MainMenu = () => {
 }
 
 const PlanningSavingsMenu = () => {
+  const [isPlanningOpen, setIsPlanningOpen] = useLocalStorageState(
+    'planningMenuOpen',
+    true
+  )
+
   return (
-    <Collapsible defaultOpen className="group/collapsible">
+    <Collapsible
+      open={isPlanningOpen}
+      onOpenChange={setIsPlanningOpen}
+      className="group/collapsible"
+    >
       <SidebarGroup>
         <SidebarGroupLabel asChild>
           <CollapsibleTrigger>
             Planning & Savings
-            <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+            <ChevronDown
+              className={`ml-auto transition-transform ${isPlanningOpen ? 'rotate-180' : ''}`}
+            />
           </CollapsibleTrigger>
         </SidebarGroupLabel>
         <CollapsibleContent>
@@ -209,13 +241,24 @@ const PlanningSavingsMenu = () => {
 }
 
 const AdministrationMenu = () => {
+  const [isAdminOpen, setIsAdminOpen] = useLocalStorageState(
+    'adminMenuOpen',
+    true
+  )
+
   return (
-    <Collapsible defaultOpen className="group/collapsible">
+    <Collapsible
+      open={isAdminOpen}
+      onOpenChange={setIsAdminOpen}
+      className="group/collapsible"
+    >
       <SidebarGroup>
         <SidebarGroupLabel asChild>
           <CollapsibleTrigger>
             Administration
-            <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+            <ChevronDown
+              className={`ml-auto transition-transform ${isAdminOpen ? 'rotate-180' : ''}`}
+            />
           </CollapsibleTrigger>
         </SidebarGroupLabel>
         <CollapsibleContent>
