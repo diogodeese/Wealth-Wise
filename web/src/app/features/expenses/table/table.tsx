@@ -1,4 +1,5 @@
 import { useExpenses } from '@/api/expenses/get-expenses'
+import { Loading } from '@/app/shared/components/loading'
 import { Expense } from '@/types/expenses/expense'
 import { useSearchParams } from 'react-router-dom'
 import { DataTable } from '../../../shared/components/ui/data-table'
@@ -14,7 +15,7 @@ export default function ExpensesTable() {
 
   const { data, isLoading, isError } = useExpenses(from, to, categories)
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) return <Loading />
   if (isError) return <div>Error loading data or no data available.</div>
 
   const expenses = data
@@ -26,11 +27,7 @@ export default function ExpensesTable() {
 
   return (
     <div className="mt-8 h-full">
-      <DataTable
-        columns={columns}
-        data={expenses} // Pass the mapped expenses
-        ToolbarComponent={Toolbar}
-      />
+      <DataTable columns={columns} data={expenses} ToolbarComponent={Toolbar} />
     </div>
   )
 }

@@ -3,7 +3,9 @@ import RecurringExpense from '@/types/recurring-expenses/recurring-expense'
 import { useQuery } from '@tanstack/react-query'
 
 export async function getRecurringExpenses(): Promise<RecurringExpense[]> {
-  return await api.get('/recurring-expenses')
+  const { data } = await api.get<RecurringExpense[]>('/recurring-expenses')
+
+  return data
 }
 
 export const useRecurringExpenses = () =>
