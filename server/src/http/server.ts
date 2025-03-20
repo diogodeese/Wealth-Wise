@@ -5,7 +5,6 @@ import fastify from 'fastify'
 import cookie from '@fastify/cookie'
 import fastifyStatic from '@fastify/static'
 import { join } from 'path'
-import swaggerJsdoc from 'swagger-jsdoc'
 
 import type { FastifyCookieOptions } from '@fastify/cookie'
 
@@ -32,36 +31,7 @@ import { getRecurringExpenses } from './routes/recurring-expenses/get-recurring-
 import { updateRecurringExpense } from './routes/recurring-expenses/update-recurring-expense'
 
 import { cronJobRecurringExpenses } from '../cron-jobs/recurring-expenses'
-
-// OpenAPI/Swagger setup using swagger-jsdoc
-const swaggerOptions = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'API Documentation',
-      version: '1.0.0',
-      description: 'API Documentation for the development team'
-    },
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT'
-        }
-      }
-    },
-    servers: [
-      {
-        url: 'http://localhost:3000'
-      }
-    ]
-  },
-  apis: ['./src/http/routes/**/*.ts']
-}
-
-// Generate the OpenAPI specification
-const swaggerSpec = swaggerJsdoc(swaggerOptions)
+import { swaggerSpec } from '../docs/swagger-options'
 
 dotenv.config()
 

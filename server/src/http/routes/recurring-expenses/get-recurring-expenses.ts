@@ -1,7 +1,7 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import { AuthenticatedRequest } from '../../../interfaces/request'
 import { prisma } from '../../../lib/prisma'
-import { verifyToken } from '../../middleware/verify-token'
+import { validateToken } from '../../middleware/validate-token'
 
 /**
  * @swagger
@@ -59,7 +59,7 @@ import { verifyToken } from '../../middleware/verify-token'
 export async function getRecurringExpenses(app: FastifyInstance) {
   app.get(
     '/api/recurring-expenses',
-    { preHandler: [verifyToken] },
+    { preHandler: [validateToken] },
     async (request: FastifyRequest, reply: FastifyReply) => {
       const authenticatedRequest = request as AuthenticatedRequest
       const userId = authenticatedRequest.userId

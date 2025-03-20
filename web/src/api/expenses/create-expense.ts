@@ -1,6 +1,5 @@
 import api from '@/lib/axios'
-import CreateExpenseRequest from '@/types/create-expense-request'
-import Expense from '@/types/expense'
+import { CreateExpenseRequest, Expense } from '@Types/ExpenseTypes'
 
 export async function createExpense(
   data: CreateExpenseRequest

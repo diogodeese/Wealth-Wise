@@ -1,5 +1,5 @@
 import api from '@/lib/axios'
-import { Expense } from '@/types/expenses/expense'
+import { Expense } from '@Types/ExpenseTypes'
 import { useQuery } from '@tanstack/react-query'
 
 export async function getExpenses(

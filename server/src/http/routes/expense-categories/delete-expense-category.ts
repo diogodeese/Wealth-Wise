@@ -2,7 +2,7 @@ import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 import { AuthenticatedRequest } from '../../../interfaces/request'
 import { prisma } from '../../../lib/prisma'
-import { verifyToken } from '../../middleware/verify-token'
+import { validateToken } from '../../middleware/validate-token'
 
 /**
  * @swagger
@@ -89,7 +89,7 @@ import { verifyToken } from '../../middleware/verify-token'
 export async function deleteExpenseCategory(app: FastifyInstance) {
   app.delete(
     '/api/expense-categories/:id',
-    { preHandler: [verifyToken] },
+    { preHandler: [validateToken] },
     async (request: FastifyRequest, reply: FastifyReply) => {
       try {
         const authenticatedRequest = request as AuthenticatedRequest

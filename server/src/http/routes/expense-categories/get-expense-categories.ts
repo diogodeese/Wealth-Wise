@@ -1,8 +1,7 @@
-import { FastifyInstance, FastifyReply } from 'fastify'
-import { z } from 'zod'
-import { AuthenticatedRequest } from '../../../interfaces/request'
+import { AuthenticatedRequest } from '@Interfaces/request'
+import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import { prisma } from '../../../lib/prisma'
-import { verifyToken } from '../../middleware/verify-token'
+import { validateToken } from '../../middleware/validate-token'
 
 /**
  * @swagger
@@ -83,57 +82,33 @@ import { verifyToken } from '../../middleware/verify-token'
  *                   type: string
  *                   example: Failed to fetch expense categories
  */
+
 export async function getExpenseCategories(app: FastifyInstance) {
   app.get(
     '/api/expense-categories',
-    { preHandler: [verifyToken] },
-    async (request: AuthenticatedRequest, reply: FastifyReply) => {
+    { preHandler: [validateToken] },
+    async (request: FastifyRequest, reply: FastifyReply) => {
       try {
-        const userIdSchema = z.object({
-          userId: z.string().uuid()
-        })
+        const { userId } = request as AuthenticatedRequest
 
-        // Validate the userId using Zod schema
-        userIdSchema.parse({ userId: request.userId })
-
-        // Fetch the expense category IDs that belong to the user
         const userExpenseCategories = await prisma.userExpenseCategory.findMany(
           {
-            where: {
-              userId: request.userId
-            },
-            select: {
-              expenseCategoryId: true
-            }
+            where: { userId },
+            select: { expenseCategoryId: true }
           }
         )
 
-        // Extract the category IDs
         const expenseCategoryIds = userExpenseCategories.map(
           (uec) => uec.expenseCategoryId
         )
 
-        // Fetch the expense categories based on the extracted IDs
         const expenseCategories = await prisma.expenseCategory.findMany({
-          where: {
-            id: {
-              in: expenseCategoryIds
-            }
-          },
-          orderBy: {
-            id: 'desc'
-          }
+          where: { id: { in: expenseCategoryIds } },
+          orderBy: { id: 'desc' }
         })
 
         return reply.status(200).send(expenseCategories)
       } catch (error) {
-        if (error instanceof z.ZodError) {
-          return reply.status(400).send({
-            error: 'Validation failed',
-            details: error.errors
-          })
-        }
-
         console.error('Error fetching expense categories:', error)
         return reply
           .status(500)

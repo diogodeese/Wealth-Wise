@@ -2,7 +2,7 @@ import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import { z, ZodError } from 'zod'
 import { AuthenticatedRequest } from '../../../interfaces/request'
 import { prisma } from '../../../lib/prisma'
-import { verifyToken } from '../../middleware/verify-token'
+import { validateToken } from '../../middleware/validate-token'
 
 /**
  * @swagger
@@ -118,7 +118,7 @@ import { verifyToken } from '../../middleware/verify-token'
 export async function createRecurringExpense(app: FastifyInstance) {
   app.post(
     '/api/recurring-expenses',
-    { preHandler: [verifyToken] },
+    { preHandler: [validateToken] },
     async (request: FastifyRequest, reply: FastifyReply) => {
       const authenticatedRequest = request as AuthenticatedRequest
 
